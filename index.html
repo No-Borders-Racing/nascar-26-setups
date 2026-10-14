@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Beta 0.6.3 -->
+<!-- Beta 0.6.4 -->
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>No Borders Racing - NASCAR 26 Set-ups</title>
@@ -25,7 +25,7 @@ html{scroll-padding-top:env(safe-area-inset-top,0px)}
 [hidden]{display:none!important}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.4 Barlow,system-ui,-apple-system,"Segoe UI",sans-serif}
 .w{max-width:880px;margin:0 auto;padding:20px 16px 40px}
-h1,h2,.num,.chip,.lbl{font-family:"Barlow Semi Condensed","Arial Narrow",system-ui,sans-serif}
+h1,h2,.num{font-family:"Barlow Semi Condensed","Arial Narrow",system-ui,sans-serif}
 header{display:flex;justify-content:space-between;align-items:baseline;gap:12px;border-bottom:4px solid var(--red);padding-bottom:10px}
 .brand{display:flex;align-items:center;gap:12px;min-width:0}.brand img{width:48px;height:48px;flex:none}
 h1{margin:0;font-size:1.7rem;font-weight:700;letter-spacing:.01em}
@@ -56,8 +56,6 @@ header span{color:var(--mute);font-size:.9rem}
 .f input,.f select{font:inherit;font-size:1rem;color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:8px;padding:7px 8px;width:100%}
 .fr{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}
 .fr .f:first-child{grid-column:1/-1}
-.formpage :is(#tabs,#trk,#bar,#vars,#body,#guide,#empty,.note),.formpage #admin>:not(#frm){display:none!important}
-.formpage #frm{border:0;background:none;padding:0}
 .trk{display:block;width:100%;margin-top:10px;font:700 1.15rem "Barlow Semi Condensed",sans-serif;color:var(--ink);background:var(--card);border:1.5px solid var(--ink);border-radius:8px;padding:10px 12px}
 :focus-visible{outline:3px solid var(--blue);outline-offset:2px}
 .bar{margin:16px 0 12px}
@@ -178,13 +176,8 @@ button{font:700 .9rem system-ui,sans-serif;border:1.5px solid var(--line);backgr
 button[aria-pressed=true]{background:var(--red);border-color:var(--red);color:#fff}
 .tabs{display:flex;gap:6px;flex-wrap:wrap}.tabs button{flex:1;min-width:92px}
 .tabs small{display:block;font-weight:600;font-size:.68rem;opacity:.9}
-.ctl{display:grid;grid-template-columns:1fr;gap:12px;margin-top:12px}
-@media(min-width:640px){.ctl{grid-template-columns:1fr 1fr}}
 .sl label{display:flex;justify-content:space-between;font-weight:700;margin-bottom:2px}
 .sl input[type=range]{width:100%;accent-color:var(--red);height:28px}
-.ends{display:flex;justify-content:space-between;color:var(--mute);font-size:.8rem}
-.rule{margin:10px 0 0;padding:10px 12px;border-left:4px solid var(--red);background:var(--bg);border-radius:6px}
-.rule b{display:block}
 .gauge{position:relative;height:18px;border-radius:99px;background:linear-gradient(90deg,var(--red),var(--grn) 50%,var(--blue));margin:34px 8px 6px}
 .gauge{cursor:grab;touch-action:none}.gauge:active{cursor:grabbing}
 .needle{position:absolute;top:-8px;width:6px;height:34px;margin-left:-3px;background:var(--ink);border-radius:3px;border:2px solid var(--card);transition:left .35s ease}
@@ -325,7 +318,6 @@ const $=id=>document.getElementById(id);
 const clamp=(x,a,b)=>Math.max(a,Math.min(b,x)),sm=x=>{x=clamp(x,0,1);return x*x*(3-2*x)};
 const rg=(a,b,st)=>{const o=[],n=Math.round((b-a)/st);for(let i=0;i<=n;i++)o.push(Number((a+i*st).toFixed(4)));return o};
 // ---- real NASCAR 26 ranges (same as the setup sheet) ----
-const CO=['LF','RF','LR','RR'],CN={LF:'Front left',RF:'Front right',LR:'Rear left',RR:'Rear right'};
 const ST=['Spring','Bump','Rebound','Tire pressure','Camber'],UN=['lbs/in','','','psi','°'];
 let SER='cup';
 const RNG=(k,i)=>{const fr=k[0]==='L'&&k[1]==='F'||k==='RF';
@@ -407,13 +399,11 @@ const A=()=>view==='front'?0:1;
 function params(){const a=A(),S=leanS(a),D=(ax(1,a)+ax(2,a))/2;return{w:2.2+0.04*S,z:0.25+0.012*D,mx:rollMax(S)}}
 function step(dt){const P=params(),g=gOf(T*L),tg=P.mx*g*bankF();let n=Math.ceil(dt/0.01);const h=dt/n,a=A();
  for(let i=0;i<n;i++){const z=0.12+0.014*(rv>0?ax(1,a):ax(2,a)),acc=P.w*P.w*(tg-roll)-2*z*P.w*rv;rv+=acc*h;roll+=rv*h}}
-function simTo(t){roll=0;rv=0;T=0;trail=[];trace=[];const dt=1/60;while(T<t){T=Math.min(t,T+dt/PERIOD);step(dt);rec()}draw()}
 function rec(){trace[Math.min(N-1,Math.floor(T*N))]=roll}
 // ---- drawing ----
 function draw(){
  const s=T*L,g=gOf(s),b=total(),a=A(),P=params(),sg=a?1:-1;           // front view: outside is image-left
- const outC=a?'RR':'RF',inC=a?'LR':'LF',leftC=a?inC:outC,rightC=a?outC:inC;  // corner shown at image-left / image-right
- {const out=a?'RIGHT':'RIGHT',inn='LEFT';const L=$('lblL'),R=$('lblR');L.textContent=(a?'LEFT (inside)':'RIGHT (outside)');R.textContent=(a?'RIGHT (outside)':'LEFT (inside)');L.setAttribute('fill',a?'var(--blue)':'var(--red)');R.setAttribute('fill',a?'var(--red)':'var(--blue)');$('lblV').textContent=a?'':''}
+ {const L=$('lblL'),R=$('lblR');L.textContent=(a?'LEFT (inside)':'RIGHT (outside)');R.textContent=(a?'RIGHT (outside)':'LEFT (inside)');L.setAttribute('fill',a?'var(--blue)':'var(--red)');R.setAttribute('fill',a?'var(--red)':'var(--blue)')}
 const VM=1.8,vr=sg*roll*VM;   // body lean is drawn bigger than the real number so you can see it
  $('scene').setAttribute('transform','rotate('+(-sg*TB*g).toFixed(2)+' 160 170)');
  const dp=dropPx(a,g);
@@ -427,8 +417,7 @@ const VM=1.8,vr=sg*roll*VM;   // body lean is drawn bigger than the real number 
   c.setAttribute('x1',m[0]);c.setAttribute('y1',m[1]);c.setAttribute('x2',wx);c.setAttribute('y2',130);c.setAttribute('stroke-width',w+2);c.style.stroke=col});
  {const sp=cpct(a?7:0),m1=at(112,100),m2=at(208,100);$('swb').setAttribute('points','82,152 '+m1[0].toFixed(1)+','+m1[1].toFixed(1)+' '+m2[0].toFixed(1)+','+m2[1].toFixed(1)+' 238,152');$('swb').style.stroke='color-mix(in srgb, var(--red) '+Math.round(clamp(Math.abs(roll)*sp/400,0,1)*100)+'%, var(--amb))';$('swb').setAttribute('stroke-width',(1.5+sp/9).toFixed(1))}
  const eo=eR(a,roll),ei=eL(a,roll);
- const rotL=(a?-1:1)*(a?ei:eo)*(a?1:1),rotR=0;
- // outside tire is image-left in front view, image-right in rear view
+  // outside tire is image-left in front view, image-right in rear view
  const rOut=sg*eo,rIn=-sg*ei;
  const wl=a?rIn:rOut,wr=a?rOut:rIn;
  $('wL').setAttribute('transform','rotate('+wl.toFixed(2)+' 80 170)');$('wR').setAttribute('transform','rotate('+wr.toFixed(2)+' 240 170)');
@@ -635,7 +624,7 @@ const HC=['Spring','Bump','Rebound','PSI','Camber'];
 const SW={'Front Sway Bar':2,'Rear Sway Bar':3};const sf=(k,v)=>SW[k]!==undefined&&v!==''&&!isNaN(+v)?(+v).toFixed(SW[k]):v;
 const GK=['Front Sway Bar','Wheel Lock','Brake Bias %','Rear End Ratio','Wedge','Left Weight %','Nose Weight %','Steering Offset','Rear Sway Bar'];
 function srcText(t){if(ONLINE){$('dsrc').textContent='Shared online: setups you add are visible to everyone, and you can only edit or delete your own.';return}if(!(window.claude&&window.claude.use)){$('dsrc').textContent='Demo mode: changes are saved in this browser only and are not shared with anyone else.';return}$('dsrc').textContent=t?'Data last updated from a spreadsheet on '+new Date(t).toLocaleDateString()+'.':'Data is the version built into the app.'}
-let curT=null,editT=null,delArm=false;
+let curT=null,editT=null;
 function parseRows(rows,defSer,out,tab){
  const h=(rows[0]||[]).map(x=>x==null?'':String(x).trim());
  const need=['Track',...(defSer?[]:['Series']),...['LF','RF','LR','RR'].flatMap(k=>HC.map(p=>k+' '+p)),...GK];
