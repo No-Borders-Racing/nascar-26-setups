@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Beta 0.7.1 -->
+<!-- Beta 0.7.3 -->
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>No Borders Racing - NASCAR 26 Set-ups</title>
@@ -219,6 +219,25 @@ select{font:600 .9rem system-ui,sans-serif;border:1.5px solid var(--line);backgr
 .g{display:flex;flex-direction:column;gap:4px;min-width:0}.g select{width:100%;max-width:100%;min-width:0}
 .note{margin:0 0 10px;padding:10px 12px;border-left:4px solid var(--amb);background:var(--card);border-radius:6px}
 details{margin-top:12px}summary{cursor:pointer}
+.beta{font:700 .65rem system-ui,sans-serif;background:var(--blue);color:#fff;border-radius:99px;padding:2px 7px;vertical-align:middle;margin-left:4px}
+#telem input{width:64px;font:600 .9rem system-ui,sans-serif;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:6px}
+.tlg{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:.78rem;margin:4px 0 6px;font-variant-numeric:tabular-nums}.tl i,.tsm i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px}
+.tsm{width:100%;border-collapse:collapse;font-size:.74rem;margin:10px 0 4px;font-variant-numeric:tabular-nums}.tsm th,.tsm td{padding:4px 3px;text-align:center;border-bottom:1px solid var(--line)}.tsm th:first-child{text-align:left;white-space:nowrap}.tsm td{white-space:nowrap}.tsm th{color:var(--mute);font-weight:600}
+#tsvg{max-width:620px;margin:0 auto}
+#stack{align-items:stretch}
+@media(min-width:640px){#stack>[data-id=telem],#stack>[data-id=now],#stack>[data-id=help]{grid-column:1/-1}
+#stack>[data-id=car],#stack>[data-id=weight],#stack>[data-id=track],#stack>[data-id=tire]{height:480px;display:flex;flex-direction:column;overflow:hidden;box-sizing:border-box}
+#stack>[data-id=car]>svg,#stack>[data-id=weight]>svg,#stack>[data-id=track]>svg,#stack>[data-id=tire]>svg{flex:1 1 0;min-height:0;width:100%}
+#stack>.mv>.cap{flex:none}
+#stack>[data-id=car]>svg:nth-of-type(2){flex:none;height:auto}
+#stack>.mv.min{height:auto!important;align-self:start}}
+.mvrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:12px 0 8px}.mvrow button{padding:5px 10px;font-size:.8rem;margin:0}
+.mvt{display:flex;align-items:center;gap:6px;margin:-4px -4px 6px;min-height:30px}
+.mvn{display:none;flex:1;font-weight:700;font-size:.95rem;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mva{margin-left:auto;display:flex;gap:4px}.mvt button{width:34px;height:30px;padding:0;border:1.5px solid var(--line);background:var(--card);color:var(--mute);border-radius:8px;font-size:.8rem;cursor:pointer;touch-action:manipulation}
+.mvt .mvg{cursor:grab;touch-action:none;user-select:none;font-size:1.1rem}
+.mv.min{padding-bottom:6px}.mv.min>:not(.mvt){display:none}.mv.min .mvn{display:block}.mv.min .mvt{margin-bottom:0}
+.mv.drag{box-shadow:0 8px 24px rgba(0,0,0,.28);outline:2px solid var(--blue);position:relative;z-index:2}.mv.drag .mvg{cursor:grabbing}
 </style>
 </head><body><main>
 <h1>Tune Lab</h1>
@@ -236,8 +255,9 @@ details{margin-top:12px}summary{cursor:pointer}
  <p class="state" id="state"></p>
  <p class="cap" id="mix" style="text-align:center"></p>
 </section>
-<section class="panels">
- <div class="card">
+<p class="mvrow"><button type="button" id="mvreset" class="view">Reset card layout</button><span class="fine">Drag the dots, or use the arrows, to move a card. The dash minimises it.</span></p>
+<section class="panels" id="stack">
+<div class="card mv" data-id="car" data-name="Car view">
   <div class="ph"><h2>Car seen from the <span id="vn">front</span></h2><div class="seg" id="view"><button type="button" data-v="front" aria-pressed="true">Front</button><button type="button" data-v="rear" aria-pressed="false">Rear</button></div></div>
   <svg viewBox="-30 0 380 250" role="img" aria-label="Car seen head-on leaning in a corner on a banked track">
    <defs><clipPath id="sc"><rect x="-30" y="0" width="380" height="214"/></clipPath></defs>
@@ -265,7 +285,9 @@ details{margin-top:12px}summary{cursor:pointer}
    <text x="6" y="12" font-size="10" fill="var(--mute)">Lean over the lap (dashed = where it is trying to go)</text>
   </svg>
   <p class="cap" id="rollcap"></p>
-  <div class="ph" style="margin-top:12px"><h2>Weight on each tire (from above)</h2></div>
+</div>
+<div class="card mv" data-id="weight" data-name="Weight on each tire">
+  <div class="ph"><h2>Weight on each tire (from above)</h2></div>
   <svg viewBox="0 0 320 200" role="img" aria-label="Car from above showing how much weight is on each tire">
    <text x="160" y="12" text-anchor="middle" font-size="10" font-weight="700" fill="var(--mute)">NOSE (front)</text>
    <text x="8" y="100" font-size="10" font-weight="700" fill="var(--blue)">LEFT</text>
@@ -276,8 +298,8 @@ details{margin-top:12px}summary{cursor:pointer}
    <text id="comt" x="160" y="196" text-anchor="middle" font-size="10" fill="var(--mute)"></text>
   </svg>
   <p class="cap" id="wcap"></p>
- </div>
- <div class="card">
+</div>
+<div class="card mv" data-id="track" data-name="Through the corner">
   <div class="ph"><h2>Through the corner</h2></div>
   <svg viewBox="0 0 320 232" role="img" aria-label="Car from above going round the track, turning left">
    <rect width="320" height="232" fill="var(--grass)" rx="8"/>
@@ -293,8 +315,9 @@ details{margin-top:12px}summary{cursor:pointer}
    <g id="car"><rect x="-15" y="-7" width="30" height="14" rx="5" fill="var(--red)" stroke="#fff" stroke-width="1"/><rect x="2" y="-5" width="9" height="10" rx="2" fill="#1c2330" opacity=".85"/><circle cx="14" cy="-3" r="1.6" fill="#fff"/><circle cx="14" cy="3" r="1.6" fill="#fff"/></g>
   </svg>
   <p class="cap">Dashed line = the ideal line. White trail = where the car actually went. The track outline is a simplified AI drawing, not to scale.</p>
-  <div id="tire">
-   <div class="ph" style="margin-top:12px"><h2>Tire pressure: the contact patch</h2></div>
+</div>
+<div class="card mv" id="tire" data-id="tire" data-name="Tire pressure">
+   <div class="ph"><h2>Tire pressure: the contact patch</h2></div>
    <svg viewBox="0 0 320 150" role="img" aria-label="Side view of front and rear tires showing contact patch size">
     <line x1="0" y1="130" x2="320" y2="130" stroke="var(--wall)" stroke-width="2"/>
     <g id="tf"><ellipse id="tfe" cx="90" cy="74" rx="52" ry="52" fill="#20242b" stroke="var(--ink)" stroke-width="2"/><circle cx="90" cy="74" r="22" fill="var(--card)" stroke="var(--ink)" stroke-width="2"/><rect id="tfp" x="60" y="128" width="60" height="5" rx="2.5" fill="var(--grn)"/></g>
@@ -302,14 +325,21 @@ details{margin-top:12px}summary{cursor:pointer}
     <text x="90" y="147" text-anchor="middle" font-size="10" fill="var(--mute)" id="tft"></text>
     <text x="230" y="147" text-anchor="middle" font-size="10" fill="var(--mute)" id="trt"></text>
    </svg>
-  </div>
- </div>
+</div>
+<section class="card mv" id="telem" data-id="telem" data-name="Telemetry">
+ <div class="ph"><h2>Telemetry <span class="beta">test</span></h2><div class="seg" id="tch"><button type="button" data-c="travel" aria-pressed="true">Travel</button><button type="button" data-c="speed" aria-pressed="false">Shock speed</button><button type="button" data-c="load" aria-pressed="false">Tire load</button></div></div>
+ <p class="cap" id="tcap"></p>
+ <svg id="tsvg" viewBox="0 0 360 190" role="img" aria-label="Simulated telemetry for the four corners over one lap"></svg>
+ <div class="tlg" id="tleg"></div>
+ <div class="row"><label class="lt">Bump stop at <input id="lb" type="number" step="0.05" min="0.1" max="4" value="0.45"> in</label><label class="lt">Top-out at <input id="ld2" type="number" step="0.05" min="0.1" max="4" value="0.12"> in</label></div>
+ <table class="tsm" id="tsum"></table>
+ <p class="cap" id="tread"></p>
+ <p class="fine">Simulated clean lap using the settings above: no curbs, aprons or track bumps. It uses real-world stock car theory (springs, dampers, sway bars, weight transfer, banking, downforce), not the game's own physics. Car weight is taken as 3,400 lb. Shock speeds look low because a clean track has no bumps. The two limits are estimates you can change. Dashed lines are the left side, solid are the right.</p>
 </section>
-
-<section class="card" aria-live="polite"><h2 style="margin-bottom:4px">What's happening</h2><p id="w1" style="margin:6px 0"></p><p id="w2" style="margin:6px 0"></p>
+<section class="card mv" data-id="now" data-name="What's happening" aria-live="polite"><h2 style="margin-bottom:4px">What's happening</h2><p id="w1" style="margin:6px 0"></p><p id="w2" style="margin:6px 0"></p>
  <p class="fine">Simplified teaching model. It shows the general direction of each change, not exact game numbers or a real physics result. Real handling also depends on the track, the car and the rest of your setup. Values shown are NASCAR 26 Cup ranges.</p></section>
-
-<details class="card"><summary><b>What each setting does</b></summary>
+<div class="card mv" data-id="help" data-name="What each setting does">
+<h2>What each setting does</h2>
 <p><b>Spring.</b> Stiffer holds the body flatter. The end with stiffer springs gives up grip first (stiffer front = tight, stiffer rear = loose).</p>
 <p><b>Bump.</b> Resists the car pushing down. Stiffer front bump = tight on entry, stiffer rear = loose. <i>(To confirm in the game.)</i></p>
 <p><b>Rebound.</b> Resists the car rising back up. Stiffer front rebound = looser, stiffer rear = tighter. <i>(To confirm in the game.)</i></p>
@@ -321,7 +351,15 @@ details{margin-top:12px}summary{cursor:pointer}
 <p><b>Wheel lock and steering offset.</b> Small effects. More wheel lock = a little looser (more steering to use). Positive offset = a little tighter. <i>(To confirm.)</i></p>
 <p><b>Rear end ratio.</b> This changes gearing, not tight or loose, so it isn't shown here.</p>
 <p><b>Track.</b> Picks the real corner banking from published track data. The road in the car view tilts into the turn. Steeper banking holds the car up, so the body leans less and less weight moves to the outside tires. It also presses the car down, so both springs squash more (softer springs squash most), and it adds grip, so setup changes show a little weaker. Flatter tracks do the opposite. The effect sizes are my estimates.</p>
-<p><b>Loading a setup.</b> Uses the right-side tire values of the saved setup for Front and Rear.</p><p><b>Front and Rear.</b> Each value is applied to both tires on that end.</p></details>
+<p><b>Loading a setup.</b> Uses the right-side tire values of the saved setup for Front and Rear.</p><p><b>Front and Rear.</b> Each value is applied to both tires on that end.</p>
+</div>
+</section>
+
+
+
+
+
+
 </main><script>
 const $=id=>document.getElementById(id);
 const clamp=(x,a,b)=>Math.max(a,Math.min(b,x)),sm=x=>{x=clamp(x,0,1);return x*x*(3-2*x)};
@@ -476,7 +514,7 @@ function words(){
  $('w1').textContent=a<.12?'Everything adds up to a balanced car: it turns where you point it.':b>0?'Overall the front is giving up grip before the rear, so the nose pushes up the track and the car will not turn in as much as you want.':'Overall the rear is giving up grip before the front, so the back end tries to come around and the car feels twitchy.';
  const big=KEYS.slice().sort((x,y)=>Math.abs(W[y]*c[y])-Math.abs(W[x]*c[x]))[0];
  $('w2').textContent=Math.abs(c[big])<.1?'':'Biggest effect right now: '+KN[big]+' ('+lab(c[big])+').';
-}
+ tdirty=true}
 function btn(a,i,n,d){return '<button type="button" class="ab" data-c="'+a+'" data-i="'+i+'" data-d="'+d+'" aria-label="'+n+(d<0?' lower':' higher')+'">'+(d<0?'\u25C0':'\u25B6')+'</button>'}
 function row(a,i,n){return '<div class="st"><div class="sn">'+n+'</div><div class="sv" id="o_'+a+i+'"></div><div class="sb">'+btn(a,i,n,-1)+'<div class="bar" aria-hidden="true"><i id="p_'+a+i+'"></i></div>'+btn(a,i,n,1)+'</div></div>'}
 const KS=()=>MODE==='corner'?['LF','RF','LR','RR']:['F','R'];
@@ -517,7 +555,7 @@ PRE.forEach((q,i)=>{const o=document.createElement('option');o.value=i;o.textCon
 $('ld').addEventListener('change',e=>{if(e.target.value==='')return;const q=PRE[+e.target.value];selTrack(BANK[q.n]!==undefined?q.n:'Generic');['F','R'].forEach(a=>{q[a].forEach((v,i)=>{const o=RNG(AP[a],i);let bi=0;o.forEach((x,k)=>{if(Math.abs(x-v)<Math.abs(o[bi]-v))bi=k});X[a][i]=bi})});['LF','RF','LR','RR'].forEach(c=>{const a=c[1]==='F'?'F':'R',src=q[c]||(c[0]==='L'?q[a].map((v,i)=>i===4?-v:v):q[a]);X[c]=ST.map((_,i)=>snap(c,i,src[i]))});CH.forEach((c,i)=>{const v=q.g[c.k];if(v===undefined)return;let bi=0;c.r.forEach((x,k)=>{if(Math.abs(x-v)<Math.abs(c.r[bi]-v))bi=k});X.C[i]=bi});build();all()});
 $('reset').addEventListener('click',()=>{$('ld').value='';resetX();build();all()});
 $('view').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;view=b.dataset.v;[...$('view').children].forEach(x=>x.setAttribute('aria-pressed',x===b));all()});
-function tick(ts){if(playing){if(last!==null){const dt=Math.min(.05,(ts-last)/1000),T0=T;T=(T+dt/PERIOD)%1;if(T<T0)trace=[];step(dt);rec()}last=ts}else last=null;draw();requestAnimationFrame(tick)}
+function tick(ts){if(playing){if(last!==null){const dt=Math.min(.05,(ts-last)/1000),T0=T;T=(T+dt/PERIOD)%1;if(T<T0)trace=[];step(dt);rec()}last=ts}else last=null;draw();if(tdirty&&!TMIN&&ts-tlast>150){tlast=ts;telRun()}telCur();requestAnimationFrame(tick)}
 if(matchMedia('(prefers-reduced-motion: reduce)').matches){playing=false;const pb=document.createElement('button');pb.type='button';pb.id='play';pb.textContent='Play';pb.addEventListener('click',()=>{playing=!playing;pb.textContent=playing?'Pause':'Play';last=null});$('reset').parentNode.appendChild(pb)}
 const SETUPS=[{"t":"Bristol","s":"Cup Series","by":"TooFastTuck","F":[1950,2,10,15,-7],"R":[1425,0,10,15,-2.5],"LF":[1680,0,10,15,7],"LR":[750,0,10,15,2.5]},{"t":"Charlotte","s":"Cup Series","by":"TooFastTuck","F":[1410,2,5,15,-7],"R":[1425,2,10,15,-2.5],"LF":[1140,5,5,15,7],"LR":[750,10,10,15,2.5]},{"t":"Chicagoland","s":"Cup Series","by":"Slowball99","F":[1140,0,10,15,-7],"R":[1762.5,2,10,15,-2.5],"LF":[1140,0,10,15,7],"LR":[1087.5,0,10,15,2.5]},{"t":"Dover","s":"Cup Series","by":"TooFastTuck","F":[2490,8,2,15,-7],"R":[2100,6,10,15,-2.5],"LF":[1410,8,5,15,7],"LR":[750,5,8,15,2.5]},{"t":"Echo Park","s":"Cup Series","by":"ABC Weapons","F":[1140,6,6,57.5,-7],"R":[1425,9,4,42.5,-2.5],"LF":[1140,3,9,40,7],"LR":[1087.5,6,4,25,2.5]},{"t":"Echo Park","s":"Cup Series","by":"TooFastTuck","F":[3300,5,6,40,-6],"R":[2775,7,7,40,-2],"LF":[3300,3,8,22.5,5],"LR":[2100,7,7,22.5,2]},{"t":"Homestead-Miami","s":"Cup Series","by":"TooFastTuck","F":[1410,0,8,15,-7],"R":[1762.5,0,10,15,-2.5],"LF":[1410,0,8,15,7],"LR":[750,0,10,15,2.5]},{"t":"Indianapolis","s":"Cup Series","by":"ABC Weapons","F":[1140,2,6,40,-5.5],"R":[1762.5,7,6,40,-2],"LF":[1140,2,10,20,4.5],"LR":[750,5,6,20,2]},{"t":"Indianapolis","s":"Cup Series","by":"TooFastTuck","F":[1140,0,10,15,-7],"R":[2775,5,8,15,-2.5],"LF":[3030,0,9,17.5,7],"LR":[1087.5,0,8,15,2.5]},{"t":"Las Vegas","s":"Cup Series","by":"13allistics","F":[1680,5,5,15,-5.5],"R":[1762.5,5,5,15,-2.5],"LF":[1140,5,5,15,5.5],"LR":[750,5,8,15,2.5]},{"t":"Las Vegas","s":"Cup Series","by":"TooFastTuck","F":[1140,0,10,15,-7],"R":[1762.5,2,9,17.5,-2.5],"LF":[1140,2,9,15,7],"LR":[1087.5,0,10,15,2.5]},{"t":"Michigan","s":"Cup Series","by":"13allistics","F":[1680,5,5,15,-6],"R":[1762.5,5,5,15,-2.5],"LF":[1140,5,5,15,6],"LR":[750,5,8,15,2.5]},{"t":"Michigan","s":"Cup Series","by":"TooFastTuck","F":[1140,0,10,15,-7],"R":[1762.5,5,10,15,-2.5],"LF":[1410,0,9,15,7],"LR":[750,0,10,15,2.5]},{"t":"Nashville","s":"Cup Series","by":"TooFastTuck","F":[1140,3,6,17.5,-6.5],"R":[2775,2,8,17.5,-2.5],"LF":[3030,2,5,15,7],"LR":[1425,3,8,15,2.5]},{"t":"Pocono","s":"Cup Series","by":"TooFastTuck","F":[1140,3,6,15,-7],"R":[2775,2,8,15,-2.5],"LF":[3030,2,5,15,7],"LR":[1087.5,0,8,15,2.5]},{"t":"Talladega","s":"Cup Series","by":"ABC Weapons","F":[3300,3,9,65,-6],"R":[1425,3,10,65,-2],"LF":[1680,3,9,65,6.5],"LR":[1425,3,10,65,1.5]},{"t":"Watkins Glen","s":"Cup Series","by":"TooFastTuck","F":[1680,0,10,15,-7],"R":[1087.5,0,10,15,-2.5],"LF":[1680,0,10,15,-7],"LR":[1087.5,0,10,15,-2.5]}];
 SETUPS.forEach((o,i)=>{PRE[i].LF=o.LF;PRE[i].LR=o.LR});   // real left-side values for the per-corner layout
@@ -525,6 +563,96 @@ function snap(c,i,v){const o=RNG(c,i);let b=0;o.forEach((x,k)=>{if(Math.abs(x-v)
 $('lay').addEventListener('click',e=>{const b=e.target.closest('button');if(!b||b.dataset.m===MODE)return;const m=b.dataset.m;
  if(m==='axle')['F','R'].forEach(a=>{X[a]=X[AP[a]].slice()});
  MODE=m;BASE=BASES[m];[...$('lay').children].forEach(x=>x.setAttribute('aria-pressed',String(x===b)));build();all()});
+// ---- telemetry (test) ----
+const TC=['LF','RF','LR','RR'],TCOL={LF:'#2f80ed',RF:'#e5484d',LR:'#2fa36b',RR:'#e69f00'},TNM={LF:'Left front',RF:'Right front',LR:'Left rear',RR:'Right rear'};
+const WT=3400,TL=16,NS=320;
+let TEL=null,tdirty=true,tch='travel',tlast=0,tci=-1;const LIM={b:.45,d:.12};
+function telSim(){
+ const ld0=loads(0),k={},m={},zb={},zr={},F0={};
+ TC.forEach(c=>{F0[c]=ld0[c]*WT;k[c]=Math.max(200,val(c,0));m[c]=F0[c]/386.4;zb[c]=.12+.5*pct(c,1)/100;zr[c]=.12+.5*pct(c,2)/100});
+ const kf=1600*cpct(0)/100,kr=1600*cpct(7)/100,th=TB*Math.PI/180;
+ const g=[],v=[];for(let i=0;i<NS;i++){const gg=clamp(gOf(i/NS*L),0,1.2);g.push(gg);v.push(1-.3*Math.min(1,gg))}
+ const dts=TL/NS,gl=v.map((_,i)=>clamp(-(v[(i+1)%NS]-v[(i-1+NS)%NS])/(2*dts),-.7,.7));
+ const dem=g.map((gg,i)=>{const l=loads(Math.min(gg,1.1)),gb=Math.min(1,gg),nf=1+gb*(Math.cos(th)-1+1.2*gg*Math.sin(th)),aero=.22*WT*v[i]*v[i],lg=gl[i]*WT*.14,o={};
+  TC.forEach(c=>{const f=c[1]==='F';o[c]=l[c]*WT*nf+aero*(f?.22:.28)+(f?lg:-lg)/2-F0[c]});return o});
+ const x={},w={},out={g:g,x:{},w:{},f:{},F0:F0};TC.forEach(c=>{x[c]=0;w[c]=0;out.x[c]=[];out.w[c]=[];out.f[c]=[]});
+ const sub=8,h=dts/sub,ks=25000;let arb={},st={};
+ for(let lap=0;lap<3;lap++)for(let i=0;i<NS;i++){
+  for(let s=0;s<sub;s++){
+   const fa=kf*(x.LF-x.RF),ra=kr*(x.LR-x.RR);arb={LF:-fa,RF:fa,LR:-ra,RR:ra};
+   TC.forEach(c=>{const z=w[c]>0?zb[c]:zr[c],cc=2*z*Math.sqrt(k[c]*m[c]);
+    st[c]=x[c]>LIM.b?-ks*(x[c]-LIM.b):x[c]<-LIM.d?-ks*(x[c]+LIM.d):0;
+    const a=(dem[i][c]-k[c]*x[c]-cc*w[c]+arb[c]+st[c])/m[c];w[c]+=a*h;x[c]+=w[c]*h})}
+  if(lap===2)TC.forEach(c=>{const z=w[c]>0?zb[c]:zr[c],cc=2*z*Math.sqrt(k[c]*m[c]);
+   out.x[c].push(x[c]);out.w[c].push(w[c]);out.f[c].push(Math.max(0,F0[c]+k[c]*x[c]+cc*w[c]-arb[c]-st[c]))})}
+ out.sum={};TC.forEach(c=>{const X_=out.x[c],W_=out.w[c],F_=out.f[c];let bo=0,to=0,li=0,pb=false,pt=false,pl=false;out.ev=out.ev||{};out.ev[c]=[];
+  X_.forEach((q,i)=>{const b=q>=LIM.b-.02,t=q<=-LIM.d+.02,l=F_[i]<20;
+   if(b&&!pb){bo++;out.ev[c].push([i,'b'])}if(t&&!pt){to++;out.ev[c].push([i,'t'])}if(l&&!pl)li++;pb=b;pt=t;pl=l});
+  out.sum[c]={cmax:Math.max.apply(null,X_),emax:Math.min.apply(null,X_),wmax:Math.max.apply(null,W_.map(Math.abs)),fmin:Math.min.apply(null,F_),fmax:Math.max.apply(null,F_),bo:bo,to:to,li:li}});
+ return out}
+function telDraw(){
+ if(!TEL)return;const Ht=190,x0=36,x1=352,y0=10,y1=164,E=TEL;let lo,hi,fmt,unit;
+ const all_=ch=>TC.reduce((a,c)=>a.concat(E[ch][c]),[]);
+ if(tch==='travel'){const a=all_('x');lo=Math.min(-LIM.d,Math.min.apply(null,a))*1.2;hi=Math.max(LIM.b,Math.max.apply(null,a))*1.2;unit='in';fmt=q=>q.toFixed(1)}
+ else if(tch==='speed'){const a=all_('w').map(Math.abs),mx=Math.max(2,Math.max.apply(null,a))*1.1;lo=-mx;hi=mx;unit='in/s';fmt=q=>q.toFixed(0)}
+ else{const a=all_('f');lo=0;hi=Math.max.apply(null,a)*1.08;unit='lb';fmt=q=>q.toFixed(0)}
+ const X=i=>x0+(x1-x0)*i/(NS-1),Y=q=>y1-(y1-y0)*(q-lo)/(hi-lo);let s='';
+ s+='<rect x="'+x0+'" y="'+y0+'" width="'+(x1-x0)+'" height="'+(y1-y0)+'" fill="none" stroke="var(--line)"/>';
+ let run=null;E.g.forEach((gg,i)=>{const on=gg>.2;if(on&&run===null)run=i;if((!on||i===NS-1)&&run!==null){s+='<rect x="'+X(run)+'" y="'+y0+'" width="'+(X(i)-X(run))+'" height="'+(y1-y0)+'" fill="var(--mute)" opacity=".12"/>';run=null}});
+ for(let t=0;t<=4;t++){const q=lo+(hi-lo)*t/4;s+='<line x1="'+x0+'" x2="'+x1+'" y1="'+Y(q)+'" y2="'+Y(q)+'" stroke="var(--line)" stroke-width=".5"/><text x="'+(x0-3)+'" y="'+(Y(q)+3)+'" text-anchor="end" font-size="8" fill="var(--mute)">'+fmt(q)+'</text>'}
+ if(tch==='travel'){s+='<line x1="'+x0+'" x2="'+x1+'" y1="'+Y(0)+'" y2="'+Y(0)+'" stroke="var(--mute)" stroke-width=".8"/>';
+  s+='<line x1="'+x0+'" x2="'+x1+'" y1="'+Y(LIM.b)+'" y2="'+Y(LIM.b)+'" stroke="var(--red)" stroke-dasharray="4 3"/><text x="'+(x0+3)+'" y="'+(Y(LIM.b)-3)+'" font-size="8" fill="var(--red)">bump stop (bottoming)</text>';
+  s+='<line x1="'+x0+'" x2="'+x1+'" y1="'+Y(-LIM.d)+'" y2="'+Y(-LIM.d)+'" stroke="var(--blue)" stroke-dasharray="4 3"/><text x="'+(x0+3)+'" y="'+(Y(-LIM.d)-3)+'" font-size="8" fill="var(--blue)">top-out (fully extended)</text>'}
+ if(tch==='speed')s+='<line x1="'+x0+'" x2="'+x1+'" y1="'+Y(0)+'" y2="'+Y(0)+'" stroke="var(--mute)" stroke-width=".8"/><text x="'+(x0+3)+'" y="'+(y0+9)+'" font-size="8" fill="var(--mute)">bump (compressing)</text><text x="'+(x0+3)+'" y="'+(y1-3)+'" font-size="8" fill="var(--mute)">rebound (extending)</text>';
+ const ch=tch==='travel'?'x':tch==='speed'?'w':'f';
+ TC.forEach(c=>{s+='<polyline fill="none" stroke="'+TCOL[c]+'" stroke-width="1.6"'+(c[0]==='L'?' stroke-dasharray="5 2"':'')+' points="'+E[ch][c].map((q,i)=>X(i).toFixed(1)+','+Y(q).toFixed(1)).join(' ')+'"/>'});
+ if(tch==='travel')TC.forEach(c=>E.ev[c].forEach(e=>{s+='<circle cx="'+X(e[0])+'" cy="'+Y(e[1]==='b'?LIM.b:-LIM.d)+'" r="3.5" fill="'+TCOL[c]+'" stroke="var(--ink)" stroke-width="1"/>'}));
+ s+='<line id="tcur" x1="'+X(0)+'" x2="'+X(0)+'" y1="'+y0+'" y2="'+y1+'" stroke="var(--ink)" stroke-width="1"/>';
+ s+='<text x="'+x0+'" y="'+(Ht-14)+'" font-size="8" fill="var(--mute)">start / finish</text><text x="'+x1+'" y="'+(Ht-14)+'" text-anchor="end" font-size="8" fill="var(--mute)">one lap  (shaded = in the corners)</text>';
+ s+='<text x="'+x0+'" y="7" font-size="8" fill="var(--mute)">'+unit+'</text>';
+ $('tsvg').innerHTML=s;$('tsvg').dataset.x0=x0;$('tsvg').dataset.x1=x1;
+ $('tcap').textContent=tch==='travel'?'How far each spring squashes (up) or stretches (down) from its normal ride position. Dots show where a wheel hits a limit.':tch==='speed'?'How fast each shock is moving. Up = compressing (bump), down = extending (rebound). The bump and rebound settings decide how hard the shock fights that movement.':'Weight pushing each tire onto the road, in lb. Near zero means the tire is almost off the ground and has no grip.';
+ tci=-1;telCur()}
+function telCur(){if(!TEL)return;const i=Math.min(NS-1,Math.floor(T*NS));if(i===tci)return;tci=i;const x0=+$('tsvg').dataset.x0,x1=+$('tsvg').dataset.x1,cx=x0+(x1-x0)*i/(NS-1),el=$('tcur');if(el){el.setAttribute('x1',cx);el.setAttribute('x2',cx)}
+ const ch=tch==='travel'?'x':tch==='speed'?'w':'f',u=tch==='travel'?' in':tch==='speed'?' in/s':' lb',d=tch==='travel'?2:tch==='speed'?1:0;
+ $('tleg').innerHTML=TC.map(c=>'<span class="tl"><i style="background:'+TCOL[c]+'"></i>'+c+' <b>'+(tch!=='load'&&TEL[ch][c][i]>0?'+':'')+TEL[ch][c][i].toFixed(d)+u+'</b></span>').join('')}
+function telTable(){if(!TEL)return;const S=TEL.sum;
+ $('tsum').innerHTML='<tr><th></th><th>Most squash</th><th>Most stretch</th><th>Fastest shock</th><th>Lightest tire</th><th>Hits</th></tr>'+TC.map(c=>{const q=S[c];return '<tr><th><i style="background:'+TCOL[c]+'"></i>'+c+'</th><td>'+q.cmax.toFixed(2)+' in</td><td>'+(-q.emax).toFixed(2)+' in</td><td>'+q.wmax.toFixed(1)+' in/s</td><td>'+Math.round(q.fmin)+' lb</td><td>'+(q.bo?'bottom x'+q.bo:'')+(q.bo&&q.to?', ':'')+(q.to?'top-out x'+q.to:'')+((q.bo||q.to)?'':'-')+'</td></tr>'}).join('');
+ const bo=TC.filter(c=>S[c].bo),to=TC.filter(c=>S[c].to),li=TC.filter(c=>S[c].li),t=[];
+ if(bo.length)t.push(bo.map(c=>TNM[c]).join(', ')+' hit the bump stop. That is bottoming: the car loses its suspension and the ride gets harsh. A stiffer spring, more bump damping or a higher bump stop keeps it off.');
+ if(to.length)t.push(to.map(c=>TNM[c]).join(', ')+' ran out of droop (topped out). The wheel is hanging at full stretch. A stiffer spring or a softer sway bar uses less droop.');
+ if(li.length)t.push(li.map(c=>TNM[c]).join(', ')+' came close to unloading completely. A tire with no load has no grip.');
+ $('tread').textContent=t.length?t.join(' '):'No bottoming or topping out on a clean lap. Soft springs, steep banking and stiff sway bars use the most travel.'}
+function telRun(){tdirty=false;TEL=telSim();telDraw();telTable()}
+$('tch').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;tch=b.dataset.c;[...$('tch').children].forEach(x=>x.setAttribute('aria-pressed',String(x===b)));telDraw()});
+['lb','ld2'].forEach(id=>$(id).addEventListener('change',e=>{const v=parseFloat(e.target.value);if(!isFinite(v))return;if(id==='lb')LIM.b=clamp(v,.1,4);else LIM.d=clamp(v,.1,4);e.target.value=(id==='lb'?LIM.b:LIM.d);tdirty=true}));
+// ---- movable cards ----
+const STK=$('stack'),LK='labcards';let TMIN=false;
+const mvAll=()=>[...STK.children].filter(e=>e.classList.contains('mv'));
+function lsGet(){try{return JSON.parse(localStorage.getItem(LK))||{}}catch(e){return{}}}
+function lsSave(){try{localStorage.setItem(LK,JSON.stringify({order:mvAll().map(e=>e.dataset.id),min:mvAll().filter(e=>e.classList.contains('min')).map(e=>e.dataset.id)}))}catch(e){}}
+function setMin(el,on){el.classList.toggle('min',on);const b=el.querySelector('.mvm');if(b){b.textContent=on?'+':'–';b.setAttribute('aria-expanded',String(!on));b.setAttribute('aria-label',(on?'Open ':'Minimise ')+el.dataset.name)}
+ if(el.dataset.id==='telem'){TMIN=on;if(!on)tdirty=true}}
+function moveBy(el,d){const l=mvAll(),i=l.indexOf(el),j=i+d;if(j<0||j>=l.length)return;if(d<0)STK.insertBefore(el,l[j]);else STK.insertBefore(el,l[j].nextSibling);lsSave();el.scrollIntoView({block:'nearest',behavior:'smooth'})}
+mvAll().forEach(el=>{const nm=el.dataset.name,t=document.createElement('div');t.className='mvt';
+ t.innerHTML='<button type="button" class="mvg" aria-label="Drag to move '+nm+'. Or use the arrow keys." title="Drag to move">⠿</button><span class="mvn">'+nm+'</span><span class="mva"><button type="button" class="mvu" aria-label="Move '+nm+' up">▲</button><button type="button" class="mvd" aria-label="Move '+nm+' down">▼</button>'+(el.dataset.nomin?'':'<button type="button" class="mvm" aria-label="Minimise '+nm+'" aria-expanded="true">–</button>')+'</span>';
+ el.insertBefore(t,el.firstChild)});
+STK.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const el=b.closest('.mv');if(!el)return;
+ if(b.classList.contains('mvu'))moveBy(el,-1);else if(b.classList.contains('mvd'))moveBy(el,1);else if(b.classList.contains('mvm')){setMin(el,!el.classList.contains('min'));lsSave()}});
+STK.addEventListener('keydown',e=>{const b=e.target.closest&&e.target.closest('.mvg');if(!b)return;const el=b.closest('.mv');if(e.key==='ArrowUp'||e.key==='ArrowDown'){e.preventDefault();moveBy(el,e.key==='ArrowUp'?-1:1);b.focus()}});
+{let drag=null,py=0,px=0,raf=0;
+ const scrollLoop=()=>{if(!drag)return;try{const fr=window.frameElement;if(fr){const top=fr.getBoundingClientRect().top+py,vh=parent.innerHeight;if(top<90)parent.scrollBy(0,-Math.ceil((90-top)/6));else if(top>vh-90)parent.scrollBy(0,Math.ceil((top-(vh-90))/6))}else{if(py<90)scrollBy(0,-Math.ceil((90-py)/6));else if(py>innerHeight-90)scrollBy(0,Math.ceil((py-(innerHeight-90))/6))}}catch(e){}
+  place();raf=requestAnimationFrame(scrollLoop)};
+ const place=()=>{if(!drag)return;const els=mvAll().filter(x=>x!==drag);for(const o of els){const r=o.getBoundingClientRect();if(px>=r.left&&px<=r.right&&py>=r.top&&py<=r.bottom){const before=!!(drag.compareDocumentPosition(o)&Node.DOCUMENT_POSITION_PRECEDING),mid=r.top+r.height/2;
+   if(before&&py<mid)STK.insertBefore(drag,o);else if(!before&&py>mid)STK.insertBefore(drag,o.nextSibling);break}}};
+ STK.addEventListener('pointerdown',e=>{const g=e.target.closest('.mvg');if(!g)return;e.preventDefault();drag=g.closest('.mv');drag.classList.add('drag');g.setPointerCapture(e.pointerId);py=e.clientY;px=e.clientX;raf=requestAnimationFrame(scrollLoop)});
+ STK.addEventListener('pointermove',e=>{if(drag){py=e.clientY;px=e.clientX}});
+ const end=()=>{if(!drag)return;cancelAnimationFrame(raf);drag.classList.remove('drag');const d=drag;drag=null;lsSave();d.scrollIntoView({block:'nearest'})};
+ ['pointerup','pointercancel'].forEach(t=>{window.addEventListener(t,end);try{parent.addEventListener(t,end)}catch(e){}});STK.addEventListener('lostpointercapture',end)}
+$('mvreset').addEventListener('click',()=>{const o=['car','weight','track','tire','telem','now','help'];o.forEach(id=>{const el=STK.querySelector('[data-id="'+id+'"]');if(el){STK.appendChild(el);setMin(el,id==='help')}});lsSave()});
+{const sv=lsGet();if(sv.order)sv.order.forEach(id=>{const el=STK.querySelector('[data-id="'+id+'"]');if(el)STK.appendChild(el)});
+ // keep any card not in the saved list at the end, in its normal order
+ if(sv.min)sv.min.forEach(id=>{const el=STK.querySelector('[data-id="'+id+'"]');if(el)setMin(el,true)});if(!sv.order&&!sv.min)setMin(STK.querySelector('[data-id="help"]'),true)}
 buildTrack('Generic');resetX();{const bk=TB;TB=15;GAIN=1.27;applyK(1,1);const c=contrib();const sm1=KEYS.reduce((a,k)=>a+W[k]*c[k],0);GAIN=sm1>0?1/sm1:1.27;TB=bk;resetX()}
 build();words();requestAnimationFrame(tick);
 new ResizeObserver(()=>parent.postMessage({lab:document.documentElement.scrollHeight},"*")).observe(document.body);
