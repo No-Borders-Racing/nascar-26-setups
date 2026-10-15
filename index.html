@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Beta 0.6.4 -->
+<!-- Beta 0.7.0 -->
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>No Borders Racing - NASCAR 26 Set-ups</title>
@@ -88,6 +88,9 @@ h2{margin:0;font-size:2.1rem;line-height:1;font-weight:700}
 .lnk{background:none;border:0;padding:0;font:inherit;font-weight:700;color:var(--blue);text-decoration:underline;cursor:pointer}
 .pv h2{margin:6px 0 2px}.pv .sub{color:var(--mute);margin:0 0 10px}
 .pvi{display:block;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:8px 0;color:var(--ink);font:inherit;cursor:pointer}
+.tgs{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.tgs span{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:2px 10px;font-size:.85rem}
+.tgr{margin:8px 0}.tgl{display:block;color:var(--mute);font-size:.9rem;margin-bottom:4px}.tgb{display:flex;flex-wrap:wrap;gap:6px}.tgb button{font:inherit;font-size:.95rem;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:5px 12px;cursor:pointer}.tgb button[aria-pressed=true]{background:var(--red);border-color:var(--red);color:#fff}
+.sortrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:8px 0}.sortrow label{display:flex;gap:8px;align-items:center}.sortrow span{color:var(--mute);font-size:.9rem}.sortrow .trk{width:auto;margin:0;font-size:1rem;padding:6px 10px}#sortnt{margin:4px 0 0}.lapt,.vwc{margin-left:12px;color:var(--mute);font-size:.95rem}.lapt b{color:var(--ink)}
 .pvi b{display:block;font-size:1.05rem}.pvi span{color:var(--mute);font-size:.9rem}
 .busy.err{background:var(--red);color:#fff}.busy.scan{border-radius:18px;text-align:center;line-height:1.3;top:50%;transform:translate(-50%,-50%);width:min(86vw,340px);height:92px;padding:0 22px;font-size:1.05rem;display:grid;place-items:center}.jkb{display:block;text-align:center}.busy small{display:block;font-weight:500;font-size:.8rem;opacity:.85;margin-top:2px}#dots{display:inline-block;width:1.3em;text-align:left}
 .savednote{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--red);border-radius:8px;padding:8px 12px;margin:8px 0;font-weight:600}
@@ -145,16 +148,17 @@ button.lk:hover,button.lk:focus-visible{color:var(--ink)}
 <select class="trk" id="trk" aria-label="Track"></select>
 <div class="bar" id="bar"><div><h2 id="tn"></h2><small id="ts"></small></div>
 </div>
+<div class="sortnote" id="sortnote" hidden><label class="sortrow"><span>Sort by</span><select class="trk" id="sortsel"></select></label><p id="sortnt"></p></div>
 <div class="vars" id="vars" role="group" aria-label="Setup version" hidden></div>
 <select class="trk" id="vsel" aria-label="Choose a setup" hidden></select>
-<p class="sortnote" id="sortnote" hidden>Setups are sorted by rating, highest first. Setups with no ratings come last.</p>
 <div class="rate" id="rate" hidden></div>
+<div class="tgs" id="tgrow" hidden></div>
 <div class="tnotes" id="tnotes" hidden><h3>Tuner's notes</h3><p id="tnp"></p></div>
 <div id="body"><button class="view" id="view" type="button" aria-label="View"></button><div class="acts" id="ed" hidden></div>
 <div class="grid" id="f"></div>
 <div class="axis">Chassis</div><div class="gen" id="g"></div></div>
 <p class="empty" id="empty" hidden></p>
-<section id="pview" class="pv" hidden><button class="view" id="pvback" type="button">&larr; Back</button><h2 id="pvh"></h2><p class="sub" id="pvs"></p><div id="pvl"></div></section>
+<section id="pview" class="pv" hidden><button class="view" id="pvback" type="button">&larr; Back</button><h2 id="pvh"></h2><p class="sub" id="pvs"></p><div class="sortrow" id="pvc" hidden><label><span>Sort by</span><select class="trk" id="allsort"></select></label><label><span>Series</span><select class="trk" id="allser"></select></label></div><div id="pvl"></div></section>
 <section id="lab" hidden><iframe id="labf" title="Tuning lab (test version)" scrolling="no"></iframe></section>
 <script type="text/plain" id="labsrc"><!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
@@ -555,7 +559,8 @@ const SB_URL='https://kvpcqovybreewxqrqmtx.supabase.co',SB_KEY='sb_publishable_Q
 const ONLINE=!!(SB_URL&&SB_KEY&&window.supabase);
 if(SB_URL&&!window.supabase){$('auth').hidden=false;$('auth').textContent='Could not load the online library, so this is showing demo data only. Check your connection and refresh.'}
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let pv=null,pvBack=null,showSaved=false,curVs=[],selId=null,sb=null,me=null,prof=null,isAdm=false,RT={},MINE={},lastSkip=0;
+let pv=null,pvBack=null,showSaved=false,curVs=[],selId=null,sb=null,me=null,prof=null,isAdm=false,RT={},MINE={},lastSkip=0,VW={},VWok=false,sortBy='top';
+try{sortBy=localStorage.getItem('sortby')||'top'}catch(e){}
 if(ONLINE){sb=window.supabase.createClient(SB_URL,SB_KEY);D=[]}
 const SER=[{t:'Cup',n:'NASCAR Cup Series',re:/cup/i},{t:"O'Reilly",n:"NASCAR O'Reilly Auto Parts Series",re:/o.?reilly|xfinity/i},{t:'Trucks',n:'NASCAR Craftsman Truck Series',re:/truck|craftsman/i},{t:'ARCA',n:'ARCA Menards Series',re:/arca/i},{t:'Tuning guide',n:'General tuning tips',re:/^$/},{t:'Add setup',n:'Add a setup',re:/^$/}];
 let si=0,tn=null,vi=0,lay='list',canAdmin=false,lastSi=0;
@@ -564,18 +569,47 @@ try{lay=localStorage.getItem('layout')==='grid'?'grid':'list'}catch(e){}
 function card(k,t){const v=t.c[k];
 return `<div class="corner${k[1]==='R'?' r':''}"><h3>${NAMES[k]}</h3>`+
 P.map((p,i)=>`<div class="row"><span class="k">${p[0]}</span><span class="num">${esc(v[i])}<i>${p[1]}</i></span></div>`).join('')+'</div>'}
-function drawTabs(none){const top=[['series','Series',!none&&si<4],['guide','Tuning guide',!none&&si===4]];if(canAdmin)top.push(['add','Add setup',!none&&si===5]);if(isAdm)top.push(['adm','Admin',!none&&si===6]);
+function drawTabs(none){const top=[['series','Series',!none&&si<4],['all','All setups',!!(pv&&pv.all)],['guide','Tuning guide',!none&&si===4]];if(canAdmin)top.push(['add','Add setup',!none&&si===5]);if(isAdm)top.push(['adm','Admin',!none&&si===6]);
 $('tabs').innerHTML=top.map(x=>`<button type="button" aria-pressed="${x[2]}" data-top="${x[0]}">${x[1]}</button>`).join('');
 const ss=$('stabs');if(!none&&si===4){ss.hidden=false;ss.innerHTML=[['tips','Guide'],['lab','Tune Lab']].map(x=>`<button type="button" aria-pressed="${gsub===x[0]}" data-g="${x[0]}">${x[1]}</button>`).join('');return}
 ss.hidden=!(none||si<4);ss.innerHTML=SER.slice(0,4).map((x,i)=>`<button type="button" aria-pressed="${!none&&i===si}" data-i="${i}">${x.t}</button>`).join('')}
+const TG=[['input','Controller or wheel',[['controller','Controller'],['wheel','Wheel'],['both','Both']]],['feel','Handling',[['tight','Tight'],['neutral','Neutral'],['loose','Loose']]],['skill','Driver level',[['beginner','Beginner'],['intermediate','Intermediate'],['expert','Expert']]]];
+const TU=[['qual','Qualifying'],['race','Race'],['long','Long runs'],['pack','Pack racing']];
+const TL={};TG.forEach(g=>g[2].forEach(o=>TL[o[0]]=o[1]));TU.forEach(o=>TL[o[0]]=o[1]);TL.both='Controller & wheel';
+const tagList=t=>{const g=t&&t.tags;return g?[g.input,g.feel,g.skill,...(g.use||[])].filter(Boolean).map(k=>TL[k]||k):[]};
+const lapTxt=ms=>{const m=Math.floor(ms/60000),sec=(ms%60000)/1000;return m+':'+sec.toFixed(3).padStart(6,'0')};
+const lapParse=v=>{v=String(v||'').trim();if(!v)return{ok:true,ms:null};const m=/^(?:(\d{1,2}):)?(\d{1,3})(?:\.(\d{1,3}))?$/.exec(v);if(!m)return{ok:false};const ms=((+(m[1]||0))*60+(+m[2]))*1000+Math.round(+('0.'+(m[3]||'0'))*1000);return ms>=8000&&ms<=300000?{ok:true,ms}:{ok:false}};
+const SORTS=[['top','Top rated'],['popular','Most popular'],['votes','Most rated'],['views','Most viewed'],['newest','Newest added'],['oldest','Oldest added'],['fast','Fastest lap']];
+const SORTNOTE={top:'Sorted by rating, highest first. Setups with no ratings come last.',popular:'Sorted by popularity: stars weighted by how many people rated.',votes:'Sorted by number of ratings, most first.',views:'Sorted by times viewed, most first.',newest:'Newest added first.',oldest:'Oldest added first.',fast:'Fastest lap time first. Setups with no lap time come last.'};
+function sortCmp(key){
+ const sc=x=>RT[x.id]?+RT[x.id].avg_stars:-1,vt=x=>RT[x.id]?RT[x.id].votes:0,vw=x=>VW[x.id]||0,dt=x=>Date.parse(x.created)||0,lp=x=>x.lap||Infinity;
+ const rated=D.filter(x=>RT[x.id]),C=rated.length?rated.reduce((a,x)=>a+sc(x),0)/rated.length:3,M=3;
+ const pop=x=>RT[x.id]?(vt(x)/(vt(x)+M))*sc(x)+(M/(vt(x)+M))*C:-1;
+ const nm=(a,b)=>((a.n||'')+(a.v||'')).toLowerCase()<((b.n||'')+(b.v||'')).toLowerCase()?-1:1;
+ const F={top:(a,b)=>sc(b)-sc(a)||vt(b)-vt(a)||nm(a,b),popular:(a,b)=>pop(b)-pop(a)||vt(b)-vt(a)||nm(a,b),votes:(a,b)=>vt(b)-vt(a)||sc(b)-sc(a)||nm(a,b),
+  views:(a,b)=>vw(b)-vw(a)||sc(b)-sc(a)||nm(a,b),newest:(a,b)=>dt(b)-dt(a)||nm(a,b),oldest:(a,b)=>dt(a)-dt(b)||nm(a,b),
+  fast:(a,b)=>(lp(a)===lp(b)?0:lp(a)<lp(b)?-1:1)||sc(b)-sc(a)||nm(a,b)};
+ return F[key]||F.top}
+function sortFill(sel){if(sortBy==='views'&&!VWok)sortBy='top';sel.innerHTML=SORTS.filter(x=>x[0]!=='views'||VWok).map(x=>`<option value="${x[0]}">${x[1]}</option>`).join('');sel.value=sortBy}
+function noteView(t){if(!ONLINE||!sb||!VWok||!t||!t.id||(me&&t.uid===me.id))return;const k='v:'+t.id,day=new Date().toISOString().slice(0,10);
+ try{if(localStorage.getItem(k)===day)return;localStorage.setItem(k,day)}catch(e){return}
+ VW[t.id]=(VW[t.id]||0)+1;sb.rpc('bump_view',{sid:t.id}).then(()=>{},()=>{})}
+function setSort(v){sortBy=v;try{localStorage.setItem('sortby',v)}catch(e){}vi=0;selId=null;render()}
 function render(){
 curT=null;$('savednote').hidden=!showSaved;showSaved=false;if(si===5&&!canAdmin)si=0;if(si===6&&!isAdm)si=0;
 if(pv){$('pview').hidden=false;$('lab').hidden=true;$('guide').hidden=true;$('admin').hidden=true;$('apanel').hidden=true;$('vsel').hidden=true;$('sortnote').hidden=true;$('vars').hidden=true;$('bar').hidden=true;$('body').hidden=true;$('empty').hidden=true;$('trk').hidden=true;$('count').textContent='';
  drawTabs(true);
- const mine=D.filter(x=>x.byKey===pv.key),sc=x=>RT[x.id]?+RT[x.id].avg_stars:-1;
- mine.sort((a,b)=>SER.slice(0,4).findIndex(z=>z.re.test(a.s))-SER.slice(0,4).findIndex(z=>z.re.test(b.s))||(a.n<b.n?-1:a.n>b.n?1:0)||sc(b)-sc(a));
- $('pvh').textContent='Setups added by '+pv.name;$('pvs').textContent=mine.length+(mine.length===1?' setup':' setups');
- $('pvl').innerHTML=mine.map(x=>{const r=RT[x.id];return `<button type="button" class="pvi" data-id="${esc(x.id)}"><b>${esc(x.n)} &middot; ${esc(x.v)}</b><span>${esc(x.s)} &middot; ${r?'&#9733; '+Number(r.avg_stars).toFixed(1)+' ('+r.votes+')':'no ratings yet'}${x.created?' &middot; '+agoTxt(x.created):''}</span></button>`}).join('')||'<p class="sub">Nothing here yet.</p>';
+ const all=!!pv.all;$('pvback').hidden=all;$('pvc').hidden=!all;
+ let mine;
+ if(all){if(!$('allser').options.length)$('allser').innerHTML='<option value="">All series</option>'+SN.map(x=>`<option>${esc(x)}</option>`).join('');
+  sortFill($('allsort'));const fs=$('allser').value;mine=D.filter(x=>!fs||x.s===fs).sort(sortCmp(sortBy));
+  $('pvh').textContent='All setups';$('pvs').textContent=mine.length+(mine.length===1?' setup':' setups')+(mine.length>100?' (showing the first 100)':'')}
+ else{const sc=x=>RT[x.id]?+RT[x.id].avg_stars:-1;mine=D.filter(x=>x.byKey===pv.key);
+  mine.sort((a,b)=>SER.slice(0,4).findIndex(z=>z.re.test(a.s))-SER.slice(0,4).findIndex(z=>z.re.test(b.s))||(a.n<b.n?-1:a.n>b.n?1:0)||sc(b)-sc(a));
+  $('pvh').textContent='Setups added by '+pv.name;$('pvs').textContent=mine.length+(mine.length===1?' setup':' setups')}
+ $('pvl').innerHTML=mine.slice(0,100).map(x=>{const r=RT[x.id],bits=[esc(x.s),r?'&#9733; '+Number(r.avg_stars).toFixed(1)+' ('+r.votes+')':'no ratings yet'];
+  if(x.lap)bits.push('Lap '+lapTxt(x.lap));if(VWok)bits.push((VW[x.id]||0)+' views');if(all)bits.push('by '+esc(x.by||'Unknown'));if(x.created)bits.push(agoTxt(x.created));
+  return `<button type="button" class="pvi" data-id="${esc(x.id)}"><b>${esc(x.n)} &middot; ${esc(x.v)}</b><span>${bits.join(' &middot; ')}</span></button>`}).join('');
  $('tnotes').hidden=true;return}
 $('pview').hidden=true;if(si<4)lastSi=si;
 const L=D.filter(x=>SER[si]&&SER[si].re.test(x.s));
@@ -586,7 +620,7 @@ const code='COTA'[si],have=new Set(L.map(x=>x.n));
 const names=[...new Set([...Object.keys(TR).filter(n=>TR[n].includes(code)),...have])].sort((a,b)=>a.toLowerCase()<b.toLowerCase()?-1:1);
 if(!names.includes(tn))tn=names.find(n=>have.has(n))||names[0];
 const vs=L.filter(x=>x.n===tn);
-if(ONLINE){const sc=x=>RT[x.id]?+RT[x.id].avg_stars:-1,vt=x=>RT[x.id]?RT[x.id].votes:0;vs.sort((a,b)=>sc(b)-sc(a)||vt(b)-vt(a));
+if(ONLINE){vs.sort(sortCmp(sortBy));
  if(selId){const k=vs.findIndex(x=>x.id===selId);if(k>=0)vi=k}}
 curVs=vs;if(vi>=vs.length)vi=0;const t=vs[vi]||null;curT=t;const has=!!t;
 $('trk').hidden=false;$('bar').hidden=false;
@@ -596,7 +630,7 @@ $('tn').textContent=tn;$('ts').textContent=SER[si].n;
 $('body').hidden=!has;$('empty').hidden=has;$('vars').hidden=vs.length<1;
 if(!has){$('vsel').hidden=true;$('sortnote').hidden=true;$('empty').textContent='No setup added yet for '+tn+' in the '+SER[si].n+'.';$('vars').hidden=true;return}
 $('vars').innerHTML=vs.map((x,i)=>`<button type="button" aria-pressed="${i===vi}" data-i="${i}">${esc(x.v||'Setup '+(i+1))}</button>`).join('');
-selId=t.id||null;const big=vs.length>4;$('vars').hidden=big;$('vsel').hidden=!big;$('sortnote').hidden=!(ONLINE&&vs.length>1);
+selId=t.id||null;const big=vs.length>4;$('vars').hidden=big;$('vsel').hidden=!big;$('sortnote').hidden=!(ONLINE&&vs.length>1);if(ONLINE&&vs.length>1){sortFill($('sortsel'));$('sortnt').textContent=SORTNOTE[sortBy]}noteView(t);
 if(big){const vsl=$('vsel');vsl.innerHTML='';vs.forEach((x,i)=>{const o=document.createElement('option'),r=ONLINE&&RT[x.id];o.value=i;
   o.textContent=(x.v||'Setup '+(i+1))+(ONLINE?(r?' · ★ '+Number(r.avg_stars).toFixed(1)+' ('+r.votes+')':' · no ratings')+(x.by?' · by '+x.by:''):'');vsl.appendChild(o)});vsl.value=String(vi)}
 $('tn').textContent=t.n;$('ts').textContent=SER[si].n;
@@ -609,13 +643,16 @@ $('g').innerHTML=GK.filter(k=>k in t.g).map(k=>[k,t.g[k]]).map(([k,v])=>`<div cl
 }
 window.addEventListener('message',e=>{const f=$('labf');if(f&&e.source===f.contentWindow&&e.data&&typeof e.data.lab==='number')f.style.height=Math.max(600,e.data.lab)+'px'});
 function goTab(i){pv=null;si=i;vi=0;tn=null;render();if(si===5&&canAdmin)openForm(null);if(si===6&&isAdm)loadAdminPanel()}
-$('tabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const t=b.dataset.top;if(t==='series'&&si<4&&!pv)return;goTab(t==='series'?(lastSi<4?lastSi:0):t==='guide'?4:t==='adm'?6:5)});
+$('tabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const t=b.dataset.top;if(t==='series'&&si<4&&!pv)return;if(t==='all'){pv={all:true};pvBack=null;render();window.scrollTo(0,0);return}goTab(t==='series'?(lastSi<4?lastSi:0):t==='guide'?4:t==='adm'?6:5)});
 $('stabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.g){gsub=b.dataset.g;render();window.scrollTo(0,0);return}goTab(+b.dataset.i)});
 $('trk').addEventListener('change',e=>{tn=e.target.value;vi=0;render()});
 $('vars').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;vi=+b.dataset.i;selId=(curVs[vi]||{}).id||null;render()});
 $('pvl').addEventListener('click',e=>{const b=e.target.closest('button[data-id]');if(!b)return;const x=D.find(z=>z.id===b.dataset.id);if(!x)return;
  const k=SER.slice(0,4).findIndex(z=>z.re.test(x.s));pv=null;if(k>=0)si=k;lastSi=si;tn=x.n;selId=x.id;vi=0;render();window.scrollTo(0,0)});
 $('pvback').addEventListener('click',()=>{const b=pvBack;pv=null;if(b){si=b.si;tn=b.tn;selId=b.selId;vi=0}render();window.scrollTo(0,0)});
+$('sortsel').addEventListener('change',e=>setSort(e.target.value));
+$('allsort').addEventListener('change',e=>setSort(e.target.value));
+$('allser').addEventListener('change',()=>render());
 $('vsel').addEventListener('change',e=>{vi=+e.target.value;selId=(curVs[vi]||{}).id||null;render()});
 $('view').addEventListener('click',()=>{lay=lay==='grid'?'list':'grid';try{localStorage.setItem('layout',lay)}catch(x){}render()});
 const BAKED_AT='2026-10-08T06:32:44Z';
@@ -687,8 +724,8 @@ function applyDeepLink(){if(deepDone)return;deepDone=true;let id=null;try{id=new
  if(!x){flash('That setup no longer exists.',4500,true);return}
  const k=SER.slice(0,4).findIndex(z=>z.re.test(x.s));pv=null;if(k>=0){si=k;lastSi=k}tn=x.n;selId=x.id;vi=0}
 const okRow=r=>r&&r.data&&r.data.c&&r.data.g&&['LF','RF','LR','RR'].every(k=>Array.isArray(r.data.c[k])&&r.data.c[k].length===5);
-const fromRow=r=>({id:r.id,uid:r.user_id,n:r.track,s:r.series,v:r.tuned_by,notes:r.notes||'',created:r.created_at,updated:r.updated_at,c:r.data.c,g:r.data.g});
-const toRow=t=>({track:t.n,series:t.s,tuned_by:t.v,notes:(t.notes||'').trim()||null,data:{c:t.c,g:t.g}});
+const fromRow=r=>({id:r.id,uid:r.user_id,n:r.track,s:r.series,v:r.tuned_by,notes:r.notes||'',created:r.created_at,updated:r.updated_at,c:r.data.c,g:r.data.g,lap:r.data.lap_ms||null,tags:r.data.tags||null});
+const toRow=t=>({track:t.n,series:t.s,tuned_by:t.v,notes:(t.notes||'').trim()||null,data:{c:t.c,g:t.g,...(t.lap?{lap_ms:t.lap}:{}),...(t.tags?{tags:t.tags}:{})}});
 async function loadSetups(){const [a,pf]=await Promise.all([sb.from('setups').select('*').order('track').order('created_at'),sb.from('profiles').select('id,name')]);if(a.error)throw a.error;
  const nm={};((pf&&pf.data)||[]).forEach(r=>nm[r.id]=r.name);
  const pfOk=!!(pf&&!pf.error);
@@ -697,18 +734,20 @@ async function loadSetups(){const [a,pf]=await Promise.all([sb.from('setups').se
   else if(t.seeded){t.by='Admin';t.byKey='admin'}else{t.by='Account Deleted';t.byKey='deleted'}
   return t})}
 async function loadRatings(){const b=await sb.from('setup_ratings').select('*');RT={};(b.data||[]).forEach(r=>RT[r.setup_id]=r);
- MINE={};if(me){const m=await sb.from('ratings').select('setup_id,stars').eq('user_id',me.id);(m.data||[]).forEach(r=>MINE[r.setup_id]=r.stars)}}
+ MINE={};if(me){const m=await sb.from('ratings').select('setup_id,stars').eq('user_id',me.id);(m.data||[]).forEach(r=>MINE[r.setup_id]=r.stars)}
+ await loadViews()}
+async function loadViews(){VW={};VWok=false;try{const r=await sb.from('setup_views').select('*');if(!r.error){VWok=true;(r.data||[]).forEach(x=>VW[x.setup_id]=x.views)}}catch(e){}}
 async function persistOnline(nd){if(!me)throw new Error('Sign in with Discord first.');
  const keep=new Set(nd.filter(t=>t.id).map(t=>t.id)),byId=new Map(D.map(t=>[t.id,t]));let skip=0;
  for(const o of D)if(o.id&&!keep.has(o.id)){const r=await sb.from('setups').delete().eq('id',o.id).select();if(r.error)throw r.error;if(!r.data.length)skip++}
  for(const t of nd){let r;
   if(!t.id)r=await sb.from('setups').insert({...toRow(t),user_id:me.id}).select();
-  else{const o=byId.get(t.id);if(o&&sig(o)===sig(t)&&o.n===t.n&&o.s===t.s&&o.v===t.v&&(o.notes||'')===(t.notes||''))continue;r=await sb.from('setups').update(toRow(t)).eq('id',t.id).select()}
+  else{const o=byId.get(t.id);if(o&&sig(o)===sig(t)&&o.n===t.n&&o.s===t.s&&o.v===t.v&&(o.notes||'')===(t.notes||'')&&(o.lap||0)===(t.lap||0)&&JSON.stringify(o.tags||null)===JSON.stringify(t.tags||null))continue;r=await sb.from('setups').update(toRow(t)).eq('id',t.id).select()}
   if(r.error){if(r.error.code==='23505'){if(/setups_fp_unique/.test(r.error.message||''))throw new Error('This setup has already been added by someone else.');skip++;continue}throw r.error}if(!r.data.length)skip++}
  lastSkip=skip;await loadSetups();await loadRatings()}
-function renderRate(){const e=$('rate');if(!curT||!curT.id||si>3){e.hidden=true;return}
+function renderRate(){const e=$('rate'),tg=$('tgrow'),tl=tagList(curT);tg.innerHTML=tl.map(x=>'<span>'+esc(x)+'</span>').join('');tg.hidden=!tl.length||si>3;if(!curT||!curT.id||si>3){e.hidden=true;return}
  const r=RT[curT.id],mine=MINE[curT.id]||0,own=!!(me&&curT.uid===me.id);
- let h='<div class="by">'+byHtml(curT)+'</div><span class="avg">'+(r?'★ '+Number(r.avg_stars).toFixed(1)+' <small>('+r.votes+(r.votes===1?' rating':' ratings')+')</small>':'<small>No ratings yet</small>')+'</span>';
+ let h='<div class="by">'+byHtml(curT)+'</div><span class="avg">'+(r?'★ '+Number(r.avg_stars).toFixed(1)+' <small>('+r.votes+(r.votes===1?' rating':' ratings')+')</small>':'<small>No ratings yet</small>')+'</span>'+(curT.lap?'<span class="lapt">Lap time <b>'+lapTxt(curT.lap)+'</b></span>':'')+(VWok?'<small class="vwc">'+(VW[curT.id]||0)+(VW[curT.id]===1?' view':' views')+'</small>':'');
  if(!me)h+='<span class="who">Sign in to rate this setup.</span>';
  else if(own)h+='<span class="who">This is your setup, so you can\'t rate it.</span>';
  else if(!canAdmin)h+='<span class="who">Your account can\'t rate setups.</span>';
@@ -781,7 +820,8 @@ const GLs=s=>(isOR(s)||isAR(s)||isTR(s))?GLO:GL;
 const onL=(o,v)=>o.some(x=>Math.abs(x-v)<1e-6);
 const fld=(id,l,o)=>o?`<label class="f"><span>${l}</span><select id="${id}" data-k="${l}"><option value="">Choose</option>${o.map(x=>`<option value="${x}">${sf(l,x)}</option>`).join('')}</select></label>`:`<label class="f"><span>${l}</span><input id="${id}" type="number" step="any" inputmode="decimal" placeholder="Enter manually"><small style="color:var(--mute);font-size:.75rem">${l==='Rear End Ratio'?'Not a dropdown: type this value in manually.':''}</small></label>`;
 const setv=(id,v)=>{const e=$(id),s=v===''?'':String(v);if(e.tagName==='SELECT'&&s!==''&&![...e.options].some(o=>o.value===s)){const o=document.createElement('option');o.value=s;o.textContent=(e.dataset.k?sf(e.dataset.k,s):s)+' (not on list)';e.appendChild(o)}e.value=s};
-$('fgrid').innerHTML='<label class="f"><span>Series</span><select id="fs"></select></label><label class="f"><span>Track</span><select id="fn"></select></label><label class="f lk" id="fbyw" hidden><span>Added by &#128274;</span><input id="fby" type="text" disabled aria-disabled="true"></label><label class="f"><span>Setup name (required)</span><input id="fv" type="text" maxlength="40"></label>'
+const TAGHTML='<div id="tgp"><h3>Describe this setup (optional)</h3>'+TG.map(g=>`<div class="tgr" data-g="${g[0]}"><span class="tgl">${g[1]}</span><div class="tgb">`+g[2].map(o=>`<button type="button" data-v="${o[0]}" aria-pressed="false">${o[1]}</button>`).join('')+'</div></div>').join('')+'<div class="tgr" data-g="use"><span class="tgl">Good for (tick any)</span><div class="tgb">'+TU.map(o=>`<button type="button" data-v="${o[0]}" aria-pressed="false">${o[1]}</button>`).join('')+'</div></div></div>';
+$('fgrid').innerHTML='<label class="f"><span>Series</span><select id="fs"></select></label><label class="f"><span>Track</span><select id="fn"></select></label><label class="f lk" id="fbyw" hidden><span>Added by &#128274;</span><input id="fby" type="text" disabled aria-disabled="true"></label><label class="f"><span>Setup name (required)</span><input id="fv" type="text" maxlength="40"></label><label class="f"><span>Lap time (optional)</span><input id="flap" type="text" inputmode="decimal" maxlength="9" placeholder="e.g. 0:29.412" autocomplete="off"></label>'+TAGHTML
  +['LF','LR','RF','RR'].map(k=>`<h3>${CN[k]}</h3><div class="fr">`+HC.map((p,i)=>fld('c_'+k+'_'+i,HL[i],CL(k,i))).join('')+'</div>').join('')
  +'<h3>Chassis</h3><div>'+GK.map((k,i)=>fld('g_'+i,k,GL[k])).join('')+'</div>'
  +'<h3>Tuner\'s notes</h3><label class="f"><span>Optional. Which gears to use, the best line, anything that helps. 500 characters max.</span><textarea id="fnotes" maxlength="500" rows="5"></textarea></label>';
@@ -792,9 +832,13 @@ function fillTracks(ser,keep){const c='COTA'[SN.indexOf(ser)];
 const setList=(id,o)=>{const e=$(id),cur=e.value;e.innerHTML='<option value="">Choose</option>'+o.map(x=>`<option value="${x}">${sf(e.dataset.k,x)}</option>`).join('');setv(id,cur)};
 function refreshLists(ser){['LF','LR','RF','RR'].forEach(k=>HC.forEach((p,i)=>setList('c_'+k+'_'+i,CL(k,i,ser))));const gl=GLs(ser);GK.forEach((k,i)=>{if(gl[k])setList('g_'+i,gl[k])})}
 $('fs').addEventListener('change',()=>{fillTracks($('fs').value,'');refreshLists($('fs').value)});
-function openForm(t){editT=t||null;fm('');
+$('fgrid').addEventListener('click',e=>{const b=e.target.closest('#tgp button[data-v]');if(!b)return;const g=b.closest('.tgr').dataset.g,on=b.getAttribute('aria-pressed')!=='true';
+ if(g!=='use')b.closest('.tgb').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed',String(on))});
+function readTags(){const o={};document.querySelectorAll('#tgp .tgr').forEach(r=>{const g=r.dataset.g,on=[...r.querySelectorAll('button[aria-pressed="true"]')].map(b=>b.dataset.v);if(!on.length)return;if(g==='use')o.use=on;else o[g]=on[0]});return Object.keys(o).length?o:null}
+function setTags(t){document.querySelectorAll('#tgp .tgr').forEach(r=>{const g=r.dataset.g,v=t&&t.tags?t.tags[g]:null;r.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(!!v&&(g==='use'?v.includes(b.dataset.v):v===b.dataset.v))))})}
+function openForm(t){editT=t||null;fm('');setTags(t);
  $('fs').innerHTML=(!t||SN.includes(t.s)?SN:[t.s,...SN]).map(x=>`<option>${x}</option>`).join('');
- $('fs').value=t?t.s:(SN[lastSi]||SN[0]);fillTracks($('fs').value,t?t.n:'');refreshLists($('fs').value);$('fv').value=t?(t.v||''):'';$('fbyw').hidden=!ONLINE;if(ONLINE)$('fby').value=t?(t.by||''):(prof?prof.name:'');
+ $('fs').value=t?t.s:(SN[lastSi]||SN[0]);fillTracks($('fs').value,t?t.n:'');refreshLists($('fs').value);$('fv').value=t?(t.v||''):'';$('flap').value=t&&t.lap?lapTxt(t.lap):'';$('fbyw').hidden=!ONLINE;if(ONLINE)$('fby').value=t?(t.by||''):(prof?prof.name:'');
  ['LF','LR','RF','RR'].forEach(k=>HC.forEach((p,i)=>setv('c_'+k+'_'+i,t?t.c[k][i]:'')));
  GK.forEach((k,i)=>setv('g_'+i,t?t.g[k]:''));
  $('fnotes').value=t?(t.notes||''):'';
@@ -910,6 +954,7 @@ $('fsave').addEventListener('click',async()=>{
  ['LF','LR','RF','RR'].forEach(k=>t.c[k]=HC.map((p,i)=>{const x=$('c_'+k+'_'+i).value;if(x===''||isNaN(+x))bad=bad||CN[k]+' '+HL[i];return +x}));
  GK.forEach((k,i)=>{const x=$('g_'+i).value;if(x===''||isNaN(+x))bad=bad||k;t.g[k]=+x});
  if(!v)return fm('Enter a setup name.');
+ {const lp=lapParse($('flap').value);if(!lp.ok)return fm('Lap time should look like 0:29.412 (minutes:seconds). Leave it empty if you do not have one.');if(lp.ms)t.lap=lp.ms;const tg=readTags();if(tg)t.tags=tg}
  if(bad)return fm('Enter a number for: '+bad+'.');
  const dup=D.find(x=>x!==editT&&x.c&&x.g&&fpOf(x.s,x.n,x.c,x.g)===fpOf(s,n,t.c,t.g));
  if(dup)return fm('This setup has already been added by '+(dup.by||'another user')+'.');
