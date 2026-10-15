@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Beta 0.7.3 -->
+<!-- Beta 0.7.4 -->
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>No Borders Racing - NASCAR 26 Set-ups</title>
@@ -222,15 +222,14 @@ details{margin-top:12px}summary{cursor:pointer}
 .beta{font:700 .65rem system-ui,sans-serif;background:var(--blue);color:#fff;border-radius:99px;padding:2px 7px;vertical-align:middle;margin-left:4px}
 #telem input{width:64px;font:600 .9rem system-ui,sans-serif;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:6px}
 .tlg{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:.78rem;margin:4px 0 6px;font-variant-numeric:tabular-nums}.tl i,.tsm i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px}
-.tsm{width:100%;border-collapse:collapse;font-size:.74rem;margin:10px 0 4px;font-variant-numeric:tabular-nums}.tsm th,.tsm td{padding:4px 3px;text-align:center;border-bottom:1px solid var(--line)}.tsm th:first-child{text-align:left;white-space:nowrap}.tsm td{white-space:nowrap}.tsm th{color:var(--mute);font-weight:600}
+.tsm{width:100%;border-collapse:collapse;font-size:.74rem;margin:10px 0 4px;font-variant-numeric:tabular-nums}.tsm th,.tsm td{padding:4px 3px;text-align:center;border-bottom:1px solid var(--line)}.tsm th:first-child{text-align:left;white-space:nowrap}@media(max-width:480px){.tsm{font-size:.68rem}.tsm th,.tsm td{padding:4px 1px}}.tsm th{color:var(--mute);font-weight:600}
 #tsvg{max-width:620px;margin:0 auto}
-#stack{align-items:stretch}
-@media(min-width:640px){#stack>[data-id=telem],#stack>[data-id=now],#stack>[data-id=help]{grid-column:1/-1}
-#stack>[data-id=car],#stack>[data-id=weight],#stack>[data-id=track],#stack>[data-id=tire]{height:480px;display:flex;flex-direction:column;overflow:hidden;box-sizing:border-box}
-#stack>[data-id=car]>svg,#stack>[data-id=weight]>svg,#stack>[data-id=track]>svg,#stack>[data-id=tire]>svg{flex:1 1 0;min-height:0;width:100%}
-#stack>.mv>.cap{flex:none}
-#stack>[data-id=car]>svg:nth-of-type(2){flex:none;height:auto}
-#stack>.mv.min{height:auto!important;align-self:start}}
+#stack{grid-template-columns:minmax(0,1fr);align-items:stretch}
+@media(min-width:700px){#stack{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}#stack>[data-id=telem],#stack>[data-id=now],#stack>[data-id=help]{grid-column:1/-1}}
+#stack>[data-id=car],#stack>[data-id=weight],#stack>[data-id=track],#stack>[data-id=tire]{display:flex;flex-direction:column;box-sizing:border-box;min-width:0}
+#stack>[data-id=car]>svg,#stack>[data-id=weight]>svg,#stack>[data-id=track]>svg,#stack>[data-id=tire]>svg{flex:none;width:100%;height:auto}
+#stack>.mv.min{min-height:0!important;height:auto;align-self:start}
+html.short #stack{grid-template-columns:minmax(0,1fr)!important}html.short #stack>.mv{min-height:0!important;display:block!important}
 .mvrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:12px 0 8px}.mvrow button{padding:5px 10px;font-size:.8rem;margin:0}
 .mvt{display:flex;align-items:center;gap:6px;margin:-4px -4px 6px;min-height:30px}
 .mvn{display:none;flex:1;font-weight:700;font-size:.95rem;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -627,7 +626,15 @@ function telRun(){tdirty=false;TEL=telSim();telDraw();telTable()}
 $('tch').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;tch=b.dataset.c;[...$('tch').children].forEach(x=>x.setAttribute('aria-pressed',String(x===b)));telDraw()});
 ['lb','ld2'].forEach(id=>$(id).addEventListener('change',e=>{const v=parseFloat(e.target.value);if(!isFinite(v))return;if(id==='lb')LIM.b=clamp(v,.1,4);else LIM.d=clamp(v,.1,4);e.target.value=(id==='lb'?LIM.b:LIM.d);tdirty=true}));
 // ---- movable cards ----
-const STK=$('stack'),LK='labcards';let TMIN=false;
+const STK=$('stack'),LK='labcards';
+const TILES=['car','weight','track','tire'];
+function eqTiles(){const t=TILES.map(id=>STK.querySelector('[data-id="'+id+'"]')).filter(e=>e&&!e.classList.contains('min'));t.forEach(e=>{e.style.minHeight=''});
+ if(document.documentElement.classList.contains('short')||getComputedStyle(STK).gridTemplateColumns.split(' ').length<2)return;
+ const m=Math.max.apply(null,t.map(e=>e.offsetHeight));t.forEach(e=>{e.style.minHeight=m+'px'})}
+setInterval(eqTiles,400);
+function shortChk(){let h=innerHeight;try{h=parent.innerHeight}catch(e){}document.documentElement.classList.toggle('short',h<600);eqTiles()}
+shortChk();addEventListener('resize',shortChk);try{parent.addEventListener('resize',shortChk)}catch(e){}
+let TMIN=false;
 const mvAll=()=>[...STK.children].filter(e=>e.classList.contains('mv'));
 function lsGet(){try{return JSON.parse(localStorage.getItem(LK))||{}}catch(e){return{}}}
 function lsSave(){try{localStorage.setItem(LK,JSON.stringify({order:mvAll().map(e=>e.dataset.id),min:mvAll().filter(e=>e.classList.contains('min')).map(e=>e.dataset.id)}))}catch(e){}}
