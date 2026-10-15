@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Beta 0.7.0 -->
+<!-- Beta 0.7.1 -->
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>No Borders Racing - NASCAR 26 Set-ups</title>
@@ -182,6 +182,7 @@ button[aria-pressed=true]{background:var(--red);border-color:var(--red);color:#f
 .tabs small{display:block;font-weight:600;font-size:.68rem;opacity:.9}
 .sl label{display:flex;justify-content:space-between;font-weight:700;margin-bottom:2px}
 .sl input[type=range]{width:100%;accent-color:var(--red);height:28px}
+.gsteps{display:flex;gap:4px;justify-content:center;margin:8px 0 4px}.gstep{flex:1;padding:6px 0;font-size:12px;border:1px solid var(--bd,#ccc);border-radius:6px;background:var(--card,#fff);color:inherit}.gstep:first-child,.gstep:nth-child(2),.gstep:nth-child(3),.gstep:nth-child(4){color:var(--red)}.gstep:nth-child(6),.gstep:nth-child(7),.gstep:nth-child(8),.gstep:last-child{color:var(--blue)}
 .gauge{position:relative;height:18px;border-radius:99px;background:linear-gradient(90deg,var(--red),var(--grn) 50%,var(--blue));margin:34px 8px 6px}
 .gauge{cursor:grab;touch-action:none}.gauge:active{cursor:grabbing}
 .needle{position:absolute;top:-8px;width:6px;height:34px;margin-left:-3px;background:var(--ink);border-radius:3px;border:2px solid var(--card);transition:left .35s ease}
@@ -198,6 +199,7 @@ svg{width:100%;height:auto;display:block}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
 #tire[hidden]{display:none}
 </style><style>
+.lt{color:var(--mute);font-size:.9rem;margin-right:8px}#layrow{margin:0 0 8px}
 .corners{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
 .cc{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px}
 .cc h2{margin-bottom:4px;font-size:.95rem}.cc .n{color:var(--mute);font-weight:600;font-size:.8rem}
@@ -222,12 +224,15 @@ details{margin-top:12px}summary{cursor:pointer}
 <h1>Tune Lab</h1>
 <p class="note"><b>This is only a guide.</b> It is not a realistic representation of the game. It shows the general direction each change pushes the car.</p>
 <p class="sub">Set the numbers the same way the game shows them. Watch the car and the Tight / Loose bar change.</p>
-<section class="card"><div class="tb"><div class="g"><label for="tk"><b>Track</b></label><select id="tk"></select></div><div class="g"><label for="ld"><b>Load Setup</b></label><select id="ld"><option value="">Choose...</option></select></div></div><div class="row"><button type="button" id="reset">Reset to middle</button></div></section>
+<section class="card"><div class="tb"><div class="g"><label for="tk"><b>Track</b></label><select id="tk"></select></div><div class="g"><label for="ld"><b>Load Setup</b></label><select id="ld"><option value="">Choose...</option></select></div></div><div class="row"><button type="button" id="reset">Reset to stock</button></div></section>
+<div class="row" id="layrow"><span class="lt">Controls</span><div class="seg" id="lay" role="group" aria-label="Controls layout"><button type="button" data-m="axle" aria-pressed="true">Front / Rear</button><button type="button" data-m="corner" aria-pressed="false">Per corner</button></div></div>
 <section class="corners" id="corners"></section>
 <section class="card" aria-label="Result">
  <div class="gl"><span>LOOSE (rear slides)</span><span>NEUTRAL</span><span>TIGHT (pushes)</span></div>
  <div class="gauge" id="gauge" tabindex="0" role="slider" aria-label="Tight / Loose. Drag to set a generalised setup" aria-valuemin="-100" aria-valuemax="100" aria-valuenow="0"><div class="needle" id="needle" style="left:50%"></div></div>
  <p class="fine" style="text-align:center;margin:0">Drag the bar all the way to Loose or Tight to set a general setup for you.</p>
+ <div class="gsteps" id="gsteps"></div>
+ <p class="fine" style="text-align:center;margin:0">Tap a step to set the car about that loose or tight. The % is an educated guess, because the game does not show what changes. It follows real-world stock car theory, not the game's own physics.</p>
  <p class="state" id="state"></p>
  <p class="cap" id="mix" style="text-align:center"></p>
 </section>
@@ -331,7 +336,7 @@ const fmt=(i,v)=>(i===0?Math.round(v).toLocaleString('en-US'):i===4?(v>0?'+':'')
 const PRE=[{"n":"Bristol","v":"TooFastTuck","F":[1950,2,10,15,-7],"R":[1425,0,10,15,-2.5],"g":{"Front Sway Bar":2,"Wheel Lock":8,"Brake Bias %":70,"Rear End Ratio":5.246,"Wedge":53,"Left Weight %":53,"Nose Weight %":50.7,"Steering Offset":0.01,"Rear Sway Bar":1}},{"n":"Charlotte","v":"TooFastTuck","F":[1410,2,5,15,-7],"R":[1425,2,10,15,-2.5],"g":{"Front Sway Bar":0,"Wheel Lock":7.5,"Brake Bias %":70,"Rear End Ratio":3.818,"Wedge":49.5,"Left Weight %":53,"Nose Weight %":50.8,"Steering Offset":0.01,"Rear Sway Bar":2}},{"n":"Chicagoland","v":"Slowball99","F":[1140,0,10,15,-7],"R":[1762.5,2,10,15,-2.5],"g":{"Front Sway Bar":0,"Wheel Lock":7.5,"Brake Bias %":70,"Rear End Ratio":3.727,"Wedge":49.5,"Left Weight %":53,"Nose Weight %":50.5,"Steering Offset":0.01,"Rear Sway Bar":2}},{"n":"Dover","v":"TooFastTuck","F":[2490,8,2,15,-7],"R":[2100,6,10,15,-2.5],"g":{"Front Sway Bar":2,"Wheel Lock":8,"Brake Bias %":70,"Rear End Ratio":4.105,"Wedge":50.5,"Left Weight %":53,"Nose Weight %":50.3,"Steering Offset":0.22,"Rear Sway Bar":0.875}},{"n":"Echo Park","v":"ABC Weapons","F":[1140,6,6,57.5,-7],"R":[1425,9,4,42.5,-2.5],"g":{"Front Sway Bar":2,"Wheel Lock":8.75,"Brake Bias %":58,"Rear End Ratio":3.727,"Wedge":49.5,"Left Weight %":53,"Nose Weight %":49.5,"Steering Offset":0.1,"Rear Sway Bar":0.625}},{"n":"Echo Park","v":"TooFastTuck","F":[3300,5,6,40,-6],"R":[2775,7,7,40,-2],"g":{"Front Sway Bar":1,"Wheel Lock":5,"Brake Bias %":58,"Rear End Ratio":3.76,"Wedge":50,"Left Weight %":53,"Nose Weight %":51,"Steering Offset":0.07,"Rear Sway Bar":0}},{"n":"Homestead-Miami","v":"TooFastTuck","F":[1410,0,8,15,-7],"R":[1762.5,0,10,15,-2.5],"g":{"Front Sway Bar":0,"Wheel Lock":8,"Brake Bias %":70,"Rear End Ratio":3.727,"Wedge":50.5,"Left Weight %":53,"Nose Weight %":51,"Steering Offset":0.16,"Rear Sway Bar":2}},{"n":"Indianapolis","v":"ABC Weapons","F":[1140,2,6,40,-5.5],"R":[1762.5,7,6,40,-2],"g":{"Front Sway Bar":1,"Wheel Lock":8.75,"Brake Bias %":58,"Rear End Ratio":3.579,"Wedge":48.5,"Left Weight %":53,"Nose Weight %":49.6,"Steering Offset":-0.04,"Rear Sway Bar":0.875}},{"n":"Indianapolis","v":"TooFastTuck","F":[1140,0,10,15,-7],"R":[2775,5,8,15,-2.5],"g":{"Front Sway Bar":0,"Wheel Lock":8.75,"Brake Bias %":70,"Rear End Ratio":3.684,"Wedge":51,"Left Weight %":53,"Nose Weight %":50.5,"Steering Offset":0.01,"Rear Sway Bar":2}},{"n":"Las Vegas","v":"13allistics","F":[1680,5,5,15,-5.5],"R":[1762.5,5,5,15,-2.5],"g":{"Front Sway Bar":1.25,"Wheel Lock":7.5,"Brake Bias %":66,"Rear End Ratio":3.727,"Wedge":45,"Left Weight %":52.9,"Nose Weight %":51,"Steering Offset":-0.13,"Rear Sway Bar":0.625}},{"n":"Las Vegas","v":"TooFastTuck","F":[1140,0,10,15,-7],"R":[1762.5,2,9,17.5,-2.5],"g":{"Front Sway Bar":0,"Wheel Lock":7.5,"Brake Bias %":70,"Rear End Ratio":3.684,"Wedge":49,"Left Weight %":53,"Nose Weight %":50.3,"Steering Offset":0.01,"Rear Sway Bar":2}},{"n":"Michigan","v":"13allistics","F":[1680,5,5,15,-6],"R":[1762.5,5,5,15,-2.5],"g":{"Front Sway Bar":1,"Wheel Lock":7.5,"Brake Bias %":66,"Rear End Ratio":3.579,"Wedge":46,"Left Weight %":53,"Nose Weight %":51,"Steering Offset":-0.13,"Rear Sway Bar":0.375}},{"n":"Michigan","v":"TooFastTuck","F":[1140,0,10,15,-7],"R":[1762.5,5,10,15,-2.5],"g":{"Front Sway Bar":0,"Wheel Lock":8,"Brake Bias %":70,"Rear End Ratio":3.636,"Wedge":52,"Left Weight %":53,"Nose Weight %":51,"Steering Offset":0.01,"Rear Sway Bar":2}},{"n":"Nashville","v":"TooFastTuck","F":[1140,3,6,17.5,-6.5],"R":[2775,2,8,17.5,-2.5],"g":{"Front Sway Bar":0,"Wheel Lock":8.75,"Brake Bias %":70,"Rear End Ratio":4.019,"Wedge":51.5,"Left Weight %":53,"Nose Weight %":51,"Steering Offset":0.01,"Rear Sway Bar":2}},{"n":"Pocono","v":"TooFastTuck","F":[1140,3,6,15,-7],"R":[2775,2,8,15,-2.5],"g":{"Front Sway Bar":0.5,"Wheel Lock":8,"Brake Bias %":70,"Rear End Ratio":3.636,"Wedge":51,"Left Weight %":53,"Nose Weight %":51.2,"Steering Offset":0.01,"Rear Sway Bar":2}},{"n":"Talladega","v":"ABC Weapons","F":[3300,3,9,65,-6],"R":[1425,3,10,65,-2],"g":{"Front Sway Bar":0.75,"Wheel Lock":3.75,"Brake Bias %":58,"Rear End Ratio":3.579,"Wedge":50,"Left Weight %":53,"Nose Weight %":49.5,"Steering Offset":0.04,"Rear Sway Bar":0.125}},{"n":"Watkins Glen","v":"TooFastTuck","F":[1680,0,10,15,-7],"R":[1087.5,0,10,15,-2.5],"g":{"Front Sway Bar":2,"Wheel Lock":8.75,"Brake Bias %":52,"Rear End Ratio":4.105,"Wedge":49,"Left Weight %":50,"Nose Weight %":49.5,"Steering Offset":0.04,"Rear Sway Bar":2}}];
 const BANK={"Talladega": 33, "Daytona": 31, "Bristol": 28, "Darlington": 24, "Dover": 24, "Charlotte": 24, "Rockingham": 23.5, "Texas": 22, "Las Vegas": 20, "Homestead-Miami": 19, "Kansas": 18.5, "Chicagoland": 18, "Michigan": 18, "Nashville": 14, "North Wilkesboro": 14, "Richmond": 14, "Pocono": 10, "Iowa": 13, "Martinsville": 12, "World Wide Technology Raceway": 10, "Phoenix": 9.5, "Indianapolis": 9, "New Hampshire": 4.5},BSH={"Bristol": "26–30", "Darlington": "23–25", "Rockingham": "22–25", "Texas": "20–24", "Homestead-Miami": "18–20", "Kansas": "17–20", "Pocono": "14 / 8 / 6", "Iowa": "12–14", "World Wide Technology Raceway": "9–11", "Phoenix": "8–11", "New Hampshire": "2–7"};
 let X={};  // X[corner][setting] = option index
-const AP={F:'RF',R:'RR'},APN={F:'Front',R:'Rear',C:'Chassis'};
+const AP={F:'RF',R:'RR',LF:'LF',RF:'RF',LR:'LR',RR:'RR'},APN={F:'Front',R:'Rear',C:'Chassis',LF:'Front left',RF:'Front right',LR:'Rear left',RR:'Rear right'};let MODE='axle';const CS={F:['LF','RF'],R:['LR','RR']};
 const CH=[{k:'Front Sway Bar',r:rg(0,2,.25),w:.5,sg:1,u:''},{k:'Wheel Lock',r:rg(2.5,8.75,.25),w:.15,sg:-1,u:''},{k:'Brake Bias %',r:rg(40,70,2),w:.2,sg:1,u:'%'},
  {k:'Wedge',r:rg(45,55,.5),w:.3,sg:1,u:''},{k:'Left Weight %',r:rg(49,53,.1),w:.2,sg:-1,u:'%'},{k:'Nose Weight %',r:rg(49.5,52,.1),w:.3,sg:1,u:'%'},
  {k:'Steering Offset',r:[...rg(-0.25,-0.01,0.03),...rg(0.01,0.25,0.03)].map(x=>Number(x.toFixed(2))),w:.15,sg:1,u:''},{k:'Rear Sway Bar',r:rg(0,2,.125),w:.5,sg:-1,u:''}];
@@ -340,9 +345,14 @@ const fv=(a,i,v)=>a==='C'?(CH[i].k==='Steering Offset'&&v>0?'+':'')+v+CH[i].u:fm
 const cpct=i=>{const n=CH[i].r.length-1;return X.C[i]/n*100};
 const STOCK={F:[3300,5,6,40,-6],R:[2775,7,7,40,-2],C:{'Front Sway Bar':1,'Wheel Lock':7.5,'Brake Bias %':58,'Wedge':50,'Left Weight %':53,'Nose Weight %':51,'Steering Offset':0.01,'Rear Sway Bar':0}};
 let SX={};const near=(l,v)=>{let b=0;l.forEach((x,j)=>{if(Math.abs(x-v)<Math.abs(l[b]-v))b=j});return b};
-function resetX(){['F','R'].forEach(a=>{X[a]=ST.map((_,i)=>near(RNG(AP[a],i),STOCK[a][i]))});X.C=CH.map(c=>near(c.r,STOCK.C[c.k]));SX={F:X.F.slice(),R:X.R.slice(),C:X.C.slice()};BASE={};const r=raw();BASE=Object.assign({},r)}
-const val=(c,i)=>{const v=RNG(c,i)[X[c[1]][i]];return i===4&&c[0]==='L'?-v:v};
-const pct=(c,i)=>{const n=RNG(c,i).length-1;return n?X[c[1]][i]/n*100:50};
+const STOCKC={LF:[3300,3,8,22.5,5],RF:[3300,5,6,40,-6],LR:[2100,7,7,22.5,2],RR:[2775,7,7,40,-2]};
+let SXC={},BASES={};
+function resetX(){['F','R'].forEach(a=>{X[a]=ST.map((_,i)=>near(RNG(AP[a],i),STOCK[a][i]))});['LF','RF','LR','RR'].forEach(c=>{X[c]=ST.map((_,i)=>near(RNG(c,i),STOCKC[c][i]))});X.C=CH.map(c=>near(c.r,STOCK.C[c.k]));
+ SX={F:X.F.slice(),R:X.R.slice(),C:X.C.slice()};SXC={};['LF','RF','LR','RR'].forEach(c=>SXC[c]=X[c].slice());
+ const m=MODE;['axle','corner'].forEach(k=>{MODE=k;BASE={};BASES[k]=Object.assign({},raw())});MODE=m;BASE=BASES[m]}
+const idx=(c,i)=>MODE==='corner'?X[c][i]:X[c[1]][i];
+const val=(c,i)=>{const v=RNG(c,i)[idx(c,i)];return MODE==='axle'&&i===4&&c[0]==='L'?-v:v};
+const pct=(c,i)=>{const n=RNG(c,i).length-1;return n?idx(c,i)/n*100:50};
 const ax=(i,a)=>a===0?.7*pct('RF',i)+.3*pct('LF',i):.7*pct('RR',i)+.3*pct('LR',i);   // 0..100, outside (right) tires count more
 // ---- model ----
 const rollMax=S=>6-0.045*S;
@@ -460,7 +470,7 @@ function words(){
  const b=total(),a=Math.abs(b),c=contrib();
  $('needle').style.left=(50+b*45)+'%';$('gauge').setAttribute('aria-valuenow',Math.round(b*100));
  const deg=a<.12?'':a<.35?'slightly ':a<.6?'':'very ';
- $('state').textContent=a<.12?'Neutral':'Car is '+deg+(b>0?'TIGHT':'LOOSE');$('state').style.color=a<.12?'var(--grn)':b>0?'var(--blue)':'var(--red)';
+ $('state').textContent=(a<.12?'Neutral':'Car is '+deg+(b>0?'TIGHT':'LOOSE'))+(a>=.04?' (about '+Math.round(a*100)+'% '+(b>0?'tight':'loose')+')':'');$('state').style.color=a<.12?'var(--grn)':b>0?'var(--blue)':'var(--red)';
  {const t=KEYS.filter(k=>c[k]>=.1).map(k=>KN[k]),l=KEYS.filter(k=>c[k]<=-.1).map(k=>KN[k]);$('mix').textContent=(t.length?'Pushing tight: '+t.join(', '):'')+(t.length&&l.length?'  |  ':'')+(l.length?'Pushing loose: '+l.join(', '):'')||'Nothing pushing either way'}
  $('vn').textContent=view;
  $('w1').textContent=a<.12?'Everything adds up to a balanced car: it turns where you point it.':b>0?'Overall the front is giving up grip before the rear, so the nose pushes up the track and the car will not turn in as much as you want.':'Overall the rear is giving up grip before the front, so the back end tries to come around and the car feels twitchy.';
@@ -469,13 +479,17 @@ function words(){
 }
 function btn(a,i,n,d){return '<button type="button" class="ab" data-c="'+a+'" data-i="'+i+'" data-d="'+d+'" aria-label="'+n+(d<0?' lower':' higher')+'">'+(d<0?'\u25C0':'\u25B6')+'</button>'}
 function row(a,i,n){return '<div class="st"><div class="sn">'+n+'</div><div class="sv" id="o_'+a+i+'"></div><div class="sb">'+btn(a,i,n,-1)+'<div class="bar" aria-hidden="true"><i id="p_'+a+i+'"></i></div>'+btn(a,i,n,1)+'</div></div>'}
+const KS=()=>MODE==='corner'?['LF','RF','LR','RR']:['F','R'];
+function updAll(){KS().forEach(a=>ST.forEach((_,i)=>upd(a,i)));CH.forEach((_,i)=>upd('C',i))}
 function build(){
- $('corners').innerHTML=['F','R'].map(a=>'<div class="cc"><h2>'+APN[a]+'</h2>'+ST.map((n,i)=>row(a,i,n)).join('')+'</div>').join('')
+ $('corners').innerHTML=KS().map(a=>'<div class="cc"><h2>'+APN[a]+'</h2>'+ST.map((n,i)=>row(a,i,n)).join('')+'</div>').join('')
   +'<div class="cc wide"><h2>Chassis</h2><div class="cg">'+CH.map((c,i)=>row('C',i,c.k)).join('')+'</div></div>';
- ['F','R'].forEach(a=>ST.forEach((_,i)=>upd(a,i)));CH.forEach((_,i)=>upd('C',i))}
+ updAll()}
 function upd(a,i){const o=RG(a,i),x=X[a][i];$('o_'+a+i).textContent=fv(a,i,o[x]);$('p_'+a+i).style.width=(o.length>1?x/(o.length-1)*100:50)+'%';
  const bs=document.querySelectorAll('.ab[data-c="'+a+'"][data-i="'+i+'"]');bs[0].disabled=x<=0;bs[1].disabled=x>=o.length-1}
-function nudge(a,i,d){$('ld').value='';const n=RG(a,i).length-1,x=clamp(X[a][i]+d,0,n);if(x===X[a][i])return false;X[a][i]=x;upd(a,i);all();return true}
+function nudge(a,i,d){$('ld').value='';const n=RG(a,i).length-1,x=clamp(X[a][i]+d,0,n);if(x===X[a][i])return false;X[a][i]=x;
+ if(a==='F'||a==='R')CS[a].forEach(c=>{const nn=RG(c,i).length-1;X[c][i]=clamp(X[c][i]+(c[0]==='L'&&i===4?-d:d),0,nn)});
+ upd(a,i);all();return true}
 let hold=null;
 function stopHold(){clearTimeout(hold);clearInterval(hold);hold=null}
 $('corners').addEventListener('pointerdown',e=>{const t=e.target.closest('.ab');if(!t||t.disabled)return;e.preventDefault();const c=t.dataset.c,i=+t.dataset.i,d=+t.dataset.d;nudge(c,i,d);
@@ -484,12 +498,14 @@ $('corners').addEventListener('pointerdown',e=>{const t=e.target.closest('.ab');
 $('corners').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.closest('.ab')){e.preventDefault();const t=e.target.closest('.ab');nudge(t.dataset.c,+t.dataset.i,+t.dataset.d)}});
 // ---- drag the gauge: auto-set a general setup for that balance ----
 const AUTO=[['F',0,1,.6],['R',0,-1,.6],['F',1,1,.6],['R',1,-1,.6],['F',2,-1,.6],['R',2,1,.6]].concat(CH.map((c,i)=>['C',i,c.sg,/Sway/.test(c.k)?.8:.5]));
-function applyK(k,sg){AUTO.forEach(([a,i,d,amp])=>{const n=RG(a,i).length-1,mid=SX[a][i];X[a][i]=clamp(Math.round(mid+sg*k*d*amp*n/2),0,n)})}
+function applyK(k,sg){AUTO.forEach(([a,i,d,amp])=>{const n=RG(a,i).length-1,mid=SX[a][i];X[a][i]=clamp(Math.round(mid+sg*k*d*amp*n/2),0,n);
+ if(a!=='C')CS[a].forEach(c=>{const nn=RG(c,i).length-1;X[c][i]=clamp(SXC[c][i]+(X[a][i]-mid),0,nn)})})}
 function autoSet(t){t=clamp(t,-1,1);const sg=t<0?-1:1;let bk=0,be=1e9;
  if(Math.abs(t)<.04){applyK(0,1)}else{for(let k=0;k<=1.0001;k+=.02){applyK(k,sg);const e=Math.abs(total()-t);if(e<be-1e-9){be=e;bk=k}}applyK(bk,sg)}
- $('ld').value='';['F','R'].forEach(a=>ST.forEach((_,i)=>upd(a,i)));CH.forEach((_,i)=>upd('C',i));all()}
+ $('ld').value='';updAll();all()}
 {const G=$('gauge');let drag=false;const fromX=x=>{const r=G.getBoundingClientRect();return clamp(((x-r.left)/r.width*100-50)/45,-1,1)};
- G.addEventListener('pointerdown',e=>{drag=true;G.setPointerCapture(e.pointerId);autoSet(fromX(e.clientX))});
+ {const gs=$('gsteps');[-1,-.75,-.5,-.25,0,.25,.5,.75,1].forEach(t=>{const b=document.createElement('button');b.type='button';b.className='gstep';b.textContent=t===0?'0':Math.abs(t*100)+(t<0?'L':'T');b.title=t===0?'Stock / neutral':Math.abs(t*100)+'% '+(t<0?'loose':'tight');b.onclick=()=>autoSet(t);gs.appendChild(b)})}
+G.addEventListener('pointerdown',e=>{drag=true;G.setPointerCapture(e.pointerId);autoSet(fromX(e.clientX))});
  G.addEventListener('pointermove',e=>{if(drag)autoSet(fromX(e.clientX))});
  ['pointerup','pointercancel'].forEach(ev=>G.addEventListener(ev,()=>{drag=false}));
  G.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();autoSet(total()+(e.key==='ArrowRight'?.1:-.1))}})}
@@ -498,16 +514,17 @@ $('tk').innerHTML='<option value="Generic">Generic (15\u00b0)</option>'+Object.k
 function selTrack(n){TB=BANK[n]!==undefined?BANK[n]:15;$('tk').value=BANK[n]!==undefined?n:'Generic';buildTrack(n);$('tkname').textContent=(BANK[n]!==undefined?n+' \u2013 ':'')+'banking '+TB+'\u00b0';all()}
 $('tk').addEventListener('change',e=>selTrack(e.target.value));
 PRE.forEach((q,i)=>{const o=document.createElement('option');o.value=i;o.textContent=q.n+' \u2013 '+q.v;$('ld').appendChild(o)});
-$('ld').addEventListener('change',e=>{if(e.target.value==='')return;const q=PRE[+e.target.value];selTrack(BANK[q.n]!==undefined?q.n:'Generic');['F','R'].forEach(a=>{q[a].forEach((v,i)=>{const o=RNG(AP[a],i);let bi=0;o.forEach((x,k)=>{if(Math.abs(x-v)<Math.abs(o[bi]-v))bi=k});X[a][i]=bi})});CH.forEach((c,i)=>{const v=q.g[c.k];if(v===undefined)return;let bi=0;c.r.forEach((x,k)=>{if(Math.abs(x-v)<Math.abs(c.r[bi]-v))bi=k});X.C[i]=bi});build();all()});
+$('ld').addEventListener('change',e=>{if(e.target.value==='')return;const q=PRE[+e.target.value];selTrack(BANK[q.n]!==undefined?q.n:'Generic');['F','R'].forEach(a=>{q[a].forEach((v,i)=>{const o=RNG(AP[a],i);let bi=0;o.forEach((x,k)=>{if(Math.abs(x-v)<Math.abs(o[bi]-v))bi=k});X[a][i]=bi})});['LF','RF','LR','RR'].forEach(c=>{const a=c[1]==='F'?'F':'R',src=q[c]||(c[0]==='L'?q[a].map((v,i)=>i===4?-v:v):q[a]);X[c]=ST.map((_,i)=>snap(c,i,src[i]))});CH.forEach((c,i)=>{const v=q.g[c.k];if(v===undefined)return;let bi=0;c.r.forEach((x,k)=>{if(Math.abs(x-v)<Math.abs(c.r[bi]-v))bi=k});X.C[i]=bi});build();all()});
 $('reset').addEventListener('click',()=>{$('ld').value='';resetX();build();all()});
 $('view').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;view=b.dataset.v;[...$('view').children].forEach(x=>x.setAttribute('aria-pressed',x===b));all()});
 function tick(ts){if(playing){if(last!==null){const dt=Math.min(.05,(ts-last)/1000),T0=T;T=(T+dt/PERIOD)%1;if(T<T0)trace=[];step(dt);rec()}last=ts}else last=null;draw();requestAnimationFrame(tick)}
 if(matchMedia('(prefers-reduced-motion: reduce)').matches){playing=false;const pb=document.createElement('button');pb.type='button';pb.id='play';pb.textContent='Play';pb.addEventListener('click',()=>{playing=!playing;pb.textContent=playing?'Pause':'Play';last=null});$('reset').parentNode.appendChild(pb)}
 const SETUPS=[{"t":"Bristol","s":"Cup Series","by":"TooFastTuck","F":[1950,2,10,15,-7],"R":[1425,0,10,15,-2.5],"LF":[1680,0,10,15,7],"LR":[750,0,10,15,2.5]},{"t":"Charlotte","s":"Cup Series","by":"TooFastTuck","F":[1410,2,5,15,-7],"R":[1425,2,10,15,-2.5],"LF":[1140,5,5,15,7],"LR":[750,10,10,15,2.5]},{"t":"Chicagoland","s":"Cup Series","by":"Slowball99","F":[1140,0,10,15,-7],"R":[1762.5,2,10,15,-2.5],"LF":[1140,0,10,15,7],"LR":[1087.5,0,10,15,2.5]},{"t":"Dover","s":"Cup Series","by":"TooFastTuck","F":[2490,8,2,15,-7],"R":[2100,6,10,15,-2.5],"LF":[1410,8,5,15,7],"LR":[750,5,8,15,2.5]},{"t":"Echo Park","s":"Cup Series","by":"ABC Weapons","F":[1140,6,6,57.5,-7],"R":[1425,9,4,42.5,-2.5],"LF":[1140,3,9,40,7],"LR":[1087.5,6,4,25,2.5]},{"t":"Echo Park","s":"Cup Series","by":"TooFastTuck","F":[3300,5,6,40,-6],"R":[2775,7,7,40,-2],"LF":[3300,3,8,22.5,5],"LR":[2100,7,7,22.5,2]},{"t":"Homestead-Miami","s":"Cup Series","by":"TooFastTuck","F":[1410,0,8,15,-7],"R":[1762.5,0,10,15,-2.5],"LF":[1410,0,8,15,7],"LR":[750,0,10,15,2.5]},{"t":"Indianapolis","s":"Cup Series","by":"ABC Weapons","F":[1140,2,6,40,-5.5],"R":[1762.5,7,6,40,-2],"LF":[1140,2,10,20,4.5],"LR":[750,5,6,20,2]},{"t":"Indianapolis","s":"Cup Series","by":"TooFastTuck","F":[1140,0,10,15,-7],"R":[2775,5,8,15,-2.5],"LF":[3030,0,9,17.5,7],"LR":[1087.5,0,8,15,2.5]},{"t":"Las Vegas","s":"Cup Series","by":"13allistics","F":[1680,5,5,15,-5.5],"R":[1762.5,5,5,15,-2.5],"LF":[1140,5,5,15,5.5],"LR":[750,5,8,15,2.5]},{"t":"Las Vegas","s":"Cup Series","by":"TooFastTuck","F":[1140,0,10,15,-7],"R":[1762.5,2,9,17.5,-2.5],"LF":[1140,2,9,15,7],"LR":[1087.5,0,10,15,2.5]},{"t":"Michigan","s":"Cup Series","by":"13allistics","F":[1680,5,5,15,-6],"R":[1762.5,5,5,15,-2.5],"LF":[1140,5,5,15,6],"LR":[750,5,8,15,2.5]},{"t":"Michigan","s":"Cup Series","by":"TooFastTuck","F":[1140,0,10,15,-7],"R":[1762.5,5,10,15,-2.5],"LF":[1410,0,9,15,7],"LR":[750,0,10,15,2.5]},{"t":"Nashville","s":"Cup Series","by":"TooFastTuck","F":[1140,3,6,17.5,-6.5],"R":[2775,2,8,17.5,-2.5],"LF":[3030,2,5,15,7],"LR":[1425,3,8,15,2.5]},{"t":"Pocono","s":"Cup Series","by":"TooFastTuck","F":[1140,3,6,15,-7],"R":[2775,2,8,15,-2.5],"LF":[3030,2,5,15,7],"LR":[1087.5,0,8,15,2.5]},{"t":"Talladega","s":"Cup Series","by":"ABC Weapons","F":[3300,3,9,65,-6],"R":[1425,3,10,65,-2],"LF":[1680,3,9,65,6.5],"LR":[1425,3,10,65,1.5]},{"t":"Watkins Glen","s":"Cup Series","by":"TooFastTuck","F":[1680,0,10,15,-7],"R":[1087.5,0,10,15,-2.5],"LF":[1680,0,10,15,-7],"LR":[1087.5,0,10,15,-2.5]}];
-const ldSel=$('ld');SETUPS.forEach((o,i)=>{const e=document.createElement('option');e.value=i;e.textContent=o.t+' ('+o.by+')';ldSel.appendChild(e)});
+SETUPS.forEach((o,i)=>{PRE[i].LF=o.LF;PRE[i].LR=o.LR});   // real left-side values for the per-corner layout
 function snap(c,i,v){const o=RNG(c,i);let b=0;o.forEach((x,k)=>{if(Math.abs(x-v)<Math.abs(o[b]-v))b=k});return b}
-ldSel.addEventListener('change',e=>{if(e.target.value==='')return;const o=SETUPS[+e.target.value];['F','R'].forEach(a=>{X[a]=ST.map((_,i)=>snap(AP[a],i,o[a][i]))});build();all()});
-$('reset').addEventListener('click',()=>{ldSel.value=''});
+$('lay').addEventListener('click',e=>{const b=e.target.closest('button');if(!b||b.dataset.m===MODE)return;const m=b.dataset.m;
+ if(m==='axle')['F','R'].forEach(a=>{X[a]=X[AP[a]].slice()});
+ MODE=m;BASE=BASES[m];[...$('lay').children].forEach(x=>x.setAttribute('aria-pressed',String(x===b)));build();all()});
 buildTrack('Generic');resetX();{const bk=TB;TB=15;GAIN=1.27;applyK(1,1);const c=contrib();const sm1=KEYS.reduce((a,k)=>a+W[k]*c[k],0);GAIN=sm1>0?1/sm1:1.27;TB=bk;resetX()}
 build();words();requestAnimationFrame(tick);
 new ResizeObserver(()=>parent.postMessage({lab:document.documentElement.scrollHeight},"*")).observe(document.body);
