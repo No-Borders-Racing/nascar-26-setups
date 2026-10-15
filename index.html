@@ -88,7 +88,8 @@ h2{margin:0;font-size:2.1rem;line-height:1;font-weight:700}
 .lnk{background:none;border:0;padding:0;font:inherit;font-weight:700;color:var(--blue);text-decoration:underline;cursor:pointer}
 .pv h2{margin:6px 0 2px}.pv .sub{color:var(--mute);margin:0 0 10px}
 .pvi{display:block;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:8px 0;color:var(--ink);font:inherit;cursor:pointer}
-.tgs{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.tgs span{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:2px 10px;font-size:.85rem}
+.tgs{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.tnotes .nt{margin-top:12px}.tnotes p.none,.tgs span.none{color:var(--mute);font-style:italic}.tgs span.none{border:0;background:none;padding:0}.aboutnote{color:var(--mute);font-size:.9rem;margin-top:10px!important}
+.tgs span{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:2px 10px;font-size:.85rem}
 .tgr{margin:8px 0}.tgl{display:block;color:var(--mute);font-size:.9rem;margin-bottom:4px}.tgb{display:flex;flex-wrap:wrap;gap:6px}.tgb button{font:inherit;font-size:.95rem;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:5px 12px;cursor:pointer}.tgb button[aria-pressed=true]{background:var(--red);border-color:var(--red);color:#fff}
 .sortrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:8px 0}.sortrow label{display:flex;gap:8px;align-items:center}.sortrow span{color:var(--mute);font-size:.9rem}.sortrow .trk{width:auto;margin:0;font-size:1rem;padding:6px 10px}#sortnt{margin:4px 0 0}.lapt,.vwc{margin-left:12px;color:var(--mute);font-size:.95rem}.lapt b{color:var(--ink)}
 .pvi b{display:block;font-size:1.05rem}.pvi span{color:var(--mute);font-size:.9rem}
@@ -152,11 +153,10 @@ button.lk:hover,button.lk:focus-visible{color:var(--ink)}
 <div class="vars" id="vars" role="group" aria-label="Setup version" hidden></div>
 <select class="trk" id="vsel" aria-label="Choose a setup" hidden></select>
 <div class="rate" id="rate" hidden></div>
-<div class="tgs" id="tgrow" hidden></div>
-<div class="tnotes" id="tnotes" hidden><h3>Tuner's notes</h3><p id="tnp"></p></div>
 <div id="body"><button class="view" id="view" type="button" aria-label="View"></button><div class="acts" id="ed" hidden></div>
 <div class="grid" id="f"></div>
 <div class="axis">Chassis</div><div class="gen" id="g"></div></div>
+<section id="about" hidden><div class="axis">About this setup</div><div class="tnotes" id="tnotes"><h3>Tags</h3><div class="tgs" id="tgrow"></div><h3 class="nt">Tuner's notes</h3><p id="tnp"></p><p class="aboutnote" id="aboutnote" hidden>Tap <b>Edit this setup</b> above to add tags or notes.</p></div></section>
 <p class="empty" id="empty" hidden></p>
 <section id="pview" class="pv" hidden><button class="view" id="pvback" type="button">&larr; Back</button><h2 id="pvh"></h2><p class="sub" id="pvs"></p><div class="sortrow" id="pvc" hidden><label><span>Sort by</span><select class="trk" id="allsort"></select></label><label><span>Series</span><select class="trk" id="allser"></select></label></div><div id="pvl"></div></section>
 <section id="lab" hidden><iframe id="labf" title="Tuning lab (test version)" scrolling="no"></iframe></section>
@@ -610,7 +610,7 @@ if(pv){$('pview').hidden=false;$('lab').hidden=true;$('guide').hidden=true;$('ad
  $('pvl').innerHTML=mine.slice(0,100).map(x=>{const r=RT[x.id],bits=[esc(x.s),r?'&#9733; '+Number(r.avg_stars).toFixed(1)+' ('+r.votes+')':'no ratings yet'];
   if(x.lap)bits.push('Lap '+lapTxt(x.lap));if(VWok)bits.push((VW[x.id]||0)+' views');if(all)bits.push('by '+esc(x.by||'Unknown'));if(x.created)bits.push(agoTxt(x.created));
   return `<button type="button" class="pvi" data-id="${esc(x.id)}"><b>${esc(x.n)} &middot; ${esc(x.v)}</b><span>${bits.join(' &middot; ')}</span></button>`}).join('');
- $('tnotes').hidden=true;return}
+ $('about').hidden=true;return}
 $('pview').hidden=true;if(si<4)lastSi=si;
 const L=D.filter(x=>SER[si]&&SER[si].re.test(x.s));
 drawTabs(false);$('ed').hidden=!canAdmin;
@@ -703,7 +703,10 @@ function summary(nw){const old=new Map(D.map(t=>[mkey(t),sig(t)]));
  return nw.length+' setups found: '+add+' new, '+chg+' changed, '+same+' unchanged. Nothing will be removed: your other '+kept+' setups are kept.'}
 $('ed').append($('fedit'),$('fdel'));
 const _r=render;render=function(){_r();$('fedit').disabled=$('fdel').disabled=!curT;
- $('tnotes').hidden=!(curT&&curT.notes);if(curT&&curT.notes)$('tnp').textContent=curT.notes;
+ {const ab=$('about');ab.hidden=!curT;if(curT){const tl=tagList(curT),nt=curT.notes;
+  $('tgrow').innerHTML=tl.length?tl.map(x=>'<span>'+esc(x)+'</span>').join(''):'<span class="none">No tags added yet</span>';
+  $('tnp').textContent=nt||'No notes added yet';$('tnp').className=nt?'':'none';
+  $('aboutnote').hidden=!(ONLINE&&canAdmin&&me&&(isAdm||curT.uid===me.id)&&(!tl.length||!nt))}}
  if(ONLINE){const own=!!(curT&&me&&(isAdm||curT.uid===me.id));$('ed').hidden=!(canAdmin&&own);renderRate()}};
 const agoTxt=iso=>{const t=Date.parse(iso);if(!t)return '';const sec=(Date.now()-t)/1000;
  if(sec<60)return 'just now';if(sec<3600)return Math.floor(sec/60)+' min ago';
@@ -745,7 +748,7 @@ async function persistOnline(nd){if(!me)throw new Error('Sign in with Discord fi
   else{const o=byId.get(t.id);if(o&&sig(o)===sig(t)&&o.n===t.n&&o.s===t.s&&o.v===t.v&&(o.notes||'')===(t.notes||'')&&(o.lap||0)===(t.lap||0)&&JSON.stringify(o.tags||null)===JSON.stringify(t.tags||null))continue;r=await sb.from('setups').update(toRow(t)).eq('id',t.id).select()}
   if(r.error){if(r.error.code==='23505'){if(/setups_fp_unique/.test(r.error.message||''))throw new Error('This setup has already been added by someone else.');skip++;continue}throw r.error}if(!r.data.length)skip++}
  lastSkip=skip;await loadSetups();await loadRatings()}
-function renderRate(){const e=$('rate'),tg=$('tgrow'),tl=tagList(curT);tg.innerHTML=tl.map(x=>'<span>'+esc(x)+'</span>').join('');tg.hidden=!tl.length||si>3;if(!curT||!curT.id||si>3){e.hidden=true;return}
+function renderRate(){const e=$('rate');if(!curT||!curT.id||si>3){e.hidden=true;return}
  const r=RT[curT.id],mine=MINE[curT.id]||0,own=!!(me&&curT.uid===me.id);
  let h='<div class="by">'+byHtml(curT)+'</div><span class="avg">'+(r?'★ '+Number(r.avg_stars).toFixed(1)+' <small>('+r.votes+(r.votes===1?' rating':' ratings')+')</small>':'<small>No ratings yet</small>')+'</span>'+(curT.lap?'<span class="lapt">Lap time <b>'+lapTxt(curT.lap)+'</b></span>':'')+(VWok?'<small class="vwc">'+(VW[curT.id]||0)+(VW[curT.id]===1?' view':' views')+'</small>':'');
  if(!me)h+='<span class="who">Sign in to rate this setup.</span>';
