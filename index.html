@@ -630,7 +630,7 @@ $('tn').textContent=tn;$('ts').textContent=SER[si].n;
 $('body').hidden=!has;$('empty').hidden=has;$('vars').hidden=vs.length<1;
 if(!has){$('vsel').hidden=true;$('sortnote').hidden=true;$('empty').textContent='No setup added yet for '+tn+' in the '+SER[si].n+'.';$('vars').hidden=true;return}
 $('vars').innerHTML=vs.map((x,i)=>`<button type="button" aria-pressed="${i===vi}" data-i="${i}">${esc(x.v||'Setup '+(i+1))}</button>`).join('');
-selId=t.id||null;const big=vs.length>4;$('vars').hidden=big;$('vsel').hidden=!big;$('sortnote').hidden=!(ONLINE&&vs.length>1);if(ONLINE&&vs.length>1){sortFill($('sortsel'));$('sortnt').textContent=SORTNOTE[sortBy]}noteView(t);
+selId=t.id||null;const big=vs.length>4;$('vars').hidden=big;$('vsel').hidden=!big;$('sortnote').hidden=!ONLINE;if(ONLINE){sortFill($('sortsel'));$('sortnt').textContent=SORTNOTE[sortBy]}noteView(t);
 if(big){const vsl=$('vsel');vsl.innerHTML='';vs.forEach((x,i)=>{const o=document.createElement('option'),r=ONLINE&&RT[x.id];o.value=i;
   o.textContent=(x.v||'Setup '+(i+1))+(ONLINE?(r?' · ★ '+Number(r.avg_stars).toFixed(1)+' ('+r.votes+')':' · no ratings')+(x.by?' · by '+x.by:''):'');vsl.appendChild(o)});vsl.value=String(vi)}
 $('tn').textContent=t.n;$('ts').textContent=SER[si].n;
