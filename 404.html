@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>No Borders Racing</title>
+<meta name="robots" content="noindex">
+<script>
+// A share link for a setup that was added in the last few minutes has no page yet.
+// Send it to the app anyway so the person still lands on the right setup.
+(function(){var p=location.pathname,i=p.indexOf('/share/');
+ var m=/\/share\/([0-9a-f-]{36})(\.html)?$/i.exec(p);
+ if(m)location.replace(p.slice(0,i+1)+'?setup='+m[1]);
+ else location.replace(p.slice(0,Math.max(i,p.lastIndexOf('/')))+'/');})();
+</script></head>
+<body><p>Page not found. <a href="./">Go to No Borders Racing</a></p></body></html>
