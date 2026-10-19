@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Beta 0.7.6 -->
+<!-- Beta 0.7.7 -->
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>No Borders Racing - NASCAR 26 Set-ups</title>
@@ -44,6 +44,7 @@ header span{color:var(--mute);font-size:.9rem}
 .gt{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);font-size:.88rem;line-height:1.3}
 .gt th,.gt td{text-align:left;vertical-align:top;padding:8px;border-top:1px solid var(--line)}
 .gt thead th{border-top:0;font:700 .95rem "Barlow Semi Condensed",sans-serif;background:var(--bg)}
+
 .gt tbody th{font:700 .95rem "Barlow Semi Condensed",sans-serif;width:27%}
 .vars{display:flex;gap:4px;margin:0 0 14px;overflow-x:auto;border-bottom:2px solid var(--line);-webkit-overflow-scrolling:touch}
 .vars button{flex:0 0 auto;font:700 1rem "Barlow Semi Condensed",sans-serif;border:0;border-bottom:4px solid transparent;margin-bottom:-2px;background:none;color:var(--mute);padding:8px 16px 6px;cursor:pointer;white-space:nowrap}
@@ -87,6 +88,11 @@ h2{margin:0;font-size:2.1rem;line-height:1;font-weight:700}
 .tnotes h3{margin:0 0 4px;font:700 1.05rem "Barlow Semi Condensed",sans-serif}.tnotes p{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
 .lnk{background:none;border:0;padding:0;font:inherit;font-weight:700;color:var(--blue);text-decoration:underline;cursor:pointer}
 .pv h2{margin:6px 0 2px}.pv .sub{color:var(--mute);margin:0 0 10px}
+.pvhead{display:flex;gap:14px;align-items:center;margin:10px 0 6px}.pvhead>div{min-width:0}
+.pav{width:72px;height:72px;border-radius:50%;object-fit:cover;flex:none;background:var(--card);border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font:700 1.8rem "Barlow Semi Condensed",sans-serif;color:var(--mute)}
+.pls{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 0}.pls a{display:inline-block;padding:5px 12px;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--ink);text-decoration:none;font-size:.9rem}.pls a:hover{border-color:var(--blue)}
+.pgs{margin:18px 0 2px;font:700 1.15rem "Barlow Semi Condensed",sans-serif}.pgs small{color:var(--mute);font-weight:400;font-size:.9rem}
+#pve{margin:12px 0;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--card)}#pve h3{margin:0 0 4px;font-size:1rem}#pve label{display:block;margin:8px 0 2px;font-size:.9rem;color:var(--mute)}#pve input{width:100%;box-sizing:border-box;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}#pve .msg{min-height:1.2em;margin:6px 0;font-size:.9rem}
 .pvi{display:block;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:8px 0;color:var(--ink);font:inherit;cursor:pointer}
 .tgs{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.tnotes .nt{margin-top:12px}.tnotes p.none,.tgs span.none{color:var(--mute);font-style:italic}.tgs span.none{border:0;background:none;padding:0}.aboutnote{color:var(--mute);font-size:.9rem;margin-top:10px!important}
 .tgs span{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:2px 10px;font-size:.85rem}
@@ -158,7 +164,7 @@ button.lk:hover,button.lk:focus-visible{color:var(--ink)}
 <div class="axis">Chassis</div><div class="gen" id="g"></div></div>
 <section id="about" hidden><div class="axis">About this setup</div><div class="tnotes" id="tnotes"><h3>Tags</h3><div class="tgs" id="tgrow"></div><h3 class="nt">Tuner's notes</h3><p id="tnp"></p><p class="aboutnote" id="aboutnote" hidden>Tap <b>Edit this setup</b> above to add tags or notes.</p></div></section>
 <p class="empty" id="empty" hidden></p>
-<section id="pview" class="pv" hidden><button class="view" id="pvback" type="button">&larr; Back</button><h2 id="pvh"></h2><p class="sub" id="pvs"></p><div class="sortrow" id="pvc" hidden><label><span>Sort by</span><select class="trk" id="allsort"></select></label><label><span>Series</span><select class="trk" id="allser"></select></label></div><div id="pvl"></div></section>
+<section id="pview" class="pv" hidden><button class="view" id="pvback" type="button">&larr; Back</button><div class="pvhead"><span id="pvav"></span><div><h2 id="pvh"></h2><p class="sub" id="pvs" style="margin:0"></p><div class="pls" id="pvlk"></div></div></div><div id="pve" hidden><h3>Your streaming links</h3><p class="sub" style="margin:0 0 4px">Optional. Shown on your profile so people can find you. YouTube and Twitch only. Leave a box empty to remove it.</p><label for="pvyt">YouTube link</label><input id="pvyt" type="url" inputmode="url" maxlength="200" placeholder="https://www.youtube.com/@yourchannel" autocomplete="off"><label for="pvtw">Twitch link</label><input id="pvtw" type="url" inputmode="url" maxlength="100" placeholder="https://www.twitch.tv/yourname" autocomplete="off"><p class="msg" id="pvm" role="status"></p><button class="view" id="pvsv" type="button">Save links</button></div><div class="sortrow" id="pvc" hidden><label><span>Sort by</span><select class="trk" id="allsort"></select></label><label><span>Series</span><select class="trk" id="allser"></select></label></div><div id="pvl"></div></section>
 <section id="lab" hidden><iframe id="labf" title="Tuning lab (test version)" scrolling="no"></iframe></section>
 <script type="text/plain" id="labsrc"><!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
@@ -193,6 +199,7 @@ button[aria-pressed=true]{background:var(--red);border-color:var(--red);color:#f
 @media(min-width:640px){.panels{grid-template-columns:1fr 1fr}}
 .ph{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}
 .seg{display:flex;gap:4px}.seg button{padding:4px 10px;font-size:.8rem}
+#shock svg{width:100%;height:auto;display:block}#shock .shn{font-size:.85rem;color:var(--mute);margin:6px 0}#shv{margin:8px 0 4px;font-weight:500}#shk .seg{flex-wrap:wrap}
 svg{width:100%;height:auto;display:block}
 .cap{color:var(--mute);font-size:.85rem;margin:6px 0 0}
 .fine{color:var(--mute);font-size:.8rem}
@@ -225,7 +232,7 @@ details{margin-top:12px}summary{cursor:pointer}
 .tsm{width:100%;border-collapse:collapse;font-size:.74rem;margin:10px 0 4px;font-variant-numeric:tabular-nums}.tsm th,.tsm td{padding:4px 3px;text-align:center;border-bottom:1px solid var(--line)}.tsm th:first-child{text-align:left;white-space:nowrap}@media(max-width:480px){.tsm{font-size:.68rem}.tsm th,.tsm td{padding:4px 1px}}.tsm th{color:var(--mute);font-weight:600}
 #tsvg{max-width:620px;margin:0 auto}
 #stack{grid-template-columns:minmax(0,1fr);align-items:stretch}
-@media(min-width:700px){#stack{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}#stack>[data-id=telem],#stack>[data-id=now],#stack>[data-id=help]{grid-column:1/-1}}
+@media(min-width:700px){#stack{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}#stack>[data-id=telem],#stack>[data-id=now],#stack>[data-id=help],#stack>[data-id=shock]{grid-column:1/-1}}
 #stack>[data-id=car],#stack>[data-id=weight],#stack>[data-id=track],#stack>[data-id=tire]{display:flex;flex-direction:column;box-sizing:border-box;min-width:0}
 #stack>[data-id=car]>svg,#stack>[data-id=weight]>svg,#stack>[data-id=track]>svg,#stack>[data-id=tire]>svg{flex:none;width:100%;height:auto}
 #stack>.mv.min{min-height:0!important;height:auto;align-self:start}
@@ -242,7 +249,7 @@ html.short #stack{grid-template-columns:minmax(0,1fr)!important}html.short #stac
 <h1>Tune Lab</h1>
 <p class="note"><b>This is only a guide.</b> It is not a realistic representation of the game. It shows the general direction each change pushes the car.</p>
 <p class="sub">Set the numbers the same way the game shows them. Watch the car and the Tight / Loose bar change.</p>
-<section class="card"><div class="tb"><div class="g"><label for="tk"><b>Track</b></label><select id="tk"></select></div><div class="g"><label for="ld"><b>Load Setup</b></label><select id="ld"><option value="">Choose...</option></select></div></div><div class="row"><button type="button" id="reset">Reset to stock</button></div></section>
+<section class="card"><div class="tb"><div class="g"><label for="tk"><b>Track</b></label><select id="tk"></select></div></div><div class="row"><button type="button" id="reset">Reset to stock</button></div><p class="fine" id="stknote" style="margin:8px 0 0"></p></section>
 <div class="row" id="layrow"><span class="lt">Controls</span><div class="seg" id="lay" role="group" aria-label="Controls layout"><button type="button" data-m="axle" aria-pressed="true">Front / Rear</button><button type="button" data-m="corner" aria-pressed="false">Per corner</button></div></div>
 <section class="corners" id="corners"></section>
 <section class="card" aria-label="Result">
@@ -325,6 +332,29 @@ html.short #stack{grid-template-columns:minmax(0,1fr)!important}html.short #stac
     <text x="230" y="147" text-anchor="middle" font-size="10" fill="var(--mute)" id="trt"></text>
    </svg>
 </div>
+<div class="card mv" id="shock" data-id="shock" data-name="Bump and rebound">
+ <div class="ph"><h2>Bump and rebound: the shock over a bump</h2><div class="seg" id="shc" role="group" aria-label="Corner to show"><button type="button" data-c="LF" aria-pressed="false">LF</button><button type="button" data-c="RF" aria-pressed="true">RF</button><button type="button" data-c="LR" aria-pressed="false">LR</button><button type="button" data-c="RR" aria-pressed="false">RR</button></div></div>
+ <p class="shn"><b>Bump</b> is how hard the shock resists being squashed as the wheel goes up. <b>Rebound</b> is how hard it resists stretching back out as the wheel comes down. Change the Bump and Rebound settings above and watch this corner.</p>
+ <svg viewBox="0 -24 320 174" role="img" aria-label="Side view of one wheel and shock driving over three bumps" id="shsvg">
+  <path id="shroad" d="" fill="var(--road)" stroke="var(--wall)" stroke-width="1.5"/>
+  <g id="shwheel"><circle id="shw" cx="100" cy="100" r="18" fill="#20242b" stroke="var(--ink)" stroke-width="2"/><circle id="shh" cx="100" cy="100" r="7" fill="var(--card)" stroke="var(--ink)" stroke-width="1.5"/></g>
+  <rect id="shbody" x="55" y="10" width="90" height="24" rx="4" fill="var(--card)" stroke="var(--ink)" stroke-width="2"/>
+  <text id="shbt" x="100" y="26" text-anchor="middle" font-size="9" fill="var(--mute)">car body</text>
+  <polyline id="shspr" points="" fill="none" stroke="var(--mute)" stroke-width="2"/>
+  <rect id="shcyl" x="104" y="0" width="8" height="10" fill="var(--card)" stroke="var(--ink)" stroke-width="1.5"/>
+  <line id="shrod" x1="108" y1="0" x2="108" y2="0" stroke="var(--blue)" stroke-width="3"/>
+  <text id="shlab" x="312" y="-8" text-anchor="end" font-size="11" font-weight="700" fill="var(--mute)">Resting</text>
+ </svg>
+ <svg viewBox="0 0 320 76" role="img" aria-label="Chart of the road height and the car body height over time" id="shch">
+  <line x1="0" y1="50" x2="320" y2="50" stroke="var(--line)" stroke-width="1"/>
+  <polyline id="shcr" points="" fill="none" stroke="var(--mute)" stroke-width="1.5" stroke-dasharray="3 3"/>
+  <polyline id="shcy" points="" fill="none" stroke="var(--blue)" stroke-width="2"/>
+  <line id="shcp" x1="0" y1="0" x2="0" y2="76" stroke="var(--red)" stroke-width="1"/>
+  <text x="316" y="10" text-anchor="end" font-size="9" fill="var(--mute)">Dashed: the road. Solid: the car body.</text>
+ </svg>
+ <p id="shv"></p><p class="shn" id="shm"></p>
+ <p class="shn">One corner, simplified, with the movement exaggerated. It shows the idea, not the game's exact numbers.</p>
+</div>
 <section class="card mv" id="telem" data-id="telem" data-name="Telemetry">
  <div class="ph"><h2>Telemetry <span class="beta">test</span></h2><div class="seg" id="tch"><button type="button" data-c="travel" aria-pressed="true">Travel</button><button type="button" data-c="speed" aria-pressed="false">Shock speed</button><button type="button" data-c="load" aria-pressed="false">Tire load</button></div></div>
  <p class="cap" id="tcap"></p>
@@ -370,8 +400,7 @@ const RNG=(k,i)=>{const fr=k[0]==='L'&&k[1]==='F'||k==='RF';
  if(SER==='or'){const sp=fr?rg(2000,8600,1100):k[0]==='L'?rg(205,520,35):rg(200,1040,140);return[sp,rg(0,10,1),rg(0,10,1),rg(13,55,3),fr?rg(-6,6,0.5):rg(-1,1,0.25)][i]}
  return[fr?rg(1140,4110,270):rg(750,4125,337.5),rg(0,10,1),rg(0,10,1),rg(15,65,2.5),fr?rg(-7,7,0.5):rg(-2.5,2.5,0.25)][i]};
 const fmt=(i,v)=>(i===0?Math.round(v).toLocaleString('en-US'):i===4?(v>0?'+':'')+v:String(v))+(UN[i]?' '+UN[i]:'');
-const PRE=[{"n":"Bristol","v":"TooFastTuck","F":[1950,2,10,15,-7],"R":[1425,0,10,15,-2.5],"g":{"Front Sway Bar":2,"Wheel Lock":8,"Brake Bias %":70,"Rear End Ratio":5.246,"Wedge":53,"Left Weight %":53,"Nose Weight %":50.7,"Steering Offset":0.01,"Rear Sway Bar":1}},{"n":"Charlotte","v":"TooFastTuck","F":[1410,2,5,15,-7],"R":[1425,2,10,15,-2.5],"g":{"Front Sway Bar":0,"Wheel Lock":7.5,"Brake Bias %":70,"Rear End Ratio":3.818,"Wedge":49.5,"Left Weight %":53,"Nose Weight %":50.8,"Steering Offset":0.01,"Rear Sway Bar":2}},{"n":"Chicagoland","v":"Slowball99","F":[1140,0,10,15,-7],"R":[1762.5,2,10,15,-2.5],"g":{"Front Sway Bar":0,"Wheel Lock":7.5,"Brake Bias %":70,"Rear End Ratio":3.727,"Wedge":49.5,"Left Weight %":53,"Nose Weight %":50.5,"Steering Offset":0.01,"Rear Sway Bar":2}},{"n":"Dover","v":"TooFastTuck","F":[2490,8,2,15,-7],"R":[2100,6,10,15,-2.5],"g":{"Front Sway Bar":2,"Wheel Lock":8,"Brake Bias %":70,"Rear End Ratio":4.105,"Wedge":50.5,"Left Weight %":53,"Nose Weight %":50.3,"Steering Offset":0.22,"Rear Sway Bar":0.875}},{"n":"Echo Park","v":"ABC Weapons","F":[1140,6,6,57.5,-7],"R":[1425,9,4,42.5,-2.5],"g":{"Front Sway Bar":2,"Wheel Lock":8.75,"Brake Bias %":58,"Rear End Ratio":3.727,"Wedge":49.5,"Left Weight %":53,"Nose Weight %":49.5,"Steering Offset":0.1,"Rear Sway Bar":0.625}},{"n":"Echo Park","v":"TooFastTuck","F":[3300,5,6,40,-6],"R":[2775,7,7,40,-2],"g":{"Front Sway Bar":1,"Wheel Lock":5,"Brake Bias %":58,"Rear End Ratio":3.76,"Wedge":50,"Left Weight %":53,"Nose Weight %":51,"Steering Offset":0.07,"Rear Sway Bar":0}},{"n":"Homestead-Miami","v":"TooFastTuck","F":[1410,0,8,15,-7],"R":[1762.5,0,10,15,-2.5],"g":{"Front Sway Bar":0,"Wheel Lock":8,"Brake Bias %":70,"Rear End Ratio":3.727,"Wedge":50.5,"Left Weight %":53,"Nose Weight %":51,"Steering Offset":0.16,"Rear Sway Bar":2}},{"n":"Indianapolis","v":"ABC Weapons","F":[1140,2,6,40,-5.5],"R":[1762.5,7,6,40,-2],"g":{"Front Sway Bar":1,"Wheel Lock":8.75,"Brake Bias %":58,"Rear End Ratio":3.579,"Wedge":48.5,"Left Weight %":53,"Nose Weight %":49.6,"Steering Offset":-0.04,"Rear Sway Bar":0.875}},{"n":"Indianapolis","v":"TooFastTuck","F":[1140,0,10,15,-7],"R":[2775,5,8,15,-2.5],"g":{"Front Sway Bar":0,"Wheel Lock":8.75,"Brake Bias %":70,"Rear End Ratio":3.684,"Wedge":51,"Left Weight %":53,"Nose Weight %":50.5,"Steering Offset":0.01,"Rear Sway Bar":2}},{"n":"Las Vegas","v":"13allistics","F":[1680,5,5,15,-5.5],"R":[1762.5,5,5,15,-2.5],"g":{"Front Sway Bar":1.25,"Wheel Lock":7.5,"Brake Bias %":66,"Rear End Ratio":3.727,"Wedge":45,"Left Weight %":52.9,"Nose Weight %":51,"Steering Offset":-0.13,"Rear Sway Bar":0.625}},{"n":"Las Vegas","v":"TooFastTuck","F":[1140,0,10,15,-7],"R":[1762.5,2,9,17.5,-2.5],"g":{"Front Sway Bar":0,"Wheel Lock":7.5,"Brake Bias %":70,"Rear End Ratio":3.684,"Wedge":49,"Left Weight %":53,"Nose Weight %":50.3,"Steering Offset":0.01,"Rear Sway Bar":2}},{"n":"Michigan","v":"13allistics","F":[1680,5,5,15,-6],"R":[1762.5,5,5,15,-2.5],"g":{"Front Sway Bar":1,"Wheel Lock":7.5,"Brake Bias %":66,"Rear End Ratio":3.579,"Wedge":46,"Left Weight %":53,"Nose Weight %":51,"Steering Offset":-0.13,"Rear Sway Bar":0.375}},{"n":"Michigan","v":"TooFastTuck","F":[1140,0,10,15,-7],"R":[1762.5,5,10,15,-2.5],"g":{"Front Sway Bar":0,"Wheel Lock":8,"Brake Bias %":70,"Rear End Ratio":3.636,"Wedge":52,"Left Weight %":53,"Nose Weight %":51,"Steering Offset":0.01,"Rear Sway Bar":2}},{"n":"Nashville","v":"TooFastTuck","F":[1140,3,6,17.5,-6.5],"R":[2775,2,8,17.5,-2.5],"g":{"Front Sway Bar":0,"Wheel Lock":8.75,"Brake Bias %":70,"Rear End Ratio":4.019,"Wedge":51.5,"Left Weight %":53,"Nose Weight %":51,"Steering Offset":0.01,"Rear Sway Bar":2}},{"n":"Pocono","v":"TooFastTuck","F":[1140,3,6,15,-7],"R":[2775,2,8,15,-2.5],"g":{"Front Sway Bar":0.5,"Wheel Lock":8,"Brake Bias %":70,"Rear End Ratio":3.636,"Wedge":51,"Left Weight %":53,"Nose Weight %":51.2,"Steering Offset":0.01,"Rear Sway Bar":2}},{"n":"Talladega","v":"ABC Weapons","F":[3300,3,9,65,-6],"R":[1425,3,10,65,-2],"g":{"Front Sway Bar":0.75,"Wheel Lock":3.75,"Brake Bias %":58,"Rear End Ratio":3.579,"Wedge":50,"Left Weight %":53,"Nose Weight %":49.5,"Steering Offset":0.04,"Rear Sway Bar":0.125}},{"n":"Watkins Glen","v":"TooFastTuck","F":[1680,0,10,15,-7],"R":[1087.5,0,10,15,-2.5],"g":{"Front Sway Bar":2,"Wheel Lock":8.75,"Brake Bias %":52,"Rear End Ratio":4.105,"Wedge":49,"Left Weight %":50,"Nose Weight %":49.5,"Steering Offset":0.04,"Rear Sway Bar":2}}];
-const BANK={"Talladega": 33, "Daytona": 31, "Bristol": 28, "Darlington": 24, "Dover": 24, "Charlotte": 24, "Rockingham": 23.5, "Texas": 22, "Las Vegas": 20, "Homestead-Miami": 19, "Kansas": 18.5, "Chicagoland": 18, "Michigan": 18, "Nashville": 14, "North Wilkesboro": 14, "Richmond": 14, "Pocono": 10, "Iowa": 13, "Martinsville": 12, "World Wide Technology Raceway": 10, "Phoenix": 9.5, "Indianapolis": 9, "New Hampshire": 4.5},BSH={"Bristol": "26–30", "Darlington": "23–25", "Rockingham": "22–25", "Texas": "20–24", "Homestead-Miami": "18–20", "Kansas": "17–20", "Pocono": "14 / 8 / 6", "Iowa": "12–14", "World Wide Technology Raceway": "9–11", "Phoenix": "8–11", "New Hampshire": "2–7"};
+const BANK={"Talladega": 33, "Daytona": 31, "Bristol": 28, "Darlington": 24, "Dover": 24, "Charlotte": 24, "Rockingham": 23.5, "Texas": 22, "Las Vegas": 20, "Echo Park": 28, "Homestead-Miami": 19, "Kansas": 18.5, "Chicagoland": 18, "Michigan": 18, "Nashville": 14, "North Wilkesboro": 14, "Richmond": 14, "Pocono": 10, "Iowa": 13, "Martinsville": 12, "World Wide Technology Raceway": 10, "Phoenix": 9.5, "Indianapolis": 9, "New Hampshire": 4.5},BSH={"Bristol": "26–30", "Darlington": "23–25", "Rockingham": "22–25", "Texas": "20–24", "Homestead-Miami": "18–20", "Kansas": "17–20", "Pocono": "14 / 8 / 6", "Iowa": "12–14", "World Wide Technology Raceway": "9–11", "Phoenix": "8–11", "New Hampshire": "2–7"};
 let X={};  // X[corner][setting] = option index
 const AP={F:'RF',R:'RR',LF:'LF',RF:'RF',LR:'LR',RR:'RR'},APN={F:'Front',R:'Rear',C:'Chassis',LF:'Front left',RF:'Front right',LR:'Rear left',RR:'Rear right'};let MODE='axle';const CS={F:['LF','RF'],R:['LR','RR']};
 const CH=[{k:'Front Sway Bar',r:rg(0,2,.25),w:.5,sg:1,u:''},{k:'Wheel Lock',r:rg(2.5,8.75,.25),w:.15,sg:-1,u:''},{k:'Brake Bias %',r:rg(40,70,2),w:.2,sg:1,u:'%'},
@@ -382,9 +411,11 @@ const fv=(a,i,v)=>a==='C'?(CH[i].k==='Steering Offset'&&v>0?'+':'')+v+CH[i].u:fm
 const cpct=i=>{const n=CH[i].r.length-1;return X.C[i]/n*100};
 const STOCK={F:[3300,5,6,40,-6],R:[2775,7,7,40,-2],C:{'Front Sway Bar':1,'Wheel Lock':7.5,'Brake Bias %':58,'Wedge':50,'Left Weight %':53,'Nose Weight %':51,'Steering Offset':0.01,'Rear Sway Bar':0}};
 let SX={};const near=(l,v)=>{let b=0;l.forEach((x,j)=>{if(Math.abs(x-v)<Math.abs(l[b]-v))b=j});return b};
+const STOCKT={"Bristol":{"LF":[1410,3,6,15,5],"RF":[1680,3,7,25,-6],"LR":[1087.5,5,6,15,2],"RR":[1425,5,6,25,-2],"g":{"Front Sway Bar":1.0,"Wheel Lock":7.5,"Brake Bias %":58,"Wedge":50.0,"Left Weight %":53.0,"Nose Weight %":50.0,"Steering Offset":0.01,"Rear Sway Bar":0.75}},"Charlotte":{"LF":[3300,3,8,22.5,5],"RF":[3300,5,6,40,-6],"LR":[2100,7,7,22.5,2],"RR":[2775,7,7,40,-2],"g":{"Front Sway Bar":1.0,"Wheel Lock":7.5,"Brake Bias %":58,"Wedge":50.0,"Left Weight %":53.0,"Nose Weight %":51.0,"Steering Offset":0.01,"Rear Sway Bar":0.0}},"Chicagoland":{"LF":[3300,3,8,22.5,5],"RF":[3300,5,6,40,-6],"LR":[2100,7,7,22.5,2],"RR":[2775,7,7,40,-2],"g":{"Front Sway Bar":1.0,"Wheel Lock":7.5,"Brake Bias %":58,"Wedge":50.0,"Left Weight %":53.0,"Nose Weight %":51.0,"Steering Offset":0.01,"Rear Sway Bar":0.0}},"Darlington":{"LF":[3300,3,8,22.5,5],"RF":[3300,5,6,40,-6],"LR":[2100,7,7,22.5,2],"RR":[2775,7,7,40,-2],"g":{"Front Sway Bar":1.0,"Wheel Lock":7.5,"Brake Bias %":58,"Wedge":50.0,"Left Weight %":53.0,"Nose Weight %":51.0,"Steering Offset":0.01,"Rear Sway Bar":0.0}},"Daytona":{"LF":[3300,3,8,22.5,5],"RF":[3300,5,6,40,-6],"LR":[2100,7,7,22.5,2],"RR":[2775,7,7,40,-2],"g":{"Front Sway Bar":1.0,"Wheel Lock":3.75,"Brake Bias %":58,"Wedge":50.0,"Left Weight %":53.0,"Nose Weight %":51.0,"Steering Offset":0.07,"Rear Sway Bar":0.0}},"Dover":{"LF":[2760,3,8,20,5],"RF":[2760,5,6,37.5,-6],"LR":[1425,7,7,20,2],"RR":[2437.5,7,7,37.5,-2],"g":{"Front Sway Bar":1.0,"Wheel Lock":7.5,"Brake Bias %":58,"Wedge":49.0,"Left Weight %":53.0,"Nose Weight %":51.0,"Steering Offset":0.01,"Rear Sway Bar":0.0}},"Echo Park":{"LF":[3300,3,8,22.5,5],"RF":[3300,5,6,40,-6],"LR":[2100,7,7,22.5,2],"RR":[2775,7,7,40,-2],"g":{"Front Sway Bar":1.0,"Wheel Lock":5.0,"Brake Bias %":58,"Wedge":50.0,"Left Weight %":53.0,"Nose Weight %":51.0,"Steering Offset":0.07,"Rear Sway Bar":0.0}},"Homestead-Miami":{"LF":[3300,3,8,22.5,5],"RF":[3300,5,6,40,-6],"LR":[2100,7,7,22.5,2],"RR":[2775,7,7,40,-2],"g":{"Front Sway Bar":1.0,"Wheel Lock":7.5,"Brake Bias %":58,"Wedge":50.0,"Left Weight %":53.0,"Nose Weight %":51.0,"Steering Offset":0.01,"Rear Sway Bar":0.0}},"Iowa":{"LF":[1410,3,6,15,5],"RF":[1680,3,7,25,-6],"LR":[1087.5,5,6,15,2],"RR":[1425,5,6,25,-2],"g":{"Front Sway Bar":1.0,"Wheel Lock":7.5,"Brake Bias %":58,"Wedge":50.0,"Left Weight %":53.0,"Nose Weight %":50.0,"Steering Offset":0.01,"Rear Sway Bar":0.75}},"Kansas":{"LF":[3300,3,8,22.5,5],"RF":[3300,5,6,40,-6],"LR":[2100,7,7,22.5,2],"RR":[2775,7,7,40,-2],"g":{"Front Sway Bar":1.0,"Wheel Lock":7.5,"Brake Bias %":58,"Wedge":50.0,"Left Weight %":53.0,"Nose Weight %":51.0,"Steering Offset":0.01,"Rear Sway Bar":0.0}},"Las Vegas":{"LF":[3300,3,8,22.5,5],"RF":[3300,5,6,40,-6],"LR":[2100,7,7,22.5,2],"RR":[2775,7,7,40,-2],"g":{"Front Sway Bar":1.0,"Wheel Lock":7.5,"Brake Bias %":58,"Wedge":50.0,"Left Weight %":53.0,"Nose Weight %":51.0,"Steering Offset":0.01,"Rear Sway Bar":0.0}},"Martinsville":{"LF":[1410,3,6,15,5],"RF":[1410,3,7,25,-6],"LR":[1087.5,5,6,15,2],"RR":[1087.5,5,6,25,-2],"g":{"Front Sway Bar":1.0,"Wheel Lock":6.25,"Brake Bias %":58,"Wedge":50.0,"Left Weight %":53.0,"Nose Weight %":50.0,"Steering Offset":0.01,"Rear Sway Bar":0.75}},"Michigan":{"LF":[3300,3,8,22.5,5],"RF":[3300,5,6,40,-6],"LR":[2100,7,7,22.5,2],"RR":[2775,7,7,40,-2],"g":{"Front Sway Bar":1.0,"Wheel Lock":7.5,"Brake Bias %":58,"Wedge":50.0,"Left Weight %":53.0,"Nose Weight %":51.0,"Steering Offset":0.01,"Rear Sway Bar":0.0}},"Nashville":{"LF":[2760,3,8,17.5,5],"RF":[2760,5,6,32.5,-6],"LR":[1425,7,7,17.5,2],"RR":[2437.5,7,7,32.5,-2],"g":{"Front Sway Bar":1.0,"Wheel Lock":7.5,"Brake Bias %":58,"Wedge":50.0,"Left Weight %":53.0,"Nose Weight %":51.0,"Steering Offset":0.01,"Rear Sway Bar":0.0}},"New Hampshire":{"LF":[2490,3,8,20,5],"RF":[2490,5,6,32.5,-6],"LR":[1762.5,7,7,20,2],"RR":[1762.5,7,7,32.5,-2],"g":{"Front Sway Bar":1.25,"Wheel Lock":6.25,"Brake Bias %":58,"Wedge":50.0,"Left Weight %":53.0,"Nose Weight %":51.0,"Steering Offset":0.01,"Rear Sway Bar":0.0}},"North Wilkesboro":{"LF":[1410,3,6,15,5],"RF":[1680,3,7,25,-6],"LR":[1087.5,5,6,15,2],"RR":[1087.5,5,6,25,-2],"g":{"Front Sway Bar":1.0,"Wheel Lock":7.5,"Brake Bias %":58,"Wedge":50.0,"Left Weight %":53.0,"Nose Weight %":50.0,"Steering Offset":0.01,"Rear Sway Bar":0.75}}};   // Cup stock setups read from the game, one per track. Corner = [spring, bump, rebound, psi, camber].
 const STOCKC={LF:[3300,3,8,22.5,5],RF:[3300,5,6,40,-6],LR:[2100,7,7,22.5,2],RR:[2775,7,7,40,-2]};
 let SXC={},BASES={};
-function resetX(){['F','R'].forEach(a=>{X[a]=ST.map((_,i)=>near(RNG(AP[a],i),STOCK[a][i]))});['LF','RF','LR','RR'].forEach(c=>{X[c]=ST.map((_,i)=>near(RNG(c,i),STOCKC[c][i]))});X.C=CH.map(c=>near(c.r,STOCK.C[c.k]));
+let CURST=null;
+function resetX(sk){const SF=sk?sk.RF:STOCK.F,SR=sk?sk.RR:STOCK.R,SK=sk||STOCKC,SC=sk?sk.g:STOCK.C;['F','R'].forEach(a=>{X[a]=ST.map((_,i)=>near(RNG(AP[a],i),(a==='F'?SF:SR)[i]))});['LF','RF','LR','RR'].forEach(c=>{X[c]=ST.map((_,i)=>near(RNG(c,i),SK[c][i]))});X.C=CH.map(c=>near(c.r,SC[c.k]!==undefined?SC[c.k]:STOCK.C[c.k]));
  SX={F:X.F.slice(),R:X.R.slice(),C:X.C.slice()};SXC={};['LF','RF','LR','RR'].forEach(c=>SXC[c]=X[c].slice());
  const m=MODE;['axle','corner'].forEach(k=>{MODE=k;BASE={};BASES[k]=Object.assign({},raw())});MODE=m;BASE=BASES[m]}
 const idx=(c,i)=>MODE==='corner'?X[c][i]:X[c[1]][i];
@@ -524,7 +555,7 @@ function build(){
  updAll()}
 function upd(a,i){const o=RG(a,i),x=X[a][i];$('o_'+a+i).textContent=fv(a,i,o[x]);$('p_'+a+i).style.width=(o.length>1?x/(o.length-1)*100:50)+'%';
  const bs=document.querySelectorAll('.ab[data-c="'+a+'"][data-i="'+i+'"]');bs[0].disabled=x<=0;bs[1].disabled=x>=o.length-1}
-function nudge(a,i,d){$('ld').value='';const n=RG(a,i).length-1,x=clamp(X[a][i]+d,0,n);if(x===X[a][i])return false;X[a][i]=x;
+function nudge(a,i,d){const n=RG(a,i).length-1,x=clamp(X[a][i]+d,0,n);if(x===X[a][i])return false;X[a][i]=x;
  if(a==='F'||a==='R')CS[a].forEach(c=>{const nn=RG(c,i).length-1;X[c][i]=clamp(X[c][i]+(c[0]==='L'&&i===4?-d:d),0,nn)});
  upd(a,i);all();return true}
 let hold=null;
@@ -539,7 +570,7 @@ function applyK(k,sg){AUTO.forEach(([a,i,d,amp])=>{const n=RG(a,i).length-1,mid=
  if(a!=='C')CS[a].forEach(c=>{const nn=RG(c,i).length-1;X[c][i]=clamp(SXC[c][i]+(X[a][i]-mid),0,nn)})})}
 function autoSet(t){t=clamp(t,-1,1);const sg=t<0?-1:1;let bk=0,be=1e9;
  if(Math.abs(t)<.04){applyK(0,1)}else{for(let k=0;k<=1.0001;k+=.02){applyK(k,sg);const e=Math.abs(total()-t);if(e<be-1e-9){be=e;bk=k}}applyK(bk,sg)}
- $('ld').value='';updAll();all()}
+ updAll();all()}
 {const G=$('gauge');let drag=false;const fromX=x=>{const r=G.getBoundingClientRect();return clamp(((x-r.left)/r.width*100-50)/45,-1,1)};
  {const gs=$('gsteps');[-1,-.75,-.5,-.25,0,.25,.5,.75,1].forEach(t=>{const b=document.createElement('button');b.type='button';b.className='gstep';b.textContent=t===0?'0':Math.abs(t*100)+(t<0?'L':'T');b.title=t===0?'Stock / neutral':Math.abs(t*100)+'% '+(t<0?'loose':'tight');b.onclick=()=>autoSet(t);gs.appendChild(b)})}
 G.addEventListener('pointerdown',e=>{drag=true;G.setPointerCapture(e.pointerId);autoSet(fromX(e.clientX))});
@@ -547,17 +578,17 @@ G.addEventListener('pointerdown',e=>{drag=true;G.setPointerCapture(e.pointerId);
  ['pointerup','pointercancel'].forEach(ev=>G.addEventListener(ev,()=>{drag=false}));
  G.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();autoSet(total()+(e.key==='ArrowRight'?.1:-.1))}})}
 function all(){trace=[];words();draw()}
-$('tk').innerHTML='<option value="Generic">Generic (15\u00b0)</option>'+Object.keys(BANK).sort().map(n=>'<option value="'+n+'">'+n+' \u2013 '+(BSH[n]||BANK[n])+'\u00b0</option>').join('');
-function selTrack(n){TB=BANK[n]!==undefined?BANK[n]:15;$('tk').value=BANK[n]!==undefined?n:'Generic';buildTrack(n);$('tkname').textContent=(BANK[n]!==undefined?n+' \u2013 ':'')+'banking '+TB+'\u00b0';all()}
+$('tk').innerHTML=''+Object.keys(BANK).sort().map(n=>'<option value="'+n+'">'+n+'</option>').join('');
+function setMode(m){MODE=m;BASE=BASES[m];[...$('lay').children].forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.m===m)))}
+function selTrack(n){TB=BANK[n]!==undefined?BANK[n]:15;$('tk').value=BANK[n]!==undefined?n:'Generic';buildTrack(n);$('tkname').textContent=BANK[n]!==undefined?n:'';
+ CURST=STOCKT[n]||null;resetX(CURST);if(CURST)setMode('corner');
+ $('stknote').textContent=CURST?'Starting from the Cup stock setup for '+n+', read from the game. Left and right sides can differ, so this uses the Per corner layout.':(n&&n!=='Generic'?'No stock setup for '+n+' yet, so this starts from general values.':'');
+ build();all()}
 $('tk').addEventListener('change',e=>selTrack(e.target.value));
-PRE.forEach((q,i)=>{const o=document.createElement('option');o.value=i;o.textContent=q.n+' \u2013 '+q.v;$('ld').appendChild(o)});
-$('ld').addEventListener('change',e=>{if(e.target.value==='')return;const q=PRE[+e.target.value];selTrack(BANK[q.n]!==undefined?q.n:'Generic');['F','R'].forEach(a=>{q[a].forEach((v,i)=>{const o=RNG(AP[a],i);let bi=0;o.forEach((x,k)=>{if(Math.abs(x-v)<Math.abs(o[bi]-v))bi=k});X[a][i]=bi})});['LF','RF','LR','RR'].forEach(c=>{const a=c[1]==='F'?'F':'R',src=q[c]||(c[0]==='L'?q[a].map((v,i)=>i===4?-v:v):q[a]);X[c]=ST.map((_,i)=>snap(c,i,src[i]))});CH.forEach((c,i)=>{const v=q.g[c.k];if(v===undefined)return;let bi=0;c.r.forEach((x,k)=>{if(Math.abs(x-v)<Math.abs(c.r[bi]-v))bi=k});X.C[i]=bi});build();all()});
-$('reset').addEventListener('click',()=>{$('ld').value='';resetX();build();all()});
+$('reset').addEventListener('click',()=>{resetX(CURST);build();all()});
 $('view').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;view=b.dataset.v;[...$('view').children].forEach(x=>x.setAttribute('aria-pressed',x===b));all()});
-function tick(ts){if(playing){if(last!==null){const dt=Math.min(.05,(ts-last)/1000),T0=T;T=(T+dt/PERIOD)%1;if(T<T0)trace=[];step(dt);rec()}last=ts}else last=null;draw();if(tdirty&&!TMIN&&ts-tlast>150){tlast=ts;telRun()}telCur();requestAnimationFrame(tick)}
+function tick(ts){if(playing){if(last!==null){const dt=Math.min(.05,(ts-last)/1000),T0=T;T=(T+dt/PERIOD)%1;if(T<T0)trace=[];step(dt);rec()}last=ts}else last=null;draw();if(tdirty&&!TMIN&&ts-tlast>150){tlast=ts;telRun()}telCur();shTick(ts);requestAnimationFrame(tick)}
 if(matchMedia('(prefers-reduced-motion: reduce)').matches){playing=false;const pb=document.createElement('button');pb.type='button';pb.id='play';pb.textContent='Play';pb.addEventListener('click',()=>{playing=!playing;pb.textContent=playing?'Pause':'Play';last=null});$('reset').parentNode.appendChild(pb)}
-const SETUPS=[{"t":"Bristol","s":"Cup Series","by":"TooFastTuck","F":[1950,2,10,15,-7],"R":[1425,0,10,15,-2.5],"LF":[1680,0,10,15,7],"LR":[750,0,10,15,2.5]},{"t":"Charlotte","s":"Cup Series","by":"TooFastTuck","F":[1410,2,5,15,-7],"R":[1425,2,10,15,-2.5],"LF":[1140,5,5,15,7],"LR":[750,10,10,15,2.5]},{"t":"Chicagoland","s":"Cup Series","by":"Slowball99","F":[1140,0,10,15,-7],"R":[1762.5,2,10,15,-2.5],"LF":[1140,0,10,15,7],"LR":[1087.5,0,10,15,2.5]},{"t":"Dover","s":"Cup Series","by":"TooFastTuck","F":[2490,8,2,15,-7],"R":[2100,6,10,15,-2.5],"LF":[1410,8,5,15,7],"LR":[750,5,8,15,2.5]},{"t":"Echo Park","s":"Cup Series","by":"ABC Weapons","F":[1140,6,6,57.5,-7],"R":[1425,9,4,42.5,-2.5],"LF":[1140,3,9,40,7],"LR":[1087.5,6,4,25,2.5]},{"t":"Echo Park","s":"Cup Series","by":"TooFastTuck","F":[3300,5,6,40,-6],"R":[2775,7,7,40,-2],"LF":[3300,3,8,22.5,5],"LR":[2100,7,7,22.5,2]},{"t":"Homestead-Miami","s":"Cup Series","by":"TooFastTuck","F":[1410,0,8,15,-7],"R":[1762.5,0,10,15,-2.5],"LF":[1410,0,8,15,7],"LR":[750,0,10,15,2.5]},{"t":"Indianapolis","s":"Cup Series","by":"ABC Weapons","F":[1140,2,6,40,-5.5],"R":[1762.5,7,6,40,-2],"LF":[1140,2,10,20,4.5],"LR":[750,5,6,20,2]},{"t":"Indianapolis","s":"Cup Series","by":"TooFastTuck","F":[1140,0,10,15,-7],"R":[2775,5,8,15,-2.5],"LF":[3030,0,9,17.5,7],"LR":[1087.5,0,8,15,2.5]},{"t":"Las Vegas","s":"Cup Series","by":"13allistics","F":[1680,5,5,15,-5.5],"R":[1762.5,5,5,15,-2.5],"LF":[1140,5,5,15,5.5],"LR":[750,5,8,15,2.5]},{"t":"Las Vegas","s":"Cup Series","by":"TooFastTuck","F":[1140,0,10,15,-7],"R":[1762.5,2,9,17.5,-2.5],"LF":[1140,2,9,15,7],"LR":[1087.5,0,10,15,2.5]},{"t":"Michigan","s":"Cup Series","by":"13allistics","F":[1680,5,5,15,-6],"R":[1762.5,5,5,15,-2.5],"LF":[1140,5,5,15,6],"LR":[750,5,8,15,2.5]},{"t":"Michigan","s":"Cup Series","by":"TooFastTuck","F":[1140,0,10,15,-7],"R":[1762.5,5,10,15,-2.5],"LF":[1410,0,9,15,7],"LR":[750,0,10,15,2.5]},{"t":"Nashville","s":"Cup Series","by":"TooFastTuck","F":[1140,3,6,17.5,-6.5],"R":[2775,2,8,17.5,-2.5],"LF":[3030,2,5,15,7],"LR":[1425,3,8,15,2.5]},{"t":"Pocono","s":"Cup Series","by":"TooFastTuck","F":[1140,3,6,15,-7],"R":[2775,2,8,15,-2.5],"LF":[3030,2,5,15,7],"LR":[1087.5,0,8,15,2.5]},{"t":"Talladega","s":"Cup Series","by":"ABC Weapons","F":[3300,3,9,65,-6],"R":[1425,3,10,65,-2],"LF":[1680,3,9,65,6.5],"LR":[1425,3,10,65,1.5]},{"t":"Watkins Glen","s":"Cup Series","by":"TooFastTuck","F":[1680,0,10,15,-7],"R":[1087.5,0,10,15,-2.5],"LF":[1680,0,10,15,-7],"LR":[1087.5,0,10,15,-2.5]}];
-SETUPS.forEach((o,i)=>{PRE[i].LF=o.LF;PRE[i].LR=o.LR});   // real left-side values for the per-corner layout
 function snap(c,i,v){const o=RNG(c,i);let b=0;o.forEach((x,k)=>{if(Math.abs(x-v)<Math.abs(o[b]-v))b=k});return b}
 $('lay').addEventListener('click',e=>{const b=e.target.closest('button');if(!b||b.dataset.m===MODE)return;const m=b.dataset.m;
  if(m==='axle')['F','R'].forEach(a=>{X[a]=X[AP[a]].slice()});
@@ -639,7 +670,8 @@ const mvAll=()=>[...STK.children].filter(e=>e.classList.contains('mv'));
 function lsGet(){try{return JSON.parse(localStorage.getItem(LK))||{}}catch(e){return{}}}
 function lsSave(){try{localStorage.setItem(LK,JSON.stringify({order:mvAll().map(e=>e.dataset.id),min:mvAll().filter(e=>e.classList.contains('min')).map(e=>e.dataset.id)}))}catch(e){}}
 function setMin(el,on){el.classList.toggle('min',on);const b=el.querySelector('.mvm');if(b){b.textContent=on?'+':'–';b.setAttribute('aria-expanded',String(!on));b.setAttribute('aria-label',(on?'Open ':'Minimise ')+el.dataset.name)}
- if(el.dataset.id==='telem'){TMIN=on;if(!on)tdirty=true}}
+ if(el.dataset.id==='telem'){TMIN=on;if(!on)tdirty=true}
+ if(el.dataset.id==='shock'){SHMIN=on;if(!on)SHsig=''}}
 function moveBy(el,d){const l=mvAll(),i=l.indexOf(el),j=i+d;if(j<0||j>=l.length)return;if(d<0)STK.insertBefore(el,l[j]);else STK.insertBefore(el,l[j].nextSibling);lsSave();el.scrollIntoView({block:'nearest',behavior:'smooth'})}
 mvAll().forEach(el=>{const nm=el.dataset.name,t=document.createElement('div');t.className='mvt';
  t.innerHTML='<button type="button" class="mvg" aria-label="Drag to move '+nm+'. Or use the arrow keys." title="Drag to move">⠿</button><span class="mvn">'+nm+'</span><span class="mva"><button type="button" class="mvu" aria-label="Move '+nm+' up">▲</button><button type="button" class="mvd" aria-label="Move '+nm+' down">▼</button>'+(el.dataset.nomin?'':'<button type="button" class="mvm" aria-label="Minimise '+nm+'" aria-expanded="true">–</button>')+'</span>';
@@ -656,18 +688,60 @@ STK.addEventListener('keydown',e=>{const b=e.target.closest&&e.target.closest('.
  STK.addEventListener('pointermove',e=>{if(drag){py=e.clientY;px=e.clientX}});
  const end=()=>{if(!drag)return;cancelAnimationFrame(raf);drag.classList.remove('drag');const d=drag;drag=null;lsSave();d.scrollIntoView({block:'nearest'})};
  ['pointerup','pointercancel'].forEach(t=>{window.addEventListener(t,end);try{parent.addEventListener(t,end)}catch(e){}});STK.addEventListener('lostpointercapture',end)}
-$('mvreset').addEventListener('click',()=>{const o=['car','weight','track','tire','telem','now','help'];o.forEach(id=>{const el=STK.querySelector('[data-id="'+id+'"]');if(el){STK.appendChild(el);setMin(el,id==='help')}});lsSave()});
-{const sv=lsGet();if(sv.order)sv.order.forEach(id=>{const el=STK.querySelector('[data-id="'+id+'"]');if(el)STK.appendChild(el)});
+$('mvreset').addEventListener('click',()=>{const o=['car','weight','track','tire','shock','telem','now','help'];o.forEach(id=>{const el=STK.querySelector('[data-id="'+id+'"]');if(el){STK.appendChild(el);setMin(el,id==='help')}});lsSave()});
+{const sv=lsGet();if(sv.order){sv.order.forEach(id=>{const el=STK.querySelector('[data-id="'+id+'"]');if(el)STK.appendChild(el)});if(sv.order.indexOf('shock')<0){const sh=STK.querySelector('[data-id="shock"]'),ti=STK.querySelector('[data-id="tire"]');if(sh&&ti)STK.insertBefore(sh,ti.nextSibling)}};
  // keep any card not in the saved list at the end, in its normal order
  if(sv.min)sv.min.forEach(id=>{const el=STK.querySelector('[data-id="'+id+'"]');if(el)setMin(el,true)});if(!sv.order&&!sv.min)setMin(STK.querySelector('[data-id="help"]'),true)}
 buildTrack('Generic');resetX();{const bk=TB;TB=15;GAIN=1.27;applyK(1,1);const c=contrib();const sm1=KEYS.reduce((a,k)=>a+W[k]*c[k],0);GAIN=sm1>0?1/sm1:1.27;TB=bk;resetX()}
-build();words();requestAnimationFrame(tick);
+// ---- bump and rebound card ----
+const SHT=3.2,SHN=320,SHH=1,SHB=[.1,.55,1],SHD=.2,SHPX=26,SHGY=120,SHR=18,SHWX=100;let SHC='RF',SHMIN=false,SHS=null,SHsig='',SHt=0,SHlast=null,SHchk=0;
+function shR(t){t=((t%SHT)+SHT)%SHT;let r=0;for(const b of SHB){const u=(t-b)/SHD;if(u>0&&u<1)r+=SHH*Math.pow(Math.sin(Math.PI*u),2)}return r}
+function shRd(t){t=((t%SHT)+SHT)%SHT;let r=0;for(const b of SHB){const u=(t-b)/SHD;if(u>0&&u<1)r+=SHH*Math.PI/SHD*Math.sin(2*Math.PI*u)}return r}
+function shSim(c){const ld=loads(0),k=Math.max(200,val(c,0))*.12,m=Math.max(.5,ld[c]*WT/386.4),cc=2*Math.sqrt(k*m),
+ cb=(.12+.5*pct(c,1)/100)*cc,cr=(.12+.5*pct(c,2)/100)*cc,LM=1.8,K2=k*6,sub=4,dt=SHT/SHN/sub;
+ let y=0,v=0;const Y=[],R=[],D=[];
+ for(let lp=0;lp<3;lp++)for(let i=0;i<SHN;i++){for(let q=0;q<sub;q++){const t=(i*sub+q)*dt,d=shR(t)-y,vr=shRd(t)-v;let F=k*d+(vr>0?cb:cr)*vr;if(d>LM)F+=K2*(d-LM);if(d<-LM)F+=K2*(d+LM);v+=F/m*dt;y+=v*dt}
+  if(lp===2){const r=shR(i*SHT/SHN);Y.push(y);R.push(r);D.push(r-y)}}
+ let peak=0,bot=false;for(let i=0;i<SHN;i++){peak=Math.max(peak,Math.abs(Y[i]));if(Math.abs(D[i])>=LM-.03)bot=true}
+ const i0=Math.ceil((SHB[2]+SHD)/SHT*SHN);let settle=null;for(let i=i0;i<SHN;i++){let ok=true;for(let j=i;j<SHN;j++)if(Math.abs(Y[j])>=.05){ok=false;break}if(ok){settle=(i-i0)*SHT/SHN;break}}
+ return{Y,R,D,peak,bot,settle,ratio:cr/cb}}
+function shStatic(){const S=SHS;if(!S)return;
+ $('shcr').setAttribute('points',S.R.map((r,i)=>(i/SHN*320).toFixed(1)+','+(50-r*30).toFixed(1)).join(' '));
+ $('shcy').setAttribute('points',S.Y.map((y,i)=>(i/SHN*320).toFixed(1)+','+clamp(50-y*30,2,74).toFixed(1)).join(' '));
+ let v;if(S.bot)v='The shock ran out of travel and hit the bump stop. That is harsh and it unsettles the car.';
+ else if(S.ratio>1.8)v='Rebound is much firmer than bump. The shock lets the wheel back down slowly, so the car stays pushed down after a run of bumps (packing down) and the wheel can struggle to follow the road.';
+ else if(S.ratio<.6)v='Rebound is much softer than bump. The shock lets the wheel back down quickly, but the body gets thrown up high and can bounce.';
+ else if(S.settle===null||S.settle>.9)v='The body keeps bouncing after the bumps. There is not enough damping, so it takes a long time to settle.';
+ else v='This looks balanced. The body is pushed up, comes back and settles quickly.';
+ $('shv').textContent=v;
+ $('shm').textContent='Peak body movement '+S.peak.toFixed(1)+' in. '+(S.settle===null?'Still moving 1.5 s after the last bump.':'Settled '+S.settle.toFixed(1)+' s after the last bump.')+' Bump at '+Math.round(pct(SHC,1))+'% of its range, rebound at '+Math.round(pct(SHC,2))+'%.'}
+function shDraw(){const S=SHS;if(!S)return;const f=SHt/SHT*SHN,i0=Math.floor(f)%SHN,i1=(i0+1)%SHN,a=f-Math.floor(f),
+ y=S.Y[i0]*(1-a)+S.Y[i1]*a,r=S.R[i0]*(1-a)+S.R[i1]*a,dd=S.D[i1]-S.D[i0];
+ const cy=SHGY-SHR-r*SHPX,yb=(SHGY-SHR)-54-y*SHPX;
+ let pts='M0,'+SHGY;for(let px=0;px<=320;px+=4){pts+=' L'+px+','+(SHGY-shR(SHt+(px-SHWX)/220)*SHPX).toFixed(1)}pts+=' L320,'+(SHGY+20)+' L0,'+(SHGY+20)+' Z';$('shroad').setAttribute('d',pts);
+ $('shw').setAttribute('cy',cy);$('shh').setAttribute('cy',cy);
+ $('shbody').setAttribute('y',yb-24);$('shbt').setAttribute('y',yb-9);
+ const lo=cy-4,n=7;let z='';for(let i=0;i<=n;i++){const yy=lo+(yb-lo)*i/n,xx=i===0||i===n?92:92+(i%2?-5:5);z+=xx+','+yy.toFixed(1)+' '}$('shspr').setAttribute('points',z);
+ const cl=Math.max(6,(lo-yb)*.55);$('shcyl').setAttribute('y',yb);$('shcyl').setAttribute('height',cl);
+ const rd=$('shrod');rd.setAttribute('y1',yb+cl);rd.setAttribute('y2',lo);
+ const up=dd>.002,dn=dd<-.002,lab=$('shlab');
+ rd.setAttribute('stroke',up?'var(--blue)':dn?'var(--amb)':'var(--mute)');lab.setAttribute('fill',up?'var(--blue)':dn?'var(--amb)':'var(--mute)');
+ lab.textContent=up?'BUMP: squashing':dn?'REBOUND: stretching':'Resting';
+ $('shcp').setAttribute('x1',(SHt/SHT*320));$('shcp').setAttribute('x2',(SHt/SHT*320))}
+function shTick(ts){if(SHMIN)return;
+ if(ts-SHchk>150){SHchk=ts;const ld=loads(0),sg=[SHC,val(SHC,0),pct(SHC,1),pct(SHC,2),Math.round(ld[SHC]*1000)].join();if(sg!==SHsig){SHsig=sg;SHS=shSim(SHC);shStatic()}}
+ if(playing){if(SHlast!==null)SHt=(SHt+Math.min(.05,(ts-SHlast)/1000)*.5)%SHT;SHlast=ts}else SHlast=null;
+ shDraw()}
+$('shc').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;SHC=b.dataset.c;[...$('shc').children].forEach(x=>x.setAttribute('aria-pressed',String(x===b)));SHsig=''});
+selTrack('Bristol');requestAnimationFrame(tick);
 new ResizeObserver(()=>parent.postMessage({lab:document.documentElement.scrollHeight},"*")).observe(document.body);
 <\/script></body></html>
 </script>
 <section id="guide" hidden>
 <h2 class="gh">General tuning tips</h2>
 <p class="gp"><span class="t">Tight</span> means the front won't turn (understeer). <span class="l">Loose</span> means the rear steps out (oversteer). Change one thing at a time, in small steps, and compare over the same number of laps.</p>
+<div class="axis">Working down the game screen</div>
+<p class="gp">Go down the Car Setups screen in order. Most of the balance comes from tire pressure, the sway bars, springs and wedge, so those are the values to move first. Bump, rebound, camber and steering offset are fine tuning, so leave them until the car is close. Set the rear end ratio for the track at the start and leave it. Wheel lock and left weight are about feel and stability, not tight or loose.</p>
 <div class="axis">Per corner</div>
 <div class="tw"><table class="gt"><thead><tr><th>Setting</th><th>Lower</th><th>Higher</th></tr></thead><tbody><tr><th scope="row">Spring rate</th><td>Softer, more grip over bumps, more body roll.</td><td>Stiffer, quicker response, less roll.</td></tr><tr><th scope="row">Bump (compression)</th><td>Softer. The corner is pushed up more easily, so it absorbs bumps better and takes load more gradually.</td><td>Firmer. The corner resists being pushed up, so load reaches the chassis more sharply and the car feels stiffer over bumps.</td></tr><tr><th scope="row">Rebound</th><td>The shock extends quickly. The tire follows the track better, but the car can feel bouncy or float.</td><td>The shock extends slowly. The corner stays loaded longer, but the car can pack down and feel harsh over bumps.</td></tr><tr><th scope="row">Tire pressure (psi)</th><td>More grip, more heat and wear.</td><td>Less grip, less drag, a bit faster on straights, harder ride.</td></tr><tr><th scope="row">Camber</th><td>Flatter tire, even wear, less cornering grip.</td><td>More cornering grip up to a point, then an edge overheats. Less straight-line grip.</td></tr></tbody></table></div>
 <div class="axis">Corner by corner</div>
@@ -695,8 +769,8 @@ new ResizeObserver(()=>parent.postMessage({lab:document.documentElement.scrollHe
 </div>
 <script>
 const LEGAL={
-terms:['Terms of use','<p>This is a free, fan-made community site for sharing NASCAR 26 setups. It is not made by, or connected to, NASCAR or the game\'s publisher.</p><h3>Uploading setups</h3><ul><li>When you save a setup, you confirm it is your own, or that you have permission to share it.</li><li>Only add real car setups. Do not add anything unlawful, offensive or misleading.</li><li>Your name is shown with every setup you add and every rating you give.</li><li>You can delete your own setups at any time.</li></ul><h3>Using setups</h3><ul><li>Setups are shared by other people and are provided as they are. There is no promise that a setup is accurate or will work for you.</li><li>The screenshot reader uses AI. It can make mistakes, so always check every value before you save.</li><li>The Tune Lab and tuning tips are only a guide. They are not a realistic copy of the game.</li></ul><h3>Removal</h3><ul><li>Any setup or account can be removed at any time, for example if it breaks these terms.</li><li>To have a setup removed, contact the site owner through the community where you found this link.</li></ul><h3>Changes</h3><p>These terms may change as the site grows.</p>'],
-privacy:['Privacy','<h3>What we keep</h3><ul><li>Your Discord account ID and the email address on your Discord account. These are kept by the sign-in service. We never see your Discord password.</li><li>Your name, the setups you add, and the ratings you give. Your name is public.</li><li>A record of when you use the screenshot reader, only to apply the daily scan limit.</li></ul><h3>Screenshots</h3><ul><li>Your image is sent to Google\'s AI to be read. We do not store it.</li><li>On Google\'s free service, Google may keep what it receives and use it to improve its products. Only upload your Car Setups screen, and nothing personal.</li></ul><h3>Where it lives</h3><p>The site is hosted on Netlify. Accounts and setups are stored in Supabase. We use no ads and no tracking.</p><h3>Your data</h3><p>To have your account and data removed, contact the site owner through the community where you found this link.</p>']};
+terms:['Terms of use','<p>This is a free, fan-made community site for sharing NASCAR 26 setups. It is not made by, or connected to, NASCAR or the game\'s publisher.</p><h3>Uploading setups</h3><ul><li>When you save a setup, you confirm it is your own, or that you have permission to share it.</li><li>Only add real car setups. Do not add anything unlawful, offensive or misleading.</li><li>Your name is shown with every setup you add and every rating you give.</li><li>You can delete your own setups at any time.</li><li>Streaming links on your profile must be your own channels. Links can be removed if they break these terms.</li></ul><h3>Using setups</h3><ul><li>Setups are shared by other people and are provided as they are. There is no promise that a setup is accurate or will work for you.</li><li>The screenshot reader uses AI. It can make mistakes, so always check every value before you save.</li><li>The Tune Lab and tuning tips are only a guide. They are not a realistic copy of the game.</li></ul><h3>Removal</h3><ul><li>Any setup or account can be removed at any time, for example if it breaks these terms.</li><li>To have a setup removed, contact the site owner through the community where you found this link.</li></ul><h3>Changes</h3><p>These terms may change as the site grows.</p>'],
+privacy:['Privacy','<h3>What we keep</h3><ul><li>Your Discord account ID and the email address on your Discord account. These are kept by the sign-in service. We never see your Discord password.</li><li>Your name, the setups you add, and the ratings you give. Your name is public.</li><li>Your Discord profile picture, which is shown on your profile page, and any YouTube or Twitch links you choose to add there. You can remove the links at any time.</li><li>A record of when you use the screenshot reader, only to apply the daily scan limit.</li></ul><h3>Screenshots</h3><ul><li>Your image is sent to Google\'s AI to be read. We do not store it.</li><li>On Google\'s free service, Google may keep what it receives and use it to improve its products. Only upload your Car Setups screen, and nothing personal.</li></ul><h3>Where it lives</h3><p>The site is hosted on Netlify. Accounts and setups are stored in Supabase. We use no ads and no tracking.</p><h3>Your data</h3><p>To have your account and data removed, contact the site owner through the community where you found this link.</p>']};
 function openLg(k){const d=document.getElementById('lg-'+k);if(!d)return;d.open=true;d.scrollIntoView({behavior:'smooth',block:'start'})}
 document.addEventListener('click',e=>{const b=e.target.closest('[data-lg]');if(b){e.preventDefault();openLg(b.dataset.lg)}});
 document.getElementById('lgt').innerHTML=LEGAL.terms[1];document.getElementById('lgp').innerHTML=LEGAL.privacy[1];
@@ -711,10 +785,16 @@ const SB_URL='https://kvpcqovybreewxqrqmtx.supabase.co',SB_KEY='sb_publishable_Q
 const ONLINE=!!(SB_URL&&SB_KEY&&window.supabase);
 if(SB_URL&&!window.supabase){$('auth').hidden=false;$('auth').textContent='Could not load the online library, so this is showing demo data only. Check your connection and refresh.'}
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let pv=null,pvBack=null,showSaved=false,curVs=[],selId=null,sb=null,me=null,prof=null,isAdm=false,RT={},MINE={},lastSkip=0,VW={},VWok=false,sortBy='top';
+let PF={},pv=null,pvBack=null,showSaved=false,curVs=[],selId=null,sb=null,me=null,prof=null,isAdm=false,RT={},MINE={},lastSkip=0,VW={},VWok=false,sortBy='top';
 try{sortBy=localStorage.getItem('sortby')||'top'}catch(e){}
 if(ONLINE){sb=window.supabase.createClient(SB_URL,SB_KEY);D=[]}
 const SER=[{t:'Cup',n:'NASCAR Cup Series',re:/cup/i},{t:"O'Reilly",n:"NASCAR O'Reilly Auto Parts Series",re:/o.?reilly|xfinity/i},{t:'Trucks',n:'NASCAR Craftsman Truck Series',re:/truck|craftsman/i},{t:'ARCA',n:'ARCA Menards Series',re:/arca/i},{t:'Tuning guide',n:'General tuning tips',re:/^$/},{t:'Add setup',n:'Add a setup',re:/^$/}];
+
+const avOk=u=>typeof u==='string'&&/^https:\/\/cdn\.discordapp\.com\/[A-Za-z0-9_.\/?=&%-]{1,300}$/.test(u);
+function linkOk(u,kind){if(!u)return null;try{const x=new URL(u);if(x.protocol!=='https:')return null;const h=x.hostname.replace(/^(www|m)\./,'');
+ if(kind==='yt'&&(h==='youtube.com'||h==='youtu.be'))return x.href;if(kind==='tw'&&h==='twitch.tv'&&/^\/[A-Za-z0-9_]{1,40}\/?$/.test(x.pathname))return x.href}catch(e){}return null}
+function avHtml(name,url){const ini=esc((name||'?').trim().charAt(0).toUpperCase()||'?');
+ return avOk(url)?`<img class="pav" src="${esc(url)}" alt="" width="72" height="72" referrerpolicy="no-referrer" loading="lazy" onerror="this.outerHTML='<span class=&quot;pav&quot; aria-hidden=&quot;true&quot;>${ini}</span>'">`:`<span class="pav" aria-hidden="true">${ini}</span>`}
 let si=0,tn=null,vi=0,lay='list',canAdmin=false,lastSi=0;
 let gsub='tips';   // Tuning guide sub-tab: 'tips' or 'lab' (Tune Lab)
 try{lay=localStorage.getItem('layout')==='grid'?'grid':'list'}catch(e){}
@@ -753,12 +833,27 @@ if(pv){$('pview').hidden=false;$('lab').hidden=true;$('guide').hidden=true;$('ad
  drawTabs(true);
  const all=!!pv.all;$('pvback').hidden=all;$('pvc').hidden=!all;
  let mine;
+ const so=x=>{const k=SER.slice(0,4).findIndex(z=>z.re.test(x.s));return k<0?9:k};   // series order: Cup, O'Reilly, Trucks, ARCA
  if(all){if(!$('allser').options.length)$('allser').innerHTML='<option value="">All series</option>'+SN.map(x=>`<option>${esc(x)}</option>`).join('');
   sortFill($('allsort'));const fs=$('allser').value;mine=D.filter(x=>!fs||x.s===fs).sort(sortCmp(sortBy));
   $('pvh').textContent='All setups';$('pvs').textContent=mine.length+(mine.length===1?' setup':' setups')+(mine.length>100?' (showing the first 100)':'')}
  else{const sc=x=>RT[x.id]?+RT[x.id].avg_stars:-1;mine=D.filter(x=>x.byKey===pv.key);
-  mine.sort((a,b)=>SER.slice(0,4).findIndex(z=>z.re.test(a.s))-SER.slice(0,4).findIndex(z=>z.re.test(b.s))||(a.n<b.n?-1:a.n>b.n?1:0)||sc(b)-sc(a));
-  $('pvh').textContent='Setups added by '+pv.name;$('pvs').textContent=mine.length+(mine.length===1?' setup':' setups')}
+  mine.sort((a,b)=>so(a)-so(b)||(a.n<b.n?-1:a.n>b.n?1:0)||sc(b)-sc(a));
+  const pf=PF[pv.key]||{},own=!!(me&&pv.key===me.id);
+  $('pvh').textContent=pv.name+(own?' (you)':'');
+  let vv=0,vs=0,vt=0;mine.forEach(x=>{const r=RT[x.id];if(r){vs+=+r.avg_stars*r.votes;vt+=r.votes}vv+=VW[x.id]||0});
+  const sn=new Set(mine.map(x=>so(x))).size,bits=[mine.length+(mine.length===1?' setup':' setups')];
+  if(sn>1)bits.push(sn+' series');if(vt)bits.push('&#9733; '+(vs/vt).toFixed(1)+' average from '+vt+(vt===1?' rating':' ratings'));if(VWok&&vv)bits.push(vv+(vv===1?' view':' views'));
+  $('pvs').innerHTML=bits.join(' &middot; ');
+  $('pvav').innerHTML=pv.key==='admin'?'':avHtml(pv.name,pf.avatar_url);
+  const yl=linkOk(pf.youtube_url,'yt'),tl=linkOk(pf.twitch_url,'tw');
+  $('pvlk').innerHTML=(yl?`<a href="${esc(yl)}" target="_blank" rel="noopener noreferrer nofollow ugc">YouTube</a>`:'')+(tl?`<a href="${esc(tl)}" target="_blank" rel="noopener noreferrer nofollow ugc">Twitch</a>`:'');
+  $('pve').hidden=!own;if(own){$('pvyt').value=pf.youtube_url||(prof&&prof.youtube_url)||'';$('pvtw').value=pf.twitch_url||(prof&&prof.twitch_url)||'';$('pvm').textContent=''}}
+ if(all){$('pvav').innerHTML='';$('pvlk').innerHTML='';$('pve').hidden=true}
+ if(!all){let cur='',curS='';const out=[];mine.slice(0,200).forEach(x=>{const sk=so(x),sl=sk<9?SER[sk].t:x.s;if(sl!==cur){cur=sl;const n=mine.filter(z=>(so(z)<9?SER[so(z)].t:z.s)===sl).length;out.push(`<h3 class="pgs">${esc(sl)} <small>${n}</small></h3>`)}
+   const r=RT[x.id],bits=[r?'&#9733; '+Number(r.avg_stars).toFixed(1)+' ('+r.votes+')':'no ratings yet'];if(x.lap)bits.push('Lap '+lapTxt(x.lap));if(VWok)bits.push((VW[x.id]||0)+' views');if(x.created)bits.push(agoTxt(x.created));
+   out.push(`<button type="button" class="pvi" data-id="${esc(x.id)}"><b>${esc(x.n)} &middot; ${esc(x.v)}</b><span>${bits.join(' &middot; ')}</span></button>`)});
+  $('pvl').innerHTML=out.join('')||'<p class="gp">No setups yet.</p>';$('about').hidden=true;return}
  $('pvl').innerHTML=mine.slice(0,100).map(x=>{const r=RT[x.id],bits=[esc(x.s),r?'&#9733; '+Number(r.avg_stars).toFixed(1)+' ('+r.votes+')':'no ratings yet'];
   if(x.lap)bits.push('Lap '+lapTxt(x.lap));if(VWok)bits.push((VW[x.id]||0)+' views');if(all)bits.push('by '+esc(x.by||'Unknown'));if(x.created)bits.push(agoTxt(x.created));
   return `<button type="button" class="pvi" data-id="${esc(x.id)}"><b>${esc(x.n)} &middot; ${esc(x.v)}</b><span>${bits.join(' &middot; ')}</span></button>`}).join('');
@@ -801,6 +896,13 @@ $('trk').addEventListener('change',e=>{tn=e.target.value;vi=0;render()});
 $('vars').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;vi=+b.dataset.i;selId=(curVs[vi]||{}).id||null;render()});
 $('pvl').addEventListener('click',e=>{const b=e.target.closest('button[data-id]');if(!b)return;const x=D.find(z=>z.id===b.dataset.id);if(!x)return;
  const k=SER.slice(0,4).findIndex(z=>z.re.test(x.s));pv=null;if(k>=0)si=k;lastSi=si;tn=x.n;selId=x.id;vi=0;render();window.scrollTo(0,0)});
+$('pvsv').addEventListener('click',async()=>{const yt=$('pvyt').value.trim(),tw=$('pvtw').value.trim(),m=$('pvm');
+ if(yt&&!linkOk(yt,'yt'))return m.textContent='That does not look like a YouTube link. It should start with https://youtube.com or https://youtu.be';
+ if(tw&&!linkOk(tw,'tw'))return m.textContent='That does not look like a Twitch channel link, for example https://www.twitch.tv/yourname';
+ $('pvsv').disabled=true;m.textContent='Saving...';
+ try{const r=await sb.rpc('set_links',{yt,tw});if(r.error)throw r.error;if(prof){prof.youtube_url=yt||null;prof.twitch_url=tw||null}if(me){PF[me.id]=Object.assign(PF[me.id]||{id:me.id,name:prof&&prof.name},{youtube_url:yt||null,twitch_url:tw||null})}render();$('pvm').textContent='Saved.'}
+ catch(err){m.textContent=(err.code==='42883'||err.code==='PGRST202'||/function/i.test(err.message||''))?'Links are not set up yet.':'Could not save: '+(err.message||'unknown error')}
+ $('pvsv').disabled=false});
 $('pvback').addEventListener('click',()=>{const b=pvBack;pv=null;if(b){si=b.si;tn=b.tn;selId=b.selId;vi=0}render();window.scrollTo(0,0)});
 $('sortsel').addEventListener('change',e=>setSort(e.target.value));
 $('allsort').addEventListener('change',e=>setSort(e.target.value));
@@ -881,8 +983,9 @@ function applyDeepLink(){if(deepDone)return;deepDone=true;let id=null;try{id=new
 const okRow=r=>r&&r.data&&r.data.c&&r.data.g&&['LF','RF','LR','RR'].every(k=>Array.isArray(r.data.c[k])&&r.data.c[k].length===5);
 const fromRow=r=>({id:r.id,uid:r.user_id,n:r.track,s:r.series,v:r.tuned_by,notes:r.notes||'',created:r.created_at,updated:r.updated_at,c:r.data.c,g:r.data.g,lap:r.data.lap_ms||null,tags:r.data.tags||null});
 const toRow=t=>({track:t.n,series:t.s,tuned_by:t.v,notes:(t.notes||'').trim()||null,data:{c:t.c,g:t.g,...(t.lap?{lap_ms:t.lap}:{}),...(t.tags?{tags:t.tags}:{})}});
-async function loadSetups(){const [a,pf]=await Promise.all([sb.from('setups').select('*').order('track').order('created_at'),sb.from('profiles').select('id,name')]);if(a.error)throw a.error;
- const nm={};((pf&&pf.data)||[]).forEach(r=>nm[r.id]=r.name);
+async function loadSetups(){let [a,pf]=await Promise.all([sb.from('setups').select('*').order('track').order('created_at'),sb.from('profiles').select('id,name,avatar_url,youtube_url,twitch_url')]);if(a.error)throw a.error;
+ if(pf&&pf.error)pf=await sb.from('profiles').select('id,name');
+ const nm={};PF={};((pf&&pf.data)||[]).forEach(r=>{nm[r.id]=r.name;PF[r.id]=r});
  const pfOk=!!(pf&&!pf.error);
  D=a.data.filter(okRow).map(r=>{const t=fromRow(r);t.seeded=!('seeded' in r)||!!r.seeded;
   if(r.user_id){if(nm[r.user_id]){t.by=nm[r.user_id];t.byKey=r.user_id}else if(pfOk){t.by='Account Deleted';t.byKey='deleted'}else{t.by='Unknown';t.byKey=r.user_id}}
@@ -917,13 +1020,16 @@ $('rate').addEventListener('click',async e=>{const b=e.target.closest('button[da
  try{const r=MINE[id]===s?await sb.from('ratings').delete().eq('setup_id',id).eq('user_id',me.id):await sb.from('ratings').upsert({setup_id:id,user_id:me.id,stars:s});if(r.error)throw r.error;
   await loadRatings();render()}catch(err){$('count').textContent='Could not save rating: '+(err.message||'unknown error')}});
 function renderAuth(){const e=$('auth');if(!ONLINE){e.hidden=true;return}e.hidden=false;
- e.innerHTML=me?`<span>Signed in as <b>${esc(prof?prof.name:'')}</b>${prof&&prof.blocked?' (this account is blocked from adding setups)':''}</span><button class="view" id="so" type="button">Sign out</button>`
+ e.innerHTML=me?`<span>Signed in as <b>${esc(prof?prof.name:'')}</b>${prof&&prof.blocked?' (this account is blocked from adding setups)':''}</span>${prof&&prof.name_locked?'<button class="view" id="myp" type="button">My profile</button> ':''}<button class="view" id="so" type="button">Sign out</button>`
   :'<span>Sign in to add setups and rate them.</span><button class="view" id="sin" type="button">Sign in with Discord</button>'}
 $('auth').addEventListener('click',async e=>{const b=e.target.closest('button');if(!b)return;
  try{if(b.id==='sin'){const r=await sb.auth.signInWithOAuth({provider:'discord',options:{redirectTo:location.origin+location.pathname}});if(r.error)throw r.error}
+  if(b.id==='myp'&&me&&prof){pv={key:me.id,name:prof.name};pvBack=null;render();window.scrollTo(0,0)}
   if(b.id==='so'){await sb.auth.signOut()}}catch(err){$('count').textContent='Sign-in problem: '+(err.message||'unknown error')}});
 async function afterAuth(){try{const g=await sb.auth.getSession();me=g.data.session?g.data.session.user:null;prof=null;
-  if(me){const p=await sb.from('profiles').select('*').eq('id',me.id).maybeSingle();prof=p.data||null}
+  if(me){const p=await sb.from('profiles').select('*').eq('id',me.id).maybeSingle();prof=p.data||null;
+   const av=me.user_metadata&&(me.user_metadata.avatar_url||me.user_metadata.picture);   // Discord profile picture, kept in sync at each sign-in
+   if(prof&&avOk(av)&&prof.avatar_url!==av){try{const r=await sb.rpc('set_avatar',{url:av});if(!r.error)prof.avatar_url=av}catch(e){}}}
   canAdmin=!!(me&&prof&&!prof.blocked);isAdm=!!(prof&&prof.is_admin);
   await loadSetups();await loadRatings();srcText(null);applyDeepLink()}
  catch(err){$('count').textContent='Could not load setups: '+(err.message||'unknown error')}
