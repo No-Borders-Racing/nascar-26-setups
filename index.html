@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Beta 0.8.1 -->
+<!-- Beta 0.9.0 -->
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>No Borders Racing - NASCAR 26 Set-ups</title>
@@ -106,6 +106,7 @@ h2{margin:0;font-size:2.1rem;line-height:1;font-weight:700}
 .rate .avg{font-weight:700;font-size:1.1rem}.rate .avg small{font-weight:500;color:var(--mute)}
 .rate .st button{background:none;border:0;font-size:1.7rem;line-height:1;padding:0 3px;min-width:40px;min-height:44px;color:var(--line);cursor:pointer}
 .rate .st button.on{color:var(--red)}.rate .who{color:var(--mute);font-size:.85rem}
+.view.fav.on{border-color:var(--red);color:var(--red)}.hrt{color:var(--red)}
 .lk input{background:var(--line);color:var(--mute);cursor:not-allowed;opacity:1;-webkit-text-fill-color:var(--mute);border-style:dashed}
 .ov[hidden],.auth[hidden],.rate[hidden]{display:none}
 .ov{position:fixed;inset:0;background:rgba(0,0,0,.65);display:flex;align-items:center;justify-content:center;padding:16px;z-index:50}
@@ -166,7 +167,7 @@ button.lk:hover,button.lk:focus-visible{color:var(--ink)}
 <section id="about" hidden><div class="axis">About this setup</div><div class="tnotes" id="tnotes"><h3>Tags</h3><div class="tgs" id="tgrow"></div><h3 class="nt">Tuner's notes</h3><p id="tnp"></p><p class="aboutnote" id="aboutnote" hidden>Tap <b>Edit this setup</b> above to add tags or notes.</p></div></section>
 <p class="empty" id="empty" hidden></p>
 <section id="homev" class="homev" hidden></section>
-<section id="pview" class="pv" hidden><button class="view" id="pvback" type="button">&larr; Back</button><div class="pvhead"><span id="pvav"></span><div><h2 id="pvh"></h2><p class="sub" id="pvs" style="margin:0"></p><div class="pls" id="pvlk"></div></div></div><div id="pve" hidden><h3>Your streaming links</h3><p class="sub" style="margin:0 0 4px">Optional. Shown on your profile so people can find you. YouTube and Twitch only. Leave a box empty to remove it.</p><label for="pvyt">YouTube link</label><input id="pvyt" type="url" inputmode="url" maxlength="200" placeholder="https://www.youtube.com/@yourchannel" autocomplete="off"><label for="pvtw">Twitch link</label><input id="pvtw" type="url" inputmode="url" maxlength="100" placeholder="https://www.twitch.tv/yourname" autocomplete="off"><p class="msg" id="pvdg" role="status"></p><p class="msg" id="pvm" role="status"></p><button class="view" id="pvsv" type="button">Save links</button></div><div class="sortrow" id="pvc" hidden><label><span>Sort by</span><select class="trk" id="allsort"></select></label><label><span>Series</span><select class="trk" id="allser"></select></label></div><div id="pvl"></div></section>
+<section id="pview" class="pv" hidden><button class="view" id="pvback" type="button">&larr; Back</button><div class="pvhead"><span id="pvav"></span><div><h2 id="pvh"></h2><p class="sub" id="pvs" style="margin:0"></p><div class="pls" id="pvlk"></div></div></div><div id="pve" hidden><h3>Your streaming links</h3><p class="sub" style="margin:0 0 4px">Optional. Shown on your profile so people can find you. YouTube and Twitch only. Leave a box empty to remove it.</p><label for="pvyt">YouTube link</label><input id="pvyt" type="url" inputmode="url" maxlength="200" placeholder="https://www.youtube.com/@yourchannel" autocomplete="off"><label for="pvtw">Twitch link</label><input id="pvtw" type="url" inputmode="url" maxlength="100" placeholder="https://www.twitch.tv/yourname" autocomplete="off"><p class="msg" id="pvdg" role="status"></p><p class="msg" id="pvm" role="status"></p><button class="view" id="pvsv" type="button">Save links</button></div><div class="sortrow" id="pvc" hidden><label><span>Sort by</span><select class="trk" id="allsort"></select></label><label><span>Series</span><select class="trk" id="allser"></select></label><label id="allfavl" hidden><span>Show</span><select class="trk" id="allfav"><option value="">All setups</option><option value="1">My favourites</option></select></label></div><div id="pvl"></div></section>
 <section id="lab" hidden><iframe id="labf" title="Tuning lab (test version)" scrolling="no"></iframe></section>
 <script type="text/plain" id="labsrc"><!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
@@ -803,7 +804,7 @@ const SB_URL='https://kvpcqovybreewxqrqmtx.supabase.co',SB_KEY='sb_publishable_Q
 const ONLINE=!!(SB_URL&&SB_KEY&&window.supabase);
 if(SB_URL&&!window.supabase){$('auth').hidden=false;$('auth').textContent='Could not load the online library, so this is showing demo data only. Check your connection and refresh.'}
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let home=true,AVDIAG='',PF={},pv=null,pvBack=null,showSaved=false,curVs=[],selId=null,sb=null,me=null,prof=null,isAdm=false,RT={},MINE={},lastSkip=0,VW={},VWok=false,sortBy='top';
+let home=true,AVDIAG='',PF={},pv=null,pvBack=null,showSaved=false,curVs=[],selId=null,sb=null,me=null,prof=null,isAdm=false,RT={},MINE={},FAV=new Set(),FAVok=false,lastSkip=0,VW={},VWok=false,sortBy='top';
 try{sortBy=localStorage.getItem('sortby')||'top'}catch(e){}
 if(ONLINE){sb=window.supabase.createClient(SB_URL,SB_KEY);D=[]}
 const SER=[{t:'Cup',n:'NASCAR Cup Series',re:/cup/i},{t:"O'Reilly",n:"NASCAR O'Reilly Auto Parts Series",re:/o.?reilly|xfinity/i},{t:'Trucks',n:'NASCAR Craftsman Truck Series',re:/truck|craftsman/i},{t:'ARCA',n:'ARCA Menards Series',re:/arca/i},{t:'Tuning guide',n:'General tuning tips',re:/^$/},{t:'Add setup',n:'Add a setup',re:/^$/}];
@@ -855,7 +856,7 @@ if(pv){$('pview').hidden=false;$('lab').hidden=true;$('guide').hidden=true;$('ad
  let mine;
  const so=x=>{const k=SER.slice(0,4).findIndex(z=>z.re.test(x.s));return k<0?9:k};   // series order: Cup, O'Reilly, Trucks, ARCA
  if(all){if(!$('allser').options.length)$('allser').innerHTML='<option value="">All series</option>'+SN.map(x=>`<option>${esc(x)}</option>`).join('');
-  sortFill($('allsort'));const fs=$('allser').value;mine=D.filter(x=>!fs||x.s===fs).sort(sortCmp(sortBy));
+  sortFill($('allsort'));$('allfavl').hidden=!FAVok;if(!FAVok)$('allfav').value='';const fs=$('allser').value,fo=FAVok&&$('allfav').value==='1';mine=D.filter(x=>(!fs||x.s===fs)&&(!fo||FAV.has(x.id))).sort(sortCmp(sortBy));
   $('pvh').textContent='All setups';$('pvs').textContent=mine.length+(mine.length===1?' setup':' setups')+(mine.length>100?' (showing the first 100)':'')}
  else{const sc=x=>RT[x.id]?+RT[x.id].avg_stars:-1;mine=D.filter(x=>x.byKey===pv.key);
   mine.sort((a,b)=>so(a)-so(b)||(a.n<b.n?-1:a.n>b.n?1:0)||sc(b)-sc(a));
@@ -872,11 +873,11 @@ if(pv){$('pview').hidden=false;$('lab').hidden=true;$('guide').hidden=true;$('ad
  if(all){$('pvav').innerHTML='';$('pvlk').innerHTML='';$('pve').hidden=true}
  if(!all){let cur='',curS='';const out=[];mine.slice(0,200).forEach(x=>{const sk=so(x),sl=sk<9?SER[sk].t:x.s;if(sl!==cur){cur=sl;const n=mine.filter(z=>(so(z)<9?SER[so(z)].t:z.s)===sl).length;out.push(`<h3 class="pgs">${esc(sl)} <small>${n}</small></h3>`)}
    const r=RT[x.id],bits=[r?'&#9733; '+Number(r.avg_stars).toFixed(1)+' ('+r.votes+')':'no ratings yet'];if(x.lap)bits.push('Lap '+lapTxt(x.lap));if(VWok)bits.push((VW[x.id]||0)+' views');if(x.created)bits.push(agoTxt(x.created));
-   out.push(`<button type="button" class="pvi" data-id="${esc(x.id)}"><b>${esc(x.n)} &middot; ${esc(x.v)}</b><span>${bits.join(' &middot; ')}</span></button>`)});
+   out.push(`<button type="button" class="pvi" data-id="${esc(x.id)}"><b>${FAV.has(x.id)?'<span class="hrt">&#9829;</span> ':''}${esc(x.n)} &middot; ${esc(x.v)}</b><span>${bits.join(' &middot; ')}</span></button>`)});
   $('pvl').innerHTML=out.join('')||'<p class="gp">No setups yet.</p>';$('about').hidden=true;return}
  $('pvl').innerHTML=mine.slice(0,100).map(x=>{const r=RT[x.id],bits=[esc(x.s),r?'&#9733; '+Number(r.avg_stars).toFixed(1)+' ('+r.votes+')':'no ratings yet'];
   if(x.lap)bits.push('Lap '+lapTxt(x.lap));if(VWok)bits.push((VW[x.id]||0)+' views');if(all)bits.push('by '+esc(x.by||'Unknown'));if(x.created)bits.push(agoTxt(x.created));
-  return `<button type="button" class="pvi" data-id="${esc(x.id)}"><b>${esc(x.n)} &middot; ${esc(x.v)}</b><span>${bits.join(' &middot; ')}</span></button>`}).join('');
+  return `<button type="button" class="pvi" data-id="${esc(x.id)}"><b>${FAV.has(x.id)?'<span class="hrt">&#9829;</span> ':''}${esc(x.n)} &middot; ${esc(x.v)}</b><span>${bits.join(' &middot; ')}</span></button>`}).join('')||'<p class="gp">'+(FAVok&&$('allfav').value==='1'?'No favourites yet. Open a setup and tap Save to favourites.':'No setups to show.')+'</p>';
  $('about').hidden=true;return}
 $('pview').hidden=true;if(si<4)lastSi=si;
 const L=D.filter(x=>SER[si]&&SER[si].re.test(x.s));
@@ -949,6 +950,7 @@ $('pvback').addEventListener('click',()=>{const b=pvBack;home=false;pv=null;if(b
 $('sortsel').addEventListener('change',e=>setSort(e.target.value));
 $('allsort').addEventListener('change',e=>setSort(e.target.value));
 $('allser').addEventListener('change',()=>render());
+$('allfav').addEventListener('change',()=>render());
 $('vsel').addEventListener('change',e=>{vi=+e.target.value;selId=(curVs[vi]||{}).id||null;render()});
 $('view').addEventListener('click',()=>{lay=lay==='grid'?'list':'grid';try{localStorage.setItem('layout',lay)}catch(x){}render()});
 const BAKED_AT='2026-10-08T06:32:44Z';
@@ -1035,6 +1037,7 @@ async function loadSetups(){let [a,pf]=await Promise.all([sb.from('setups').sele
   return t})}
 async function loadRatings(){const b=await sb.from('setup_ratings').select('*');RT={};(b.data||[]).forEach(r=>RT[r.setup_id]=r);
  MINE={};if(me){const m=await sb.from('ratings').select('setup_id,stars').eq('user_id',me.id);(m.data||[]).forEach(r=>MINE[r.setup_id]=r.stars)}
+ FAV=new Set();FAVok=false;if(me){try{const f=await sb.from('favorites').select('setup_id').eq('user_id',me.id);if(!f.error){FAVok=true;(f.data||[]).forEach(x=>FAV.add(x.setup_id))}}catch(e){}}
  await loadViews()}
 async function loadViews(){VW={};VWok=false;try{const r=await sb.from('setup_views').select('*');if(!r.error){VWok=true;(r.data||[]).forEach(x=>VW[x.setup_id]=x.views)}}catch(e){}}
 async function persistOnline(nd){if(!me)throw new Error('Sign in with Discord first.');
@@ -1052,8 +1055,12 @@ function renderRate(){const e=$('rate');if(!curT||!curT.id||si>3){e.hidden=true;
  else if(own)h+='<span class="who">This is your setup, so you can\'t rate it.</span>';
  else if(!canAdmin)h+='<span class="who">Your account can\'t rate setups.</span>';
  else h+='<span class="st" role="group" aria-label="Your rating">'+[1,2,3,4,5].map(n=>`<button type="button" data-s="${n}" class="${n<=mine?'on':''}" aria-label="${n} star${n>1?'s':''}" aria-pressed="${n<=mine}">★</button>`).join('')+'</span><span class="who">'+(mine?'Your rating: '+mine+'. Tap it again to remove.':'Tap a star to rate.')+'</span>';
+ if(me&&FAVok){const on=FAV.has(curT.id);h+='<button type="button" class="view fav'+(on?' on':'')+'" id="favbtn" aria-pressed="'+on+'">'+(on?'&#9829; Saved to favourites':'&#9825; Save to favourites')+'</button>'}
  h+='<button type="button" class="view" id="sharebtn">Share this setup</button>';
  e.innerHTML=h;e.hidden=false}
+$('rate').addEventListener('click',async e=>{const b=e.target.closest('#favbtn');if(!b||!curT||!curT.id||!me)return;const id=curT.id,was=FAV.has(id);b.disabled=true;
+ try{const r=was?await sb.from('favorites').delete().eq('setup_id',id).eq('user_id',me.id):await sb.from('favorites').insert({setup_id:id,user_id:me.id});if(r.error&&r.error.code!=='23505')throw r.error;was?FAV.delete(id):FAV.add(id);render();flash(was?'Removed from favourites':'Saved to favourites')}
+ catch(err){b.disabled=false;$('count').textContent='Could not save favourite: '+(err.message||'unknown error')}});
 $('rate').addEventListener('click',async e=>{if(e.target.id!=='sharebtn'||!curT||!curT.id)return;
  const url=location.origin+location.pathname.replace(/[^/]*$/,'')+'share/'+curT.id+'.html';
  try{await navigator.clipboard.writeText(url);flash('Link copied')}catch(err){window.prompt('Copy this link:',url)}});
