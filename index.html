@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Beta 0.9.5 -->
+<!-- Beta 0.9.6 -->
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>No Borders Racing - NASCAR 26 Set-ups</title>
@@ -33,6 +33,10 @@ header span{color:var(--mute);font-size:.9rem}
 .tabs{display:flex;gap:6px;margin-top:14px}
 .tabs button{flex:1;font:700 .95rem "Barlow Semi Condensed",sans-serif;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:9px 2px;cursor:pointer}
 .tabs.sub{margin-top:8px}.tabs.sub button{font-size:.88rem;padding:7px 2px}#atabs{margin:6px 0 12px}.f.unread select,.f.unread input{outline:2px solid var(--red);outline-offset:1px;background:rgba(200,16,46,.12)}.f.unread>span::after{content:" - couldn't read, please fill in";color:var(--red);font-weight:700;margin-left:4px}.exp{display:inline-block;font:700 .7rem "Barlow Semi Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;background:var(--red);color:#fff;border-radius:99px;padding:2px 8px;vertical-align:middle;margin-left:6px}#scanbox ol{margin:8px 0 12px;padding-left:20px;line-height:1.5}
+#tabs button,#stabs button[data-g]{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;line-height:1.15}#stabs button[data-g]{flex-direction:row;gap:7px}
+.ic{width:22px;height:22px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}#stabs .ic{width:18px;height:18px}
+.hc h3{display:flex;align-items:center;gap:8px}.hc h3 .ic{color:var(--red)}
+@media(min-width:640px){#tabs button{flex-direction:row;gap:8px}}
 .tabs button[aria-pressed=true]{background:var(--red);border-color:var(--red);color:#fff}
 .empty{background:var(--card);border:1px dashed var(--line);border-radius:10px;padding:18px 14px;margin-top:16px;color:var(--mute)}
 .t{color:var(--blue);font-weight:700}
@@ -823,9 +827,12 @@ try{lay=localStorage.getItem('layout')==='grid'?'grid':'list'}catch(e){}
 function card(k,t){const v=t.c[k];
 return `<div class="corner${k[1]==='R'?' r':''}"><h3>${NAMES[k]}</h3>`+
 P.map((p,i)=>`<div class="row"><span class="k">${p[0]}</span><span class="num">${esc(v[i])}<i>${p[1]}</i></span></div>`).join('')+'</div>'}
+const ICP={series:'<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>',all:'<path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1" fill="currentColor"/><circle cx="4.5" cy="12" r="1" fill="currentColor"/><circle cx="4.5" cy="18" r="1" fill="currentColor"/>',guide:'<path d="M4 5.5C6.5 4 9.5 4 12 5.5 14.5 4 17.5 4 20 5.5V19C17.5 17.5 14.5 17.5 12 19 9.5 17.5 6.5 17.5 4 19Z"/><path d="M12 5.5V19"/>',faq:'<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.6 2.6 0 1 1 3.6 2.4c-.7.4-1.1.9-1.1 1.8"/><circle cx="12" cy="17" r=".6" fill="currentColor"/>',add:'<circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/>',adm:'<path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/>',lab:'<path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/>',profile:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/>'};
+ICP.signin=ICP.add;ICP.tips=ICP.guide;
+const ic=k=>ICP[k]?'<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">'+ICP[k]+'</svg>':'';
 function drawTabs(none){const top=[['series','Series',!none&&si<4],['all','All setups',!!(pv&&pv.all)],['guide','Tuning guide',!none&&si===4],['faq','FAQ',!!faqOn]];if(canAdmin)top.push(['add','Add setup',!none&&si===5]);if(isAdm)top.push(['adm','Admin',!none&&si===6]);
-$('tabs').innerHTML=top.map(x=>`<button type="button" aria-pressed="${x[2]}" data-top="${x[0]}">${x[1]}</button>`).join('');
-const ss=$('stabs');if(!none&&si===4){ss.hidden=false;ss.innerHTML=[['tips','Guide'],['lab','Tune Lab']].map(x=>`<button type="button" aria-pressed="${gsub===x[0]}" data-g="${x[0]}">${x[1]}</button>`).join('');return}
+$('tabs').innerHTML=top.map(x=>`<button type="button" aria-pressed="${x[2]}" data-top="${x[0]}">${ic(x[0])}<span>${x[1]}</span></button>`).join('');
+const ss=$('stabs');if(!none&&si===4){ss.hidden=false;ss.innerHTML=[['tips','Guide'],['lab','Tune Lab']].map(x=>`<button type="button" aria-pressed="${gsub===x[0]}" data-g="${x[0]}">${ic(x[0])}<span>${x[1]}</span></button>`).join('');return}
 ss.hidden=!(none||si<4);ss.innerHTML=SER.slice(0,4).map((x,i)=>`<button type="button" aria-pressed="${!none&&i===si}" data-i="${i}">${x.t}</button>`).join('')}
 const TG=[['input','Controller or wheel',[['controller','Controller'],['wheel','Wheel'],['both','Both']]],['feel','Handling',[['tight','Tight'],['neutral','Neutral'],['loose','Loose']]],['skill','Driver level',[['beginner','Beginner'],['intermediate','Intermediate'],['expert','Expert']]]];
 const TU=[['qual','Qualifying'],['race','Race'],['long','Long runs'],['pack','Pack racing']];
@@ -924,7 +931,7 @@ function homeDraw(){const on=!!(ONLINE&&me);
   else C.push(['signin','Add setup','Sign in with Discord to add your own setups and to rate other people\'s. It is free.','Sign in with Discord']);
   if(on&&prof&&prof.name_locked)C.push(['profile','My profile','Your setups by series and track, with their ratings and views, plus your Discord picture and your YouTube and Twitch links.','Open my profile']);
   if(isAdm)C.push(['adm','Admin','Review setups, blocked accounts and site stats.','Open admin'])}
- $('homev').innerHTML='<h2 class="gh">Welcome</h2><p class="sub" style="margin:0">Free setups for NASCAR 26, shared by the community. Fan-made, and not affiliated with NASCAR or the game\'s publisher. New here? Start with Series, pick your track and try a setup. Come back and rate it.</p><div class="hgrid">'+C.map(x=>`<div class="hc"><h3>${esc(x[1])}</h3><p class="sub">${esc(x[2])}</p><button type="button" class="view" data-go="${x[0]}">${esc(x[3])}</button></div>`).join('')+'</div>'}
+ $('homev').innerHTML='<h2 class="gh">Welcome</h2><p class="sub" style="margin:0">Free setups for NASCAR 26, shared by the community. Fan-made, and not affiliated with NASCAR or the game\'s publisher. New here? Start with Series, pick your track and try a setup. Come back and rate it.</p><div class="hgrid">'+C.map(x=>`<div class="hc"><h3>${ic(x[0])}${esc(x[1])}</h3><p class="sub">${esc(x[2])}</p><button type="button" class="view" data-go="${x[0]}">${esc(x[3])}</button></div>`).join('')+'</div>'}
 $('homelink').addEventListener('click',e=>{if(e.defaultPrevented||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;e.preventDefault();home=true;pv=null;render();window.scrollTo(0,0)});
 $('homev').addEventListener('click',e=>{const b=e.target.closest('button[data-go]');if(!b)return;const g=b.dataset.go;
  if(g==='signin'){const s=$('sin');if(s)s.click();return}
