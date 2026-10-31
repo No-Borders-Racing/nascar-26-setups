@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Beta 0.9.6 -->
+<!-- Beta 0.9.7 -->
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>No Borders Racing - NASCAR 26 Set-ups</title>
@@ -1262,7 +1262,15 @@ async function scanFile(f){if(!f)return;$('scanmsg').textContent='';if($('scanbt
  let iv=null,jv=null;$('scanbtn').disabled=true;
  await withBusy('Analysing image. Please wait...',async()=>{let res,img;const bz=$('busy');bz.className='busy scan';jv=jkStart(bz);let dn=0;iv=setInterval(()=>{dn=(dn+1)%4;const d=$('dots');if(d)d.textContent='.'.repeat(dn)},400);
   try{img=await shrink(f)}catch(e){flash("Couldn't open that image.",3500,true);return}
-  try{res=await sb.functions.invoke('read-setup',{body:{image:img,mime:'image/jpeg',tracks:Object.keys(TR)}})}catch(e){res={error:e}}
+  // If Google is busy the server hands the scan back, so trying again costs nothing. Try up to 3 times in all.
+  for(let tries=0;;tries++){
+   try{res=await sb.functions.invoke('read-setup',{body:{image:img,mime:'image/jpeg',tracks:Object.keys(TR)}})}catch(e){res={error:e}}
+   let busy=false;if(res&&res.error){try{const j=await res.error.context.clone().json();busy=/busy right now/i.test(j.reason||'')}catch(x){}}
+   if(!busy||tries>=2)break;
+   const sx=()=>document.querySelector('#busy .srx');
+   if(sx())sx().textContent='The reader is busy. Trying again shortly (try '+(tries+2)+' of 3)...';
+   await new Promise(r=>setTimeout(r,tries===0?6000:12000));
+   if(sx())sx().textContent='Reading your setup (try '+(tries+2)+' of 3). Please wait.'}
   let d=res&&res.data,msg='';if(d)setLeft(d.left,d.limit);
   if(res&&res.error){try{const j=await res.error.context.json();msg=j.reason||'';setLeft(j.left,j.limit)}catch(x){}d=null;if(!msg)msg="Couldn't reach the reader. Please try again, or type the setup in."}
   else if(!d||d.ok!==true)msg=(d&&d.reason)||"Couldn't read that image.";
